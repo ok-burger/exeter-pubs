@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exeter Pubs</title>
+  <meta name="description" content="A curated guide to pubs in Exeter, sorted by distance.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-mark">🍺</span>
+        <div>
+          <h1>Exeter Pubs</h1>
+          <p class="tagline">A small, opinionated guide</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Location bar -->
+    <section class="location-bar">
+      <button id="find-me-btn" class="btn-find-me" type="button">
+        <span class="icon" aria-hidden="true">📍</span>
+        <span id="find-me-text">Find pubs near me</span>
+      </button>
+      <p id="location-status" class="location-status" hidden></p>
+    </section>
+
+    <!-- Search & filter -->
+    <section id="filters" class="filters" hidden>
+      <div class="filters-header">
+        <h3 class="filters-title">Search &amp; filter</h3>
+        <div class="filters-meta">
+          <span id="filter-count" class="filter-count"></span>
+          <button id="clear-filters-btn" class="btn-clear" type="button" hidden>Clear all</button>
+        </div>
+      </div>
+
+      <div class="search-row">
+        <span class="search-icon" aria-hidden="true">🔍</span>
+        <input
+          type="search"
+          id="search-input"
+          class="search-input"
+          placeholder="Search by name, address, or note…"
+          aria-label="Search pubs"
+          autocomplete="off">
+        <button id="search-clear-btn" class="search-clear" type="button" aria-label="Clear search" hidden>✕</button>
+      </div>
+
+      <div id="filter-chips" class="filter-chips" role="group" aria-label="Tag filters"></div>
+    </section>
+
+    <!-- View toggle: Map ↔ List -->
+    <div class="view-toggle" role="tablist" aria-label="View toggle">
+      <button id="view-map-btn" class="view-tab active" type="button" role="tab" aria-selected="true" aria-controls="view-map">Map</button>
+      <button id="view-list-btn" class="view-tab" type="button" role="tab" aria-selected="false" aria-controls="view-list">List</button>
+    </div>
+
+    <!-- Map view panel -->
+    <section class="view-panel view-active" id="view-map" role="tabpanel" aria-labelledby="view-map-btn">
+      <div id="map" aria-label="Map of Exeter pubs"></div>
+    </section>
+
+    <!-- List view panel -->
+    <section class="view-panel" id="view-list" role="tabpanel" aria-labelledby="view-list-btn">
+      <div id="status" class="status" role="status" aria-live="polite">Loading pubs…</div>
+      <ul id="pub-list" class="pub-list" aria-label="Pubs in Exeter"></ul>
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <p>Map and data © OpenStreetMap contributors. Tagged by hand.</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

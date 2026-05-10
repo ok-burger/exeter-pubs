@@ -1,0 +1,900 @@
+{
+  "version": 1,
+  "city": "Exeter",
+  "generated": "2026-04-28T14:11:22.905Z",
+  "pubs": [
+    {
+      "id": "pub-001",
+      "osm_id": "node/12680005703",
+      "name": "Arcadia",
+      "lat": 50.725797,
+      "lon": -3.528404,
+      "address": "6 Northernhay Place, Exeter, EX4 3QJ",
+      "website": "https://www.arcadiaexeter.com/",
+      "phone": "",
+      "tags": [
+        "Food",
+        "Modern",
+        "Chain",
+        "Hire"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-002",
+      "osm_id": "node/290025520",
+      "name": "Bridge Inn",
+      "lat": 50.6844901,
+      "lon": -3.4596445,
+      "address": "Topsham, Exeter, EX3 0QQ",
+      "website": "https://thebridgeinntopsham.co.uk/",
+      "phone": "",
+      "tags": [
+        "Real Ale",
+        "Garden",
+        "Dog Friendly",
+        "Traditional"
+      ],
+      "notes": "Minimal indoor seating, late opening"
+    },
+    {
+      "id": "pub-003",
+      "osm_id": "node/13160850050",
+      "name": "City Gate",
+      "lat": 50.7236873,
+      "lon": -3.5348824,
+      "address": "1 Iron Bridge, Exeter, EX4 3RB",
+      "website": "",
+      "phone": "",
+      "tags": [
+        "Garden",
+        "Food",
+        "Family Friendly"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-004",
+      "osm_id": "node/288335883",
+      "name": "Clifton Inn",
+      "lat": 50.7255148,
+      "lon": -3.5202641,
+      "address": "1 Clifton Road, Exeter, EX1 2BR",
+      "website": "",
+      "phone": "",
+      "tags": [
+        "Garden",
+        "Food",
+        "Sports"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-005",
+      "osm_id": "way/363499121",
+      "name": "Cowick Barton",
+      "lat": 50.7093724,
+      "lon": -3.5465544,
+      "address": "121 Cowick Lane, Exeter, EX2 9HF",
+      "website": "https://www.thecowickbarton.co.uk/",
+      "phone": "+44 1392 491117",
+      "tags": [
+        "Garden",
+        "Food",
+        "Traditional"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-006",
+      "osm_id": "node/13059428518",
+      "name": "Crossed Anchors Brewery & Taproom",
+      "lat": 50.7130168,
+      "lon": -3.5293621,
+      "address": "Water Lane, Exeter, EX2 8BY",
+      "website": "https://www.crossedanchors.co.uk/contact/",
+      "phone": "",
+      "tags": [
+        "Brewery",
+        "Real Ale",
+        "Industrial"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-007",
+      "osm_id": "way/186668495",
+      "name": "Devon Yeoman",
+      "lat": 50.739254,
+      "lon": -3.4972356,
+      "address": "156 Beacon Lane, Exeter, EX4 8LX",
+      "website": "",
+      "phone": "",
+      "tags": [
+        "Garden",
+        "Family Friendly"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-008",
+      "osm_id": "way/119208351",
+      "name": "Double Locks Inn",
+      "lat": 50.6999873,
+      "lon": -3.5127938,
+      "address": "Canal Banks, Exeter, EX2 6LT",
+      "website": "",
+      "phone": "+44 1392 256947",
+      "tags": [
+        "Garden",
+        "Food",
+        "Dog Friendly",
+        "Real Ale",
+        "Traditional",
+        "Family Friendly",
+        "Live Music"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-009",
+      "osm_id": "node/10539905163",
+      "name": "Drakes Bar & Lounge",
+      "lat": 50.7253192,
+      "lon": -3.5334342,
+      "address": "Queen Street",
+      "website": "",
+      "phone": "",
+      "tags": [
+        "Sports"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-010",
+      "osm_id": "way/265411590",
+      "name": "Duke of York",
+      "lat": 50.7278971,
+      "lon": -3.5231572,
+      "address": "58 Sidwell Street, Exeter, EX4 6PH",
+      "website": "https://www.craftunionpubs.com/duke-of-york-exeter",
+      "phone": "",
+      "tags": [
+        "Real Ale",
+        "Traditional",
+        "Food",
+        "Quiz"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-012",
+      "osm_id": "node/10076043581",
+      "name": "George's Meeting House",
+      "lat": 50.7205788,
+      "lon": -3.5300023,
+      "address": "38 South Street, Exeter, EX1 1ED",
+      "website": "https://www.jdwetherspoon.com/pubs/georges-meeting-house-exeter/",
+      "phone": "",
+      "tags": [
+        "Wetherspoon",
+        "Food",
+        "Real Ale",
+        "Garden"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-013",
+      "osm_id": "node/498427461",
+      "name": "Green Gables",
+      "lat": 50.7160682,
+      "lon": -3.5474186,
+      "address": "Buddle Lane, Exeter, EX4 1JH",
+      "website": "",
+      "phone": "",
+      "tags": [
+        "Food",
+        "Traditional",
+        "Sports"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-014",
+      "osm_id": "way/116683854",
+      "name": "Heart Of Oak",
+      "lat": 50.7390823,
+      "lon": -3.470734,
+      "address": "34 Main Road, Exeter, EX4 8HS",
+      "website": "",
+      "phone": "",
+      "tags": [
+        "Garden",
+        "Food",
+        "Sports"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-015",
+      "osm_id": "way/263343390",
+      "name": "Henry's Bar",
+      "lat": 50.7302737,
+      "lon": -3.514224,
+      "address": "Mount Pleasant Road, Exeter, EX4 7AB",
+      "website": "",
+      "phone": "",
+      "tags": [
+        "Real Ale",
+        "Garden",
+        "Traditional"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-016",
+      "osm_id": "node/9135882848",
+      "name": "Little Drop Of Poison",
+      "lat": 50.72132,
+      "lon": -3.5343488,
+      "address": "154 Fore Street, Exeter, EX4 3AT",
+      "website": "https://www.thegangesrestaurant.com/",
+      "phone": "",
+      "tags": [
+        "Real Ale",
+        "Traditional",
+        "Live Music"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-017",
+      "osm_id": "node/11813558606",
+      "name": "Loco Bar",
+      "lat": 50.7304819,
+      "lon": -3.5421379,
+      "address": "",
+      "website": "https://www.greatwesternhotel.co.uk/",
+      "phone": "",
+      "tags": [
+        "Food"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-018",
+      "osm_id": "node/290014369",
+      "name": "Lord Nelson Inn",
+      "lat": 50.6853821,
+      "lon": -3.4671305,
+      "address": "High Street, Exeter, EX3 0DU",
+      "website": "https://lordnelsontopsham.com/",
+      "phone": "",
+      "tags": [
+        "Garden"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-019",
+      "osm_id": "node/293150465",
+      "name": "Mount Radford",
+      "lat": 50.7212304,
+      "lon": -3.519728,
+      "address": "73-75 Magdalen Road, Exeter, EX2 4TA",
+      "website": "https://www.greeneking-pubs.co.uk/pubs/devon/mount-radford/",
+      "phone": "+44 1392 258221",
+      "tags": [
+        "Food"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-020",
+      "osm_id": "way/339435118",
+      "name": "New Inn",
+      "lat": 50.6998485,
+      "lon": -3.533988,
+      "address": "76 Church Road, Exeter, EX2 8TA",
+      "website": "https://www.newinnalphington.com",
+      "phone": "+44 1392 204994",
+      "tags": [
+        "Food",
+        "Garden"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-021",
+      "osm_id": "way/217574674",
+      "name": "Old Timers",
+      "lat": 50.725485,
+      "lon": -3.5287219,
+      "address": "Little Castle Street, Exeter, EX4 3PX",
+      "website": "",
+      "phone": "",
+      "tags": [
+        "Traditional"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-022",
+      "osm_id": "node/13432087760",
+      "name": "Pig & Pickle",
+      "lat": 50.7213621,
+      "lon": -3.5061055,
+      "address": "38A Fore Street, Exeter, EX1 2QL",
+      "website": "",
+      "phone": "",
+      "tags": [
+        "Food"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-023",
+      "osm_id": "way/1131143777",
+      "name": "Pinhoe Hoard",
+      "lat": 50.735071,
+      "lon": -3.4793012,
+      "address": "2 Bakers Way, Exeter, EX4 8GA",
+      "website": "https://www.pinhoehoardpubexeter.co.uk/",
+      "phone": "",
+      "tags": [
+        "Garden",
+        "Dog Friendly",
+        "Food",
+        "Family Friendly"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-024",
+      "osm_id": "node/364838404",
+      "name": "Royal Oak",
+      "lat": 50.7189402,
+      "lon": -3.5400115,
+      "address": "68 Okehampton Street, Exeter, EX4 1DY",
+      "website": "",
+      "phone": "",
+      "tags": [
+        "Real Ale",
+        "Garden",
+        "Dog Friendly",
+        "Food",
+        "Traditional",
+        "Live Music",
+        "Sports"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-025",
+      "osm_id": "node/13013923938",
+      "name": "Royal Oak",
+      "lat": 50.7213739,
+      "lon": -3.5038689,
+      "address": "78-81 Fore Street, Exeter, EX1 2RN",
+      "website": "https://www.royaloakpubheavitree.co.uk/",
+      "phone": "+44 1392 25 41 21",
+      "tags": [
+        "Garden",
+        "Food",
+        "Traditional"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-026",
+      "osm_id": "way/521544427",
+      "name": "Rumours",
+      "lat": 50.7266717,
+      "lon": -3.5284723,
+      "address": "60 New North Road, Exeter, EX4 4EP",
+      "website": "https://www.rumoursexeter.co.uk/",
+      "phone": "",
+      "tags": [],
+      "notes": ""
+    },
+    {
+      "id": "pub-027",
+      "osm_id": "way/437855478",
+      "name": "Samuel Jones Ale & Smoke House",
+      "lat": 50.7183674,
+      "lon": -3.5318201,
+      "address": "37 Commercial Road, Exeter, EX2 4AE",
+      "website": "https://www.samueljonesexeter.co.uk/",
+      "phone": "",
+      "tags": [
+        "Food",
+        "Garden"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-028",
+      "osm_id": "node/3895111344",
+      "name": "Scapegoat",
+      "lat": 50.7261714,
+      "lon": -3.5337568,
+      "address": "1A Queen Street, Exeter, EX4 3SB",
+      "website": "",
+      "phone": "+44 1392 437217",
+      "tags": [
+        "Real Ale"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-030",
+      "osm_id": "way/200071273",
+      "name": "The Bishop Blaize",
+      "lat": 50.7190607,
+      "lon": -3.5337051,
+      "address": "Commercial Road, Exeter, EX2 4AB",
+      "website": "",
+      "phone": "",
+      "tags": [
+        "Traditional"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-031",
+      "osm_id": "way/252625188",
+      "name": "The Black Horse",
+      "lat": 50.7267727,
+      "lon": -3.5272597,
+      "address": "Longbrook Street, Exeter, EX4 6AB",
+      "website": "https://www.greeneking.co.uk/pubs/devon/black-horse",
+      "phone": "",
+      "tags": [
+        "Garden",
+        "Traditional",
+        "Live Music",
+        "Sports"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-032",
+      "osm_id": "way/257932508",
+      "name": "The Bowling Green",
+      "lat": 50.7296878,
+      "lon": -3.5176547,
+      "address": "29-30 Blackboy Road, Exeter, EX4 6ST",
+      "website": "",
+      "phone": "",
+      "tags": [
+        "Traditional",
+        "Sports"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-033",
+      "osm_id": "node/10115426180",
+      "name": "The Chevalier Inn",
+      "lat": 50.7221546,
+      "lon": -3.532887,
+      "address": "81-82 Fore Street, Exeter, EX4 3HR",
+      "website": "https://www.jdwetherspoon.com/pubs/all-pubs/england/devon/the-chevalier-inn-exeter",
+      "phone": "+44 1392 457760",
+      "tags": [
+        "Real Ale",
+        "Food",
+        "Wetherspoon",
+        "Sports",
+        "Live Music"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-034",
+      "osm_id": "node/1693211829",
+      "name": "The Dolphin",
+      "lat": 50.7095059,
+      "lon": -3.506246,
+      "address": "31 Burnthouse Lane, Exeter, EX2 6BG",
+      "website": "",
+      "phone": "",
+      "tags": [],
+      "notes": ""
+    },
+    {
+      "id": "pub-035",
+      "osm_id": "way/223734495",
+      "name": "The Farmers Union",
+      "lat": 50.7274192,
+      "lon": -3.5359429,
+      "address": "16-18 Queens Terrace, Exeter, EX4 4HR",
+      "website": "",
+      "phone": "",
+      "tags": [
+        "Sports"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-036",
+      "osm_id": "way/286157838",
+      "name": "The Fat Pig",
+      "lat": 50.7208446,
+      "lon": -3.5340626,
+      "address": "2 John Street, Exeter, EX1 1BL",
+      "website": "",
+      "phone": "+44 7787510954",
+      "tags": [
+        "Real Ale"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-037",
+      "osm_id": "node/1315878724",
+      "name": "the Half Moon",
+      "lat": 50.732607,
+      "lon": -3.4923168,
+      "address": "",
+      "website": "",
+      "phone": "",
+      "tags": [
+        "Traditional"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-038",
+      "osm_id": "node/13013923934",
+      "name": "The Horse & Groom",
+      "lat": 50.7212893,
+      "lon": -3.5055687,
+      "address": "77 Fore Street, Exeter, EX1 2QL",
+      "website": "",
+      "phone": "+44 1392 437322",
+      "tags": [
+        "Traditional",
+        "Sports"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-039",
+      "osm_id": "node/274954118",
+      "name": "The Hourglass Inn",
+      "lat": 50.717518,
+      "lon": -3.5271831,
+      "address": "21 Melbourne Street, Exeter, EX2 4AU",
+      "website": "",
+      "phone": "",
+      "tags": [
+        "Real Ale",
+        "Traditional",
+        "Dog Friendly"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-040",
+      "osm_id": "way/175308977",
+      "name": "The Imperial",
+      "lat": 50.7303375,
+      "lon": -3.5397923,
+      "address": "New North Road, Exeter, EX4 4AH",
+      "website": "https://www.jdwetherspoon.com/pubs/all-pubs/england/devon/the-imperial-exeter",
+      "phone": "+44 1392 434050",
+      "tags": [
+        "Garden",
+        "Real Ale",
+        "Food",
+        "Wetherspoon"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-041",
+      "osm_id": "node/299465256",
+      "name": "The Kings",
+      "lat": 50.7176777,
+      "lon": -3.5389976,
+      "address": "173 Cowick Street, Exeter, EX4 1AA",
+      "website": "",
+      "phone": "",
+      "tags": [
+        "Traditional",
+        "Sports"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-042",
+      "osm_id": "node/290021329",
+      "name": "The Lighter Inn",
+      "lat": 50.6813173,
+      "lon": -3.4648224,
+      "address": "Fore Street, Exeter, EX3 0HZ",
+      "website": "https://www.lighterinn.co.uk",
+      "phone": "+44 1392 875439",
+      "tags": [
+        "Garden",
+        "Food",
+        "Family Friendly"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-043",
+      "osm_id": "node/537745381",
+      "name": "The Lucombe Oak",
+      "lat": 50.7171071,
+      "lon": -3.5409562,
+      "address": "Cowick Street, Exeter, EX4 1DG",
+      "website": "",
+      "phone": "",
+      "tags": [
+        "Live Music",
+        "Sports"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-044",
+      "osm_id": "way/201826184",
+      "name": "The Mill On The Exe",
+      "lat": 50.7219776,
+      "lon": -3.5392821,
+      "address": "Bonhay Road, Exeter, EX4 3AB",
+      "website": "https://www.millontheexe.co.uk/",
+      "phone": "",
+      "tags": [
+        "Garden",
+        "Real Ale",
+        "Food",
+        "Dog Friendly",
+        "Live Music",
+        "Family Friendly"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-045",
+      "osm_id": "way/245692750",
+      "name": "The Old Firehouse",
+      "lat": 50.7268201,
+      "lon": -3.5279584,
+      "address": "50 New North Road, Exeter, EX4 4EP",
+      "website": "",
+      "phone": "",
+      "tags": [
+        "Garden",
+        "Traditional",
+        "Food",
+        "Cider"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-046",
+      "osm_id": "node/290018966",
+      "name": "The Passage House Inn",
+      "lat": 50.6833853,
+      "lon": -3.4671368,
+      "address": "Ferry Road, Exeter, EX3 0JN",
+      "website": "",
+      "phone": "",
+      "tags": [
+        "Garden",
+        "Real Ale"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-047",
+      "osm_id": "way/200071239",
+      "name": "The Prospect Inn",
+      "lat": 50.7186437,
+      "lon": -3.5307743,
+      "address": "Exeter",
+      "website": "",
+      "phone": "",
+      "tags": [
+        "Garden",
+        "Food",
+        "Real Ale"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-048",
+      "osm_id": "way/203662832",
+      "name": "The Queens Head",
+      "lat": 50.7316597,
+      "lon": -3.5022109,
+      "address": "",
+      "website": "",
+      "phone": "",
+      "tags": [
+        "Sports"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-049",
+      "osm_id": "way/433828512",
+      "name": "The Sawyer's Arms",
+      "lat": 50.7154318,
+      "lon": -3.5442015,
+      "address": "121 Cowick Street, Exeter, EX4 1JD",
+      "website": "https://www.jdwetherspoon.com/pubs/all-pubs/england/devon/the-sawyers-arms-exeter",
+      "phone": "+44 1392 269520",
+      "tags": [
+        "Garden",
+        "Real Ale",
+        "Food",
+        "Wetherspoon"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-050",
+      "osm_id": "way/360421741",
+      "name": "The Seven Stars Hotel",
+      "lat": 50.708951,
+      "lon": -3.5384449,
+      "address": "Alphington Road, Exeter, EX2 8JB",
+      "website": "https://www.emberinns.co.uk/nationalsearch/southwest/the-seven-stars-hotel-exeter",
+      "phone": "+44 1392 250983",
+      "tags": [
+        "Garden",
+        "Dog Friendly"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-051",
+      "osm_id": "way/287695768",
+      "name": "The Ship",
+      "lat": 50.7235916,
+      "lon": -3.5302381,
+      "address": "1-3 Martins Lane, Exeter, EX1 1EY",
+      "website": "https://www.greeneking.co.uk/pubs/devon/ship",
+      "phone": "",
+      "tags": [
+        "Real Ale",
+        "Food",
+        "Traditional",
+        "Live Music",
+        "Sports"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-052",
+      "osm_id": "way/1416127798",
+      "name": "The Ship & Pelican",
+      "lat": 50.7211605,
+      "lon": -3.505177,
+      "address": "54 Fore Street, Exeter, EX1 2RR",
+      "website": "",
+      "phone": "",
+      "tags": [
+        "Garden",
+        "Sports"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-053",
+      "osm_id": "node/292264274",
+      "name": "The Stoke Arms",
+      "lat": 50.7348663,
+      "lon": -3.5155321,
+      "address": "Prince Charles Road, Exeter, EX4 7BZ",
+      "website": "https://www.stokearmsstokehill.co.uk/",
+      "phone": "",
+      "tags": [
+        "Traditional"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-054",
+      "osm_id": "node/469757935",
+      "name": "The Tally Ho",
+      "lat": 50.7031311,
+      "lon": -3.5024048,
+      "address": "2 Countess Wear Road, Exeter, EX2 6LG",
+      "website": "https://www.tallyhoinnexeter.co.uk/index",
+      "phone": "+44 1392 271794",
+      "tags": [
+        "Traditional"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-055",
+      "osm_id": "node/440655596",
+      "name": "The Thatched House",
+      "lat": 50.7263242,
+      "lon": -3.5487204,
+      "address": "Exwick Road, Exeter, EX4 2BQ",
+      "website": "https://thatchedhouse.net/",
+      "phone": "+44 1392 272920",
+      "tags": [
+        "Garden",
+        "Dog Friendly"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-056",
+      "osm_id": "node/10080425230",
+      "name": "The Turks Head",
+      "lat": 50.7232903,
+      "lon": -3.5318551,
+      "address": "202 High Street, Exeter, EX4 3EB",
+      "website": "https://www.turksheadexeter.com/",
+      "phone": "+44 1392 706013",
+      "tags": [
+        "Real Ale",
+        "Food",
+        "Traditional",
+        "Brewery",
+        "Sports"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-057",
+      "osm_id": "node/991222912",
+      "name": "The Twisted Oak",
+      "lat": 50.706486,
+      "lon": -3.5566686,
+      "address": "Little John's Cross Hill, Exeter, EX2 9RG",
+      "website": "https://thetwistedoak.co.uk",
+      "phone": "+44 1392 273666",
+      "tags": [
+        "Garden",
+        "Dog Friendly"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-058",
+      "osm_id": "way/219772696",
+      "name": "The Victoria Inn",
+      "lat": 50.7336041,
+      "lon": -3.5233539,
+      "address": "36 Victoria Street, Exeter, EX4 6JQ",
+      "website": "https://www.craftunionpubs.com/victoria-inn-exeter",
+      "phone": "",
+      "tags": [
+        "Traditional",
+        "Sports"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-061",
+      "osm_id": "node/5089978588",
+      "name": "Topsham Brewery & Taproom",
+      "lat": 50.716898,
+      "lon": -3.5295227,
+      "address": "1 Haven Road, Exeter, EX2 8GR",
+      "website": "",
+      "phone": "+441392275196",
+      "tags": [
+        "Real Ale",
+        "Garden",
+        "Dog Friendly",
+        "Food",
+        "Live Music",
+        "Family Friendly",
+        "Brewery"
+      ],
+      "notes": ""
+    }
+  ]
+}
