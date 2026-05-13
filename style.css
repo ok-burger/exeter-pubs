@@ -14,8 +14,11 @@
   --primary: #6b2832;
   --primary-soft: #8a3641;
   --accent: #b88a3a;
+  --accent-soft: #d4a85c;
   --line: #d8cbb4;
+  --danger: #a13b3b;
   --shadow: 0 1px 2px rgba(29, 20, 16, 0.04), 0 8px 24px rgba(29, 20, 16, 0.08);
+  --shadow-lg: 0 4px 12px rgba(29, 20, 16, 0.12), 0 20px 48px rgba(29, 20, 16, 0.18);
   --radius: 8px;
 }
 
@@ -158,7 +161,7 @@ a:hover { color: var(--primary-soft); text-decoration: underline; }
 .filters-meta {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .filter-count {
@@ -185,6 +188,27 @@ a:hover { color: var(--primary-soft); text-decoration: underline; }
   background: var(--surface-2);
   color: var(--primary);
   border-color: var(--primary);
+}
+
+.btn-icon {
+  width: 32px;
+  height: 32px;
+  font-size: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.btn-icon:hover {
+  background: var(--surface-2);
+  color: var(--ink);
+  border-color: var(--ink-soft);
 }
 
 /* ------- Search input ------- */
@@ -225,7 +249,6 @@ a:hover { color: var(--primary-soft); text-decoration: underline; }
   box-shadow: 0 0 0 3px rgba(184, 138, 58, 0.15);
 }
 
-/* hide the browser's default search clear button (we use our own) */
 .search-input::-webkit-search-cancel-button { -webkit-appearance: none; }
 
 .search-clear {
@@ -248,10 +271,7 @@ a:hover { color: var(--primary-soft); text-decoration: underline; }
   transition: all 0.15s ease;
 }
 
-.search-clear:hover {
-  background: var(--primary);
-  color: white;
-}
+.search-clear:hover { background: var(--primary); color: white; }
 
 /* ------- Filter chips ------- */
 
@@ -285,7 +305,26 @@ a:hover { color: var(--primary-soft); text-decoration: underline; }
 
 .chip.active:hover { background: var(--primary-soft); border-color: var(--primary-soft); }
 
-/* ------- View toggle (segmented control) ------- */
+/* Special chip for personal-review filter (visited / unvisited tri-state) */
+.chip.chip-personal {
+  border-style: dashed;
+}
+
+.chip.chip-personal.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  border-style: solid;
+}
+
+.chip.chip-personal.active-inverse {
+  background: transparent;
+  color: var(--accent);
+  border-color: var(--accent);
+  border-style: solid;
+}
+
+/* ------- View toggle ------- */
 
 .view-toggle {
   display: flex;
@@ -401,7 +440,7 @@ a:hover { color: var(--primary-soft); text-decoration: underline; }
   box-shadow: 0 0 0 2px rgba(66, 135, 245, 0.4), 0 2px 6px rgba(0, 0, 0, 0.25);
 }
 
-/* ------- Status (loading / error / empty) ------- */
+/* ------- Status ------- */
 
 .status {
   text-align: center;
@@ -435,6 +474,7 @@ a:hover { color: var(--primary-soft); text-decoration: underline; }
 }
 
 .pub-card {
+  position: relative;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -443,6 +483,7 @@ a:hover { color: var(--primary-soft); text-decoration: underline; }
   transition: transform 0.15s ease, box-shadow 0.15s ease;
   scroll-margin-top: 100px;
   cursor: pointer;
+  overflow: hidden;
 }
 
 .pub-card:hover {
@@ -453,6 +494,28 @@ a:hover { color: var(--primary-soft); text-decoration: underline; }
 .pub-card.highlighted {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(184, 138, 58, 0.25), var(--shadow);
+}
+
+/* Gold corner mark on reviewed pubs */
+.pub-card.reviewed::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-left: 36px solid transparent;
+  border-top: 36px solid var(--accent);
+}
+
+.pub-card.reviewed::after {
+  content: '★';
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 0.75rem;
+  color: white;
+  line-height: 1;
 }
 
 .pub-name { font-size: 1.4rem; line-height: 1.2; margin: 0 0 4px; }
@@ -511,9 +574,85 @@ a:hover { color: var(--primary-soft); text-decoration: underline; }
   color: var(--ink-soft);
 }
 
-.directions-link {
-  display: inline-block;
+/* Personal review preview on card (date + stars + note snippet) */
+.review-preview {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  background: rgba(184, 138, 58, 0.08);
+  border: 1px solid rgba(184, 138, 58, 0.3);
+  border-radius: 6px;
+}
+
+.review-preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.review-stars-display {
+  font-size: 0.9rem;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+
+.review-date {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.review-snippet {
+  font-size: 0.85rem;
+  color: var(--ink);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Card action row (My notes, Directions) */
+.card-actions {
   margin-top: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-notes {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-notes:hover {
+  background: var(--surface-2);
+  color: var(--ink);
+  border-color: var(--ink-soft);
+}
+
+.btn-notes.has-review {
+  background: rgba(184, 138, 58, 0.1);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.btn-notes.has-review:hover {
+  background: rgba(184, 138, 58, 0.2);
+}
+
+.directions-link {
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--primary);
@@ -525,6 +664,212 @@ mark.search-match {
   color: inherit;
   padding: 0 1px;
   border-radius: 2px;
+}
+
+/* ------- Dialog (modal) ------- */
+
+.dialog {
+  border: none;
+  border-radius: var(--radius);
+  padding: 0;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+  max-width: 480px;
+  width: calc(100vw - 32px);
+  max-height: calc(100vh - 32px);
+  overflow: hidden;
+  color: var(--ink);
+}
+
+.dialog::backdrop {
+  background: rgba(29, 20, 16, 0.5);
+  backdrop-filter: blur(2px);
+}
+
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 32px);
+}
+
+.dialog-header {
+  padding: 20px 24px 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.dialog-title {
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.dialog-subtitle {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 4px 0 0;
+}
+
+.dialog-body {
+  padding: 16px 24px;
+  overflow-y: auto;
+}
+
+.dialog-actions {
+  padding: 14px 20px;
+  border-top: 1px solid var(--line);
+  background: var(--surface-2);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.dialog-actions-spacer { flex: 1; }
+
+/* ------- Form fields ------- */
+
+.field {
+  display: block;
+  margin-bottom: 16px;
+}
+
+.field:last-child { margin-bottom: 0; }
+
+.field-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
+
+.field-hint {
+  color: var(--muted);
+  font-weight: normal;
+}
+
+.field-input {
+  width: 100%;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.field-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(184, 138, 58, 0.15);
+}
+
+.field-textarea {
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+/* Star input */
+.stars-input {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.star {
+  font-size: 1.6rem;
+  line-height: 1;
+  padding: 4px 6px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.1s ease, transform 0.1s ease;
+}
+
+.star:hover { transform: scale(1.1); }
+
+.star.filled { color: var(--accent); }
+
+.star-clear {
+  margin-left: 8px;
+  font-size: 0.8rem;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.star-clear:hover { background: var(--surface-2); }
+
+/* ------- Buttons ------- */
+
+.btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-primary { background: var(--primary); color: white; border-color: var(--primary); }
+.btn-primary:hover { background: var(--primary-soft); border-color: var(--primary-soft); }
+
+.btn-ghost { background: transparent; color: var(--ink-soft); border-color: var(--line); }
+.btn-ghost:hover { background: var(--surface-2); color: var(--ink); }
+
+.btn-danger { color: var(--danger); border-color: rgba(161, 59, 59, 0.3); }
+.btn-danger:hover { background: rgba(161, 59, 59, 0.08); border-color: var(--danger); }
+
+.btn-block { width: 100%; display: block; margin-bottom: 8px; text-align: center; }
+
+.btn-file {
+  cursor: pointer;
+  text-align: center;
+}
+
+/* ------- Settings dialog ------- */
+
+.settings-stat {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 0 0 16px;
+  text-align: center;
+}
+
+.settings-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.settings-note {
+  margin-top: 12px;
+  padding: 10px 12px;
+  font-size: 0.85rem;
+  border-radius: 6px;
+}
+
+.settings-note.success {
+  background: rgba(184, 138, 58, 0.1);
+  border: 1px solid var(--accent);
+  color: var(--ink);
+}
+
+.settings-note.error {
+  background: rgba(161, 59, 59, 0.08);
+  border: 1px solid var(--danger);
+  color: var(--danger);
 }
 
 /* ------- Footer ------- */
@@ -551,4 +896,7 @@ mark.search-match {
   .pub-name { font-size: 1.2rem; }
   #map { height: calc(100vh - 320px); min-height: 360px; }
   .filters { padding: 14px; }
+  .dialog-body { padding: 14px 18px; }
+  .dialog-header { padding: 18px 18px 10px; }
+  .dialog-actions { padding: 12px 16px; }
 }

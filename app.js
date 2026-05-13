@@ -1,8 +1,79 @@
 /* ============================================================
    Exeter Pubs — app logic
-   Adds free-text search across name/address/notes, combinable
-   with tag filters. Highlights matched text in the cards.
+   Phase 8: Personal reviews stored in localStorage. Each pub
+   can have one review (date, rating, with, notes). UI: button
+   on each card opens a modal. "Visited" tri-state filter chip.
+   Settings dialog for export/import/wipe.
    ============================================================ */
+
+// ----- Storage -----
+
+const REVIEWS_KEY = 'exeter-pubs:reviews:v1';
+
+const reviewStore = {
+  cache: null,
+
+  load() {
+    if (this.cache !== null) return this.cache;
+    try {
+      const raw = localStorage.getItem(REVIEWS_KEY);
+      this.cache = raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      console.warn('Failed to read reviews from storage:', e);
+      this.cache = {};
+    }
+    return this.cache;
+  },
+
+  save() {
+    try {
+      localStorage.setItem(REVIEWS_KEY, JSON.stringify(this.cache));
+      return true;
+    } catch (e) {
+      console.error('Failed to save reviews:', e);
+      return false;
+    }
+  },
+
+  get(pubId) {
+    return this.load()[pubId] || null;
+  },
+
+  set(pubId, review) {
+    this.load()[pubId] = { ...review, updated_at: new Date().toISOString() };
+    return this.save();
+  },
+
+  delete(pubId) {
+    delete this.load()[pubId];
+    return this.save();
+  },
+
+  count() {
+    return Object.keys(this.load()).length;
+  },
+
+  exportAll() {
+    return {
+      version: 1,
+      exported_at: new Date().toISOString(),
+      reviews: this.load()
+    };
+  },
+
+  importAll(data) {
+    if (!data || typeof data.reviews !== 'object') {
+      throw new Error('Invalid file: expected { reviews: {...} }');
+    }
+    this.cache = { ...this.cache, ...data.reviews };
+    return this.save();
+  },
+
+  wipeAll() {
+    this.cache = {};
+    localStorage.removeItem(REVIEWS_KEY);
+  }
+};
 
 // ----- App state -----
 const appState = {
@@ -13,8 +84,10 @@ const appState = {
   markerOnMap: {},
   userMarker: null,
   activeFilters: new Set(),
+  visitedFilter: 'off',  // 'off' | 'visited' | 'unvisited'
   searchTerm: '',
   activeView: 'map',
+  editingPubId: null,
 };
 
 const WALKING_METRES_PER_SECOND = 1.4;
@@ -41,6 +114,8 @@ async function init() {
   bindClearFiltersButton();
   bindSearchInput();
   bindViewToggle();
+  bindReviewDialog();
+  bindSettingsDialog();
 }
 
 // ----- View toggle -----
@@ -116,6 +191,11 @@ function addPubMarkers(pubs) {
 }
 
 function buildPopupHTML(pub) {
+  const review = reviewStore.get(pub.id);
+  const reviewBit = review && review.rating
+    ? `<p class="popup-meta">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)} — your visit</p>`
+    : '';
+
   const tagsHTML = (pub.tags && pub.tags.length)
     ? `<div class="popup-tags">${pub.tags.map(t => `<span class="popup-tag">${escapeHtml(t)}</span>`).join('')}</div>`
     : '';
@@ -126,6 +206,7 @@ function buildPopupHTML(pub) {
     <div class="popup-content">
       <h3 class="popup-name">${escapeHtml(pub.name)}</h3>
       ${pub.address ? `<p class="popup-meta">${escapeHtml(pub.address)}</p>` : ''}
+      ${reviewBit}
       ${tagsHTML}
       <a class="popup-link" href="#${pub.id}" data-scroll-to="${pub.id}">View details ↓</a>
       &nbsp;·&nbsp;
@@ -143,6 +224,13 @@ function attachPopupCardLink(pubId) {
       jumpToPubInList(pubId);
     });
   }, 10);
+}
+
+function refreshPopupContent(pubId) {
+  const marker = appState.pubMarkers[pubId];
+  const pub = appState.pubs.find(p => p.id === pubId);
+  if (!marker || !pub) return;
+  marker.setPopupContent(buildPopupHTML(pub));
 }
 
 function fitMapToPubs() {
@@ -188,9 +276,14 @@ function bindSearchInput() {
 function pubMatchesSearch(pub) {
   if (!appState.searchTerm) return true;
   const term = appState.searchTerm.toLowerCase();
-  const haystack = [pub.name, pub.address || '', pub.notes || '']
-    .join(' ')
-    .toLowerCase();
+  const review = reviewStore.get(pub.id);
+  const haystack = [
+    pub.name,
+    pub.address || '',
+    pub.notes || '',
+    review ? review.notes || '' : '',
+    review ? review.with || '' : ''
+  ].join(' ').toLowerCase();
   return haystack.includes(term);
 }
 
@@ -200,8 +293,19 @@ function buildFilterChips(pubs) {
   const allTags = new Set();
   pubs.forEach(pub => (pub.tags || []).forEach(t => allTags.add(t)));
 
-  // Always show the panel — search input lives here even if there are no tags
   document.getElementById('filters').hidden = false;
+
+  const container = document.getElementById('filter-chips');
+  container.innerHTML = '';
+
+  // Visited chip first — tri-state special chip
+  const visitedChip = document.createElement('button');
+  visitedChip.type = 'button';
+  visitedChip.className = 'chip chip-personal';
+  visitedChip.id = 'chip-visited';
+  visitedChip.textContent = 'Visited';
+  visitedChip.addEventListener('click', toggleVisitedFilter);
+  container.appendChild(visitedChip);
 
   if (allTags.size === 0) return;
 
@@ -210,8 +314,6 @@ function buildFilterChips(pubs) {
     ...[...allTags].filter(t => !CANONICAL_TAG_ORDER.includes(t)).sort()
   ];
 
-  const container = document.getElementById('filter-chips');
-  container.innerHTML = '';
   sortedTags.forEach(tag => {
     const chip = document.createElement('button');
     chip.type = 'button';
@@ -233,10 +335,18 @@ function toggleFilter(tag) {
   applyFiltersAndRender();
 }
 
+function toggleVisitedFilter() {
+  // Cycle off → visited → unvisited → off
+  const order = ['off', 'visited', 'unvisited'];
+  const next = order[(order.indexOf(appState.visitedFilter) + 1) % order.length];
+  appState.visitedFilter = next;
+  applyFiltersAndRender();
+}
+
 function bindClearFiltersButton() {
   document.getElementById('clear-filters-btn').addEventListener('click', () => {
-    // Clear all: search + tag filters together
     appState.activeFilters.clear();
+    appState.visitedFilter = 'off';
     appState.searchTerm = '';
     const input = document.getElementById('search-input');
     input.value = '';
@@ -246,16 +356,20 @@ function bindClearFiltersButton() {
 }
 
 function pubMatchesFilters(pub) {
-  if (appState.activeFilters.size === 0) return true;
-  const pubTags = new Set(pub.tags || []);
-  for (const tag of appState.activeFilters) {
-    if (!pubTags.has(tag)) return false;
+  // Tag filters (AND)
+  if (appState.activeFilters.size > 0) {
+    const pubTags = new Set(pub.tags || []);
+    for (const tag of appState.activeFilters) {
+      if (!pubTags.has(tag)) return false;
+    }
   }
+  // Visited filter
+  if (appState.visitedFilter === 'visited' && !reviewStore.get(pub.id)) return false;
+  if (appState.visitedFilter === 'unvisited' && reviewStore.get(pub.id)) return false;
   return true;
 }
 
 function applyFiltersAndRender() {
-  // Apply both search AND tag filters
   const filtered = appState.pubs
     .filter(pubMatchesSearch)
     .filter(pubMatchesFilters);
@@ -264,11 +378,27 @@ function applyFiltersAndRender() {
     ? sortByDistance(filtered, appState.userLocation)
     : sortByName(filtered);
 
-  document.querySelectorAll('.chip').forEach(chip => {
+  // Tag chip visual state
+  document.querySelectorAll('.chip[data-tag]').forEach(chip => {
     const isActive = appState.activeFilters.has(chip.dataset.tag);
     chip.classList.toggle('active', isActive);
     chip.setAttribute('aria-pressed', isActive ? 'true' : 'false');
   });
+
+  // Visited chip visual state
+  const visitedChip = document.getElementById('chip-visited');
+  if (visitedChip) {
+    visitedChip.classList.remove('active', 'active-inverse');
+    if (appState.visitedFilter === 'visited') {
+      visitedChip.classList.add('active');
+      visitedChip.textContent = 'Visited ✓';
+    } else if (appState.visitedFilter === 'unvisited') {
+      visitedChip.classList.add('active-inverse');
+      visitedChip.textContent = 'Unvisited';
+    } else {
+      visitedChip.textContent = 'Visited';
+    }
+  }
 
   updateFilterMeta(filtered.length, appState.pubs.length);
 
@@ -281,7 +411,9 @@ function applyFiltersAndRender() {
 function updateFilterMeta(matched, total) {
   const count = document.getElementById('filter-count');
   const clearBtn = document.getElementById('clear-filters-btn');
-  const isFiltering = appState.activeFilters.size > 0 || appState.searchTerm.length > 0;
+  const isFiltering = appState.activeFilters.size > 0
+    || appState.searchTerm.length > 0
+    || appState.visitedFilter !== 'off';
 
   if (isFiltering) {
     count.textContent = `${matched} of ${total} match`;
@@ -447,26 +579,46 @@ function renderPubs(pubs) {
   status.hidden = true;
   list.innerHTML = pubs.map(pubCardHTML).join('');
 
+  // Card click → switch to map view + open marker popup
   list.querySelectorAll('.pub-card').forEach(card => {
     card.addEventListener('click', (e) => {
-      if (e.target.closest('.directions-link')) return;
+      // Don't hijack child interactions
+      if (e.target.closest('.directions-link, .btn-notes')) return;
       const pubId = card.dataset.pubId;
       jumpToPubOnMap(pubId);
+    });
+  });
+
+  // My-notes button click → open dialog
+  list.querySelectorAll('.btn-notes').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const pubId = btn.dataset.pubId;
+      openReviewDialog(pubId);
     });
   });
 }
 
 function buildEmptyMessage() {
   const hasSearch = appState.searchTerm.length > 0;
-  const hasFilters = appState.activeFilters.size > 0;
-  if (hasSearch && hasFilters) return 'No pubs match your search and filters. Try removing one.';
+  const hasTagFilters = appState.activeFilters.size > 0;
+  const hasVisitFilter = appState.visitedFilter !== 'off';
+  const filtersInPlay = [hasSearch, hasTagFilters, hasVisitFilter].filter(Boolean).length;
+
+  if (filtersInPlay >= 2) return 'No pubs match your filters. Try removing one.';
   if (hasSearch) return `No pubs match "${appState.searchTerm}".`;
-  if (hasFilters) return 'No pubs match these filters. Try removing some.';
+  if (hasTagFilters) return 'No pubs match these tag filters. Try removing some.';
+  if (hasVisitFilter) {
+    return appState.visitedFilter === 'visited'
+      ? "You haven't reviewed any pubs yet — tap a card and add some notes."
+      : "You've reviewed every pub in the dataset (impressive).";
+  }
   return 'No pubs to show.';
 }
 
 function pubCardHTML(pub) {
   const term = appState.searchTerm;
+  const review = reviewStore.get(pub.id);
 
   const nameHTML = highlightMatch(pub.name, term);
 
@@ -485,14 +637,21 @@ function pubCardHTML(pub) {
     ? `<p class="notes">${highlightMatch(pub.notes, term)}</p>`
     : '';
 
+  const reviewPreview = review ? buildReviewPreviewHTML(review, term) : '';
+
   const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${pub.lat},${pub.lon}`;
 
   const distanceText = (pub.distanceMetres != null)
     ? `<span class="distance has-value">${formatDistance(pub.distanceMetres)} · ${formatWalkingTime(pub.distanceMetres)}</span>`
     : `<span class="distance">Tap "Find pubs near me" for distance</span>`;
 
+  const notesBtnLabel = review
+    ? `${stars(review.rating)} My notes`
+    : '+ Add my notes';
+  const notesBtnClass = review ? 'btn-notes has-review' : 'btn-notes';
+
   return `
-    <li class="pub-card" id="${pub.id}" data-pub-id="${pub.id}">
+    <li class="pub-card${review ? ' reviewed' : ''}" id="${pub.id}" data-pub-id="${pub.id}">
       <h2 class="pub-name">${nameHTML}</h2>
       ${address}
       <div class="pub-meta">
@@ -500,9 +659,229 @@ function pubCardHTML(pub) {
       </div>
       ${tags}
       ${notes}
-      <a class="directions-link" href="${directionsUrl}" target="_blank" rel="noopener">Get directions →</a>
+      ${reviewPreview}
+      <div class="card-actions">
+        <button class="${notesBtnClass}" data-pub-id="${pub.id}" type="button">${notesBtnLabel}</button>
+        <a class="directions-link" href="${directionsUrl}" target="_blank" rel="noopener">Get directions →</a>
+      </div>
     </li>
   `;
+}
+
+function buildReviewPreviewHTML(review, term) {
+  const dateText = review.visited_on ? formatPrettyDate(review.visited_on) : '';
+  const snippet = review.notes ? `<p class="review-snippet">${highlightMatch(review.notes, term)}</p>` : '';
+  return `
+    <div class="review-preview">
+      <div class="review-preview-header">
+        <span class="review-stars-display" aria-label="${review.rating || 0} out of 5 stars">${stars(review.rating)}</span>
+        ${dateText ? `<span class="review-date">${escapeHtml(dateText)}</span>` : ''}
+      </div>
+      ${snippet}
+    </div>
+  `;
+}
+
+function stars(n) {
+  const rating = Math.max(0, Math.min(5, Number(n) || 0));
+  return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+}
+
+function formatPrettyDate(iso) {
+  // iso is "YYYY-MM-DD"
+  try {
+    const d = new Date(iso + 'T00:00:00');
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  } catch (e) {
+    return iso;
+  }
+}
+
+// ----- Review dialog -----
+
+let pendingRating = 0;
+
+function bindReviewDialog() {
+  const dlg = document.getElementById('review-dialog');
+
+  document.getElementById('review-save-btn').addEventListener('click', saveReview);
+  document.getElementById('review-cancel-btn').addEventListener('click', () => dlg.close());
+  document.getElementById('review-delete-btn').addEventListener('click', deleteReview);
+
+  // Star input
+  const starsContainer = document.getElementById('review-stars');
+  starsContainer.addEventListener('click', (e) => {
+    const star = e.target.closest('.star');
+    if (!star) return;
+    pendingRating = Number(star.dataset.value);
+    renderStarsInput();
+  });
+  document.getElementById('review-stars-clear').addEventListener('click', () => {
+    pendingRating = 0;
+    renderStarsInput();
+  });
+
+  // Click outside (on backdrop) closes the dialog
+  dlg.addEventListener('click', (e) => {
+    if (e.target === dlg) dlg.close();
+  });
+}
+
+function renderStarsInput() {
+  document.querySelectorAll('#review-stars .star').forEach(star => {
+    const v = Number(star.dataset.value);
+    star.classList.toggle('filled', v <= pendingRating);
+    star.textContent = v <= pendingRating ? '★' : '☆';
+  });
+}
+
+function openReviewDialog(pubId) {
+  const pub = appState.pubs.find(p => p.id === pubId);
+  if (!pub) return;
+  appState.editingPubId = pubId;
+
+  const existing = reviewStore.get(pubId);
+
+  document.getElementById('review-dialog-subtitle').textContent = pub.name;
+
+  document.getElementById('review-date').value = existing && existing.visited_on
+    ? existing.visited_on
+    : todayISO();
+
+  pendingRating = existing && existing.rating ? existing.rating : 0;
+  renderStarsInput();
+
+  document.getElementById('review-with').value = existing ? existing.with || '' : '';
+  document.getElementById('review-notes').value = existing ? existing.notes || '' : '';
+
+  document.getElementById('review-delete-btn').hidden = !existing;
+
+  document.getElementById('review-dialog').showModal();
+}
+
+function saveReview() {
+  const pubId = appState.editingPubId;
+  if (!pubId) return;
+
+  const review = {
+    visited_on: document.getElementById('review-date').value,
+    rating: pendingRating || null,
+    with: document.getElementById('review-with').value.trim(),
+    notes: document.getElementById('review-notes').value.trim(),
+  };
+
+  // Require at least one of: rating, notes
+  if (!review.rating && !review.notes) {
+    alert('Add a rating or a note before saving.');
+    return;
+  }
+
+  const ok = reviewStore.set(pubId, review);
+  if (!ok) {
+    alert("Couldn't save — your browser blocked storage. Try again or check your settings.");
+    return;
+  }
+
+  document.getElementById('review-dialog').close();
+  refreshPopupContent(pubId);
+  applyFiltersAndRender();
+}
+
+function deleteReview() {
+  const pubId = appState.editingPubId;
+  if (!pubId) return;
+  if (!confirm('Delete your notes for this pub?')) return;
+  reviewStore.delete(pubId);
+  document.getElementById('review-dialog').close();
+  refreshPopupContent(pubId);
+  applyFiltersAndRender();
+}
+
+function todayISO() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+// ----- Settings dialog -----
+
+function bindSettingsDialog() {
+  const dlg = document.getElementById('settings-dialog');
+
+  document.getElementById('settings-btn').addEventListener('click', openSettings);
+  document.getElementById('settings-close-btn').addEventListener('click', () => dlg.close());
+  document.getElementById('settings-export-btn').addEventListener('click', exportReviews);
+  document.getElementById('settings-import-input').addEventListener('change', importReviews);
+  document.getElementById('settings-wipe-btn').addEventListener('click', wipeReviews);
+
+  dlg.addEventListener('click', (e) => {
+    if (e.target === dlg) dlg.close();
+  });
+}
+
+function openSettings() {
+  setSettingsNote('', null);
+  document.getElementById('settings-stat').textContent =
+    `${reviewStore.count()} review${reviewStore.count() === 1 ? '' : 's'} saved on this device.`;
+  document.getElementById('settings-dialog').showModal();
+}
+
+function setSettingsNote(message, type) {
+  const note = document.getElementById('settings-note');
+  if (!message) {
+    note.hidden = true;
+    return;
+  }
+  note.textContent = message;
+  note.className = 'settings-note ' + (type || '');
+  note.hidden = false;
+}
+
+function exportReviews() {
+  const data = reviewStore.exportAll();
+  if (Object.keys(data.reviews).length === 0) {
+    setSettingsNote("No reviews to export yet.", 'error');
+    return;
+  }
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const stamp = todayISO();
+  a.href = url;
+  a.download = `exeter-pubs-reviews-${stamp}.json`;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+  setSettingsNote(`Exported ${Object.keys(data.reviews).length} reviews.`, 'success');
+}
+
+async function importReviews(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const data = JSON.parse(text);
+    const before = reviewStore.count();
+    reviewStore.importAll(data);
+    const after = reviewStore.count();
+    setSettingsNote(`Imported. You now have ${after} reviews (added ${after - before}).`, 'success');
+    document.getElementById('settings-stat').textContent =
+      `${after} review${after === 1 ? '' : 's'} saved on this device.`;
+    applyFiltersAndRender();
+  } catch (err) {
+    setSettingsNote(`Import failed: ${err.message}`, 'error');
+  } finally {
+    e.target.value = '';  // allow re-importing same file
+  }
+}
+
+function wipeReviews() {
+  if (reviewStore.count() === 0) {
+    setSettingsNote("Nothing to wipe.", 'error');
+    return;
+  }
+  if (!confirm(`Delete all ${reviewStore.count()} reviews on this device? This cannot be undone.`)) return;
+  reviewStore.wipeAll();
+  setSettingsNote("All reviews wiped.", 'success');
+  document.getElementById('settings-stat').textContent = '0 reviews saved on this device.';
+  applyFiltersAndRender();
 }
 
 // ----- Cross-view navigation -----
@@ -542,11 +921,6 @@ function escapeHtml(s) {
   }[c]));
 }
 
-/**
- * Returns HTML-safe text with all occurrences of `term` wrapped in
- * <mark class="search-match">. Case-insensitive. Returns escaped text
- * unchanged if there's no search term or no match.
- */
 function highlightMatch(text, term) {
   const safeText = escapeHtml(text);
   if (!term) return safeText;
@@ -558,17 +932,12 @@ function highlightMatch(text, term) {
   let i = lowerText.indexOf(lowerTerm);
 
   while (i !== -1) {
-    if (i > lastIndex) {
-      parts.push(escapeHtml(text.substring(lastIndex, i)));
-    }
+    if (i > lastIndex) parts.push(escapeHtml(text.substring(lastIndex, i)));
     parts.push(`<mark class="search-match">${escapeHtml(text.substring(i, i + term.length))}</mark>`);
     lastIndex = i + term.length;
     i = lowerText.indexOf(lowerTerm, lastIndex);
   }
 
-  if (lastIndex < text.length) {
-    parts.push(escapeHtml(text.substring(lastIndex)));
-  }
-
+  if (lastIndex < text.length) parts.push(escapeHtml(text.substring(lastIndex)));
   return parts.join('');
 }
