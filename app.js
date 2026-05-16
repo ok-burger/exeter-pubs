@@ -85,10 +85,18 @@ const appState = {
   userMarker: null,
   activeFilters: new Set(),
   visitedFilter: 'off',  // 'off' | 'visited' | 'unvisited'
+  areaFilter: 'greater-exeter',  // 'greater-exeter' | 'all' | <area name>
   searchTerm: '',
   activeView: 'map',
   editingPubId: null,
 };
+
+// Areas considered part of "Greater Exeter" (the default view).
+// Anything outside this list is in the wider catchment.
+const GREATER_EXETER_AREAS = new Set([
+  'Exeter', 'Heavitree', 'St Thomas', 'Exwick', 'Whipton', 'Pinhoe',
+  'Wonford', 'Alphington', 'Topsham', 'Ide', 'Sowton', 'Ebford'
+]);
 
 const WALKING_METRES_PER_SECOND = 1.4;
 const EXETER_CENTRE = { lat: 50.7236, lon: -3.5339 };
@@ -107,8 +115,10 @@ async function init() {
   if (!pubs) return;
   appState.pubs = pubs;
   addPubMarkers(pubs);
-  fitMapToPubs();
+  buildAreaSelect(pubs);
+  bindAreaSelect();
   buildFilterChips(pubs);
+  fitMapToPubs();
   applyFiltersAndRender();
   bindFindMeButton();
   bindClearFiltersButton();
@@ -116,6 +126,68 @@ async function init() {
   bindViewToggle();
   bindReviewDialog();
   bindSettingsDialog();
+}
+
+// ----- Area filter -----
+
+function buildAreaSelect(pubs) {
+  const select = document.getElementById('area-select');
+  if (!select) return;
+
+  // Count pubs per area
+  const counts = new Map();
+  pubs.forEach(p => {
+    const area = p.area || 'Exeter';
+    counts.set(area, (counts.get(area) || 0) + 1);
+  });
+
+  const greaterCount = pubs.filter(p => GREATER_EXETER_AREAS.has(p.area)).length;
+  const allCount = pubs.length;
+
+  // Sort individual areas: greater-exeter ones first (alpha), then catchment ones (alpha)
+  const allAreas = [...counts.keys()];
+  const cityAreas = allAreas.filter(a => GREATER_EXETER_AREAS.has(a)).sort();
+  const wideAreas = allAreas.filter(a => !GREATER_EXETER_AREAS.has(a)).sort();
+
+  const opts = [
+    `<option value="greater-exeter">Greater Exeter (${greaterCount})</option>`,
+    `<option value="all">All catchment (${allCount})</option>`,
+    `<optgroup label="City &amp; suburbs">`,
+    ...cityAreas.map(a => `<option value="${escapeHtml(a)}">${escapeHtml(a)} (${counts.get(a)})</option>`),
+    `</optgroup>`,
+    `<optgroup label="Wider catchment">`,
+    ...wideAreas.map(a => `<option value="${escapeHtml(a)}">${escapeHtml(a)} (${counts.get(a)})</option>`),
+    `</optgroup>`
+  ];
+  select.innerHTML = opts.join('');
+  select.value = appState.areaFilter;
+}
+
+function bindAreaSelect() {
+  const select = document.getElementById('area-select');
+  if (!select) return;
+  select.addEventListener('change', (e) => {
+    appState.areaFilter = e.target.value;
+    applyFiltersAndRender();
+    refitMapToVisible();
+  });
+}
+
+function pubMatchesArea(pub) {
+  const f = appState.areaFilter;
+  if (f === 'all') return true;
+  if (f === 'greater-exeter') return GREATER_EXETER_AREAS.has(pub.area);
+  return pub.area === f;
+}
+
+function refitMapToVisible() {
+  if (!appState.map) return;
+  const visible = appState.pubs.filter(p =>
+    pubMatchesArea(p) && pubMatchesFilters(p) && pubMatchesSearch(p)
+  );
+  if (visible.length === 0) return;
+  const bounds = L.latLngBounds(visible.map(p => [p.lat, p.lon]));
+  appState.map.fitBounds(bounds, { padding: [30, 30] });
 }
 
 // ----- View toggle -----
@@ -234,7 +306,9 @@ function refreshPopupContent(pubId) {
 }
 
 function fitMapToPubs() {
-  const bounds = L.latLngBounds(appState.pubs.map(p => [p.lat, p.lon]));
+  const initiallyVisible = appState.pubs.filter(pubMatchesArea);
+  const target = initiallyVisible.length > 0 ? initiallyVisible : appState.pubs;
+  const bounds = L.latLngBounds(target.map(p => [p.lat, p.lon]));
   appState.map.fitBounds(bounds, { padding: [30, 30] });
 }
 
@@ -347,11 +421,15 @@ function bindClearFiltersButton() {
   document.getElementById('clear-filters-btn').addEventListener('click', () => {
     appState.activeFilters.clear();
     appState.visitedFilter = 'off';
+    appState.areaFilter = 'greater-exeter';
     appState.searchTerm = '';
     const input = document.getElementById('search-input');
     input.value = '';
     document.getElementById('search-clear-btn').hidden = true;
+    const areaSelect = document.getElementById('area-select');
+    if (areaSelect) areaSelect.value = 'greater-exeter';
     applyFiltersAndRender();
+    refitMapToVisible();
   });
 }
 
@@ -371,6 +449,7 @@ function pubMatchesFilters(pub) {
 
 function applyFiltersAndRender() {
   const filtered = appState.pubs
+    .filter(pubMatchesArea)
     .filter(pubMatchesSearch)
     .filter(pubMatchesFilters);
 
@@ -413,7 +492,8 @@ function updateFilterMeta(matched, total) {
   const clearBtn = document.getElementById('clear-filters-btn');
   const isFiltering = appState.activeFilters.size > 0
     || appState.searchTerm.length > 0
-    || appState.visitedFilter !== 'off';
+    || appState.visitedFilter !== 'off'
+    || appState.areaFilter !== 'greater-exeter';
 
   if (isFiltering) {
     count.textContent = `${matched} of ${total} match`;
@@ -622,6 +702,10 @@ function pubCardHTML(pub) {
 
   const nameHTML = highlightMatch(pub.name, term);
 
+  const areaBadge = pub.area
+    ? `<span class="area-badge">${escapeHtml(pub.area)}</span>`
+    : '';
+
   const address = pub.address
     ? `<p class="address">${highlightMatch(pub.address, term)}</p>`
     : '';
@@ -653,6 +737,7 @@ function pubCardHTML(pub) {
   return `
     <li class="pub-card${review ? ' reviewed' : ''}" id="${pub.id}" data-pub-id="${pub.id}">
       <h2 class="pub-name">${nameHTML}</h2>
+      ${areaBadge}
       ${address}
       <div class="pub-meta">
         ${distanceText}
