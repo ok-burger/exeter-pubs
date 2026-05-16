@@ -134,6 +134,7 @@ async function init() {
   bindSettingsDialog();
   bindCrawlPlanner();
   bindCrawlPanel();
+  bindAddStopDialog();
   // Restore crawl from URL hash if present
   const fromHash = parseCrawlHash();
   if (fromHash) {
@@ -1269,30 +1270,271 @@ function renderActiveCrawl() {
       legHTML = `<span class="crawl-leg">↳ ${formatDistance(d)} · ${formatWalkingTime(d)}</span>`;
     }
     return `
-      <li class="crawl-stop" data-pub-id="${p.id}">
+      <li class="crawl-stop" data-pub-id="${p.id}" data-index="${i}">
+        <button class="crawl-drag-handle" type="button" aria-label="Drag to reorder" title="Drag to reorder">⋮⋮</button>
         <span class="crawl-num">${i + 1}</span>
         <div class="crawl-stop-body">
           <span class="crawl-stop-name">${escapeHtml(p.name)}</span>
           <span class="crawl-stop-meta">${escapeHtml(p.area || '')}${p.address ? ' · ' + escapeHtml(p.address) : ''}</span>
           ${legHTML}
         </div>
+        <button class="crawl-stop-remove" type="button" aria-label="Remove this stop" title="Remove">×</button>
       </li>
     `;
   }).join('');
 
-  // Click stop → jump to map
+  // Stop interactions: jump to map / remove / drag-to-reorder
   list.querySelectorAll('.crawl-stop').forEach(li => {
-    li.addEventListener('click', () => jumpToPubOnMap(li.dataset.pubId));
+    const pubId = li.dataset.pubId;
+
+    li.addEventListener('click', (e) => {
+      if (e.target.closest('.crawl-stop-remove') || e.target.closest('.crawl-drag-handle')) return;
+      jumpToPubOnMap(pubId);
+    });
+
+    li.querySelector('.crawl-stop-remove').addEventListener('click', (e) => {
+      e.stopPropagation();
+      removeStopFromCrawl(pubId);
+    });
   });
+
+  bindCrawlStopDrag(list);
 
   panel.hidden = false;
 }
 
+// ----- Crawl editing -----
+
+function removeStopFromCrawl(pubId) {
+  const crawl = appState.activeCrawl;
+  if (!crawl) return;
+  if (crawl.stops.length <= 2) {
+    alert('A crawl needs at least 2 stops. Add another pub before removing this one, or clear the whole crawl.');
+    return;
+  }
+  crawl.stops = crawl.stops.filter(id => id !== pubId);
+  persistCrawlIfSaved(crawl);
+  renderActiveCrawl();
+  drawCrawlOnMap(crawl);
+}
+
+function addStopToCrawl(pubId) {
+  const crawl = appState.activeCrawl;
+  if (!crawl) return;
+  if (crawl.stops.includes(pubId)) return;
+  crawl.stops.push(pubId);
+  persistCrawlIfSaved(crawl);
+  renderActiveCrawl();
+  drawCrawlOnMap(crawl);
+}
+
+function persistCrawlIfSaved(crawl) {
+  // Only update storage if the crawl is already saved
+  const saved = crawlStore.load();
+  if (saved[crawl.id]) {
+    crawlStore.set(crawl);
+  }
+}
+
+function startRenameCrawl() {
+  const crawl = appState.activeCrawl;
+  if (!crawl) return;
+
+  const row = document.querySelector('.crawl-panel-title-row');
+  if (!row || row.querySelector('.crawl-name-input')) return;
+
+  const titleEl = document.getElementById('crawl-panel-title');
+  const pencil = document.getElementById('crawl-rename-btn');
+  const currentName = crawl.name || '';
+
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'crawl-name-input';
+  input.value = currentName;
+  input.placeholder = 'Name this crawl';
+  input.maxLength = 60;
+
+  titleEl.hidden = true;
+  pencil.hidden = true;
+  row.insertBefore(input, titleEl);
+  input.focus();
+  input.select();
+
+  let done = false;
+  const finish = (save) => {
+    if (done) return;
+    done = true;
+    if (save) {
+      const newName = input.value.trim();
+      crawl.name = newName;
+      persistCrawlIfSaved(crawl);
+    }
+    renderActiveCrawl();
+  };
+
+  input.addEventListener('blur', () => finish(true));
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); finish(true); }
+    if (e.key === 'Escape') { e.preventDefault(); finish(false); }
+  });
+}
+
+// ----- Add-a-stop dialog -----
+
+function openAddStopDialog() {
+  const crawl = appState.activeCrawl;
+  if (!crawl) return;
+  const dlg = document.getElementById('add-stop-dialog');
+  const input = document.getElementById('add-stop-search');
+  input.value = '';
+  renderAddStopList('');
+  dlg.showModal();
+  setTimeout(() => input.focus(), 50);
+}
+
+function renderAddStopList(term) {
+  const crawl = appState.activeCrawl;
+  if (!crawl) return;
+  const list = document.getElementById('add-stop-list');
+  const empty = document.getElementById('add-stop-empty');
+  const inCrawl = new Set(crawl.stops);
+  const t = term.trim().toLowerCase();
+
+  const lastStop = appState.pubs.find(p => p.id === crawl.stops[crawl.stops.length - 1]);
+
+  let candidates = appState.pubs.filter(p => !inCrawl.has(p.id));
+  if (t) {
+    candidates = candidates.filter(p =>
+      p.name.toLowerCase().includes(t) ||
+      (p.area || '').toLowerCase().includes(t) ||
+      (p.address || '').toLowerCase().includes(t)
+    );
+  }
+
+  // Sort by distance from last stop (or name if no anchor)
+  if (lastStop) {
+    candidates.forEach(p => {
+      p._addStopDist = haversineDistance(lastStop.lat, lastStop.lon, p.lat, p.lon);
+    });
+    candidates.sort((a, b) => a._addStopDist - b._addStopDist);
+  } else {
+    candidates.sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  candidates = candidates.slice(0, 80);
+
+  if (candidates.length === 0) {
+    list.innerHTML = '';
+    empty.hidden = false;
+    return;
+  }
+  empty.hidden = true;
+
+  list.innerHTML = candidates.map(p => {
+    const dist = (p._addStopDist != null)
+      ? `<span class="add-stop-dist">${formatDistance(p._addStopDist)} from last stop</span>`
+      : '';
+    return `
+      <li class="add-stop-item" data-pub-id="${p.id}">
+        <div class="add-stop-body">
+          <span class="add-stop-name">${escapeHtml(p.name)}</span>
+          <span class="add-stop-meta">${escapeHtml(p.area || '')}${p.address ? ' · ' + escapeHtml(p.address) : ''}</span>
+          ${dist}
+        </div>
+        <span class="add-stop-add">+</span>
+      </li>
+    `;
+  }).join('');
+
+  list.querySelectorAll('.add-stop-item').forEach(li => {
+    li.addEventListener('click', () => {
+      addStopToCrawl(li.dataset.pubId);
+      document.getElementById('add-stop-dialog').close();
+    });
+  });
+}
+
+function bindAddStopDialog() {
+  const dlg = document.getElementById('add-stop-dialog');
+  document.getElementById('add-stop-cancel').addEventListener('click', () => dlg.close());
+  document.getElementById('add-stop-search').addEventListener('input', (e) => {
+    renderAddStopList(e.target.value);
+  });
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+}
+
+// ----- Drag-to-reorder (pointer events, works on touch + mouse) -----
+
+function bindCrawlStopDrag(listEl) {
+  let dragging = null;
+  let activeHandle = null;
+  let activePointerId = null;
+
+  const handles = listEl.querySelectorAll('.crawl-drag-handle');
+  handles.forEach(handle => {
+    handle.addEventListener('pointerdown', (e) => {
+      const stop = handle.closest('.crawl-stop');
+      if (!stop) return;
+      e.preventDefault();
+      dragging = stop;
+      activeHandle = handle;
+      activePointerId = e.pointerId;
+      dragging.classList.add('dragging');
+      handle.setPointerCapture(e.pointerId);
+      handle.addEventListener('pointermove', onMove);
+      handle.addEventListener('pointerup', onUp);
+      handle.addEventListener('pointercancel', onUp);
+    });
+  });
+
+  function onMove(e) {
+    if (!dragging) return;
+    // Find which stop we're hovering over
+    const els = document.elementsFromPoint(e.clientX, e.clientY);
+    const targetStop = els.find(el => el.classList && el.classList.contains('crawl-stop') && el !== dragging);
+    if (!targetStop) return;
+    const rect = targetStop.getBoundingClientRect();
+    const midpoint = rect.top + rect.height / 2;
+    if (e.clientY < midpoint) {
+      targetStop.parentNode.insertBefore(dragging, targetStop);
+    } else {
+      targetStop.parentNode.insertBefore(dragging, targetStop.nextSibling);
+    }
+  }
+
+  function onUp() {
+    if (!dragging) return;
+    dragging.classList.remove('dragging');
+    if (activeHandle) {
+      activeHandle.removeEventListener('pointermove', onMove);
+      activeHandle.removeEventListener('pointerup', onUp);
+      activeHandle.removeEventListener('pointercancel', onUp);
+      try { activeHandle.releasePointerCapture(activePointerId); } catch (_) {}
+    }
+
+    // Read new order from the DOM and commit
+    const newOrder = [...listEl.querySelectorAll('.crawl-stop')].map(el => el.dataset.pubId);
+    const crawl = appState.activeCrawl;
+    if (crawl && JSON.stringify(newOrder) !== JSON.stringify(crawl.stops)) {
+      crawl.stops = newOrder;
+      persistCrawlIfSaved(crawl);
+      renderActiveCrawl();
+      drawCrawlOnMap(crawl);
+    }
+    dragging = null;
+    activeHandle = null;
+    activePointerId = null;
+  }
+}
+
 function bindCrawlPanel() {
   document.getElementById('crawl-clear-btn').addEventListener('click', clearActiveCrawl);
+  document.getElementById('crawl-rename-btn').addEventListener('click', startRenameCrawl);
+  document.getElementById('crawl-add-stop-btn').addEventListener('click', openAddStopDialog);
   document.getElementById('crawl-shuffle-btn').addEventListener('click', () => {
     if (!appState.activeCrawl) return;
     appState.activeCrawl.stops = shuffle(appState.activeCrawl.stops);
+    persistCrawlIfSaved(appState.activeCrawl);
     renderActiveCrawl();
     drawCrawlOnMap(appState.activeCrawl);
   });

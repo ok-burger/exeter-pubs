@@ -151,11 +151,50 @@ a:hover { color: var(--primary-soft); text-decoration: underline; }
 }
 
 .crawl-panel-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 10px;
+  position: relative;
   margin-bottom: 10px;
+  padding-right: 32px;
+}
+
+.crawl-clear-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.crawl-panel-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-pencil {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 4px 6px;
+  font-size: 0.95rem;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+}
+.btn-pencil:hover {
+  color: var(--primary);
+  background: var(--surface-2);
+}
+
+.crawl-name-input {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  background: var(--bg);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  padding: 4px 8px;
+  color: var(--ink);
+  width: 100%;
+  max-width: 280px;
+  outline: none;
 }
 
 .crawl-panel-title {
@@ -181,14 +220,129 @@ a:hover { color: var(--primary-soft); text-decoration: underline; }
 
 .crawl-stop {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   align-items: flex-start;
   padding: 8px;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: background 0.15s ease, opacity 0.15s ease, transform 0.15s ease;
+  background: var(--surface);
+  border: 1px solid transparent;
+  touch-action: none;  /* let drag handle own touch */
 }
 .crawl-stop:hover { background: var(--surface-2); }
+.crawl-stop.dragging {
+  opacity: 0.55;
+  border-color: var(--accent);
+  background: var(--surface-2);
+  box-shadow: var(--shadow);
+  cursor: grabbing;
+}
+
+.crawl-drag-handle {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  cursor: grab;
+  font-size: 1rem;
+  letter-spacing: -2px;
+  padding: 6px 2px;
+  align-self: center;
+  user-select: none;
+  touch-action: none;
+}
+.crawl-drag-handle:hover { color: var(--primary); }
+.crawl-drag-handle:active { cursor: grabbing; }
+
+.crawl-stop-remove {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 4px;
+  align-self: center;
+  transition: all 0.15s ease;
+}
+.crawl-stop-remove:hover {
+  color: var(--danger);
+  background: rgba(161, 59, 59, 0.08);
+}
+
+.btn-add-stop {
+  width: 100%;
+  background: transparent;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  color: var(--ink-soft);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  padding: 10px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.btn-add-stop:hover {
+  border-color: var(--accent);
+  background: var(--surface-2);
+  color: var(--primary);
+}
+
+/* ------- Add-a-stop dialog list ------- */
+
+.add-stop-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.add-stop-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.add-stop-item:hover {
+  background: var(--surface-2);
+  border-color: var(--accent);
+}
+
+.add-stop-body { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.add-stop-name { font-weight: 500; }
+.add-stop-meta {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.add-stop-dist {
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-style: italic;
+  margin-top: 2px;
+}
+.add-stop-add {
+  flex-shrink: 0;
+  color: var(--primary);
+  font-size: 1.4rem;
+  font-weight: 700;
+  padding: 0 4px;
+}
 
 .crawl-num {
   flex-shrink: 0;
