@@ -1639,13 +1639,6 @@ function dragOnMove(e) {
   t.ghost.style.left = (e.clientX - t.offsetX) + 'px';
   t.ghost.style.top = (e.clientY - t.offsetY) + 'px';
 
-  // SWAP COOLDOWN: while sibling FLIP animations are still running, their
-  // getBoundingClientRect() returns the in-flight visual position (with
-  // transform), not the final layout position. A still cursor over a card
-  // sliding underneath it would otherwise re-trigger swaps every frame —
-  // which felt like "the card is sticking on invisible elements".
-  if (t.lastSwapAt && performance.now() - t.lastSwapAt < ANIM_MS) return;
-
   const target = findInsertPosition(listEl, t.stop, e.clientY);
   if (!target) return;
 
@@ -1658,7 +1651,6 @@ function dragOnMove(e) {
   targetStop.parentNode.insertBefore(t.stop, desiredAnchor || null);
   flipAnimate(listEl, before, t.stop);
   refreshCrawlLegs(listEl);
-  t.lastSwapAt = performance.now();
 }
 
 function dragOnUp() {
@@ -1752,17 +1744,36 @@ function killAllGhosts() {
 
 // Walk siblings top-to-bottom, find the first whose midpoint is below the cursor.
 // Insert *before* that one. If cursor is below them all, insert after the last.
-// Works regardless of inter-card gaps.
+//
+// IMPORTANT: uses offsetTop / offsetHeight (LAYOUT position, ignores CSS
+// transforms) instead of getBoundingClientRect (VISUAL position, includes
+// transforms). During the FLIP animation cards have transient transforms,
+// and reading their visual position causes the swap target to flicker and
+// cards to feel sticky. The layout position is the *final* position of each
+// card, so hit testing is stable.
 function findInsertPosition(listEl, draggingStop, clientY) {
   const stops = [...listEl.querySelectorAll('.crawl-stop')].filter(s => s !== draggingStop);
   if (stops.length === 0) return null;
   for (const stop of stops) {
-    const rect = stop.getBoundingClientRect();
-    if (clientY < rect.top + rect.height / 2) {
+    const top = layoutTopOf(stop);
+    const mid = top + stop.offsetHeight / 2;
+    if (clientY < mid) {
       return { targetStop: stop, insertBefore: true };
     }
   }
   return { targetStop: stops[stops.length - 1], insertBefore: false };
+}
+
+// Viewport-relative top of an element, ignoring CSS transforms. Walks the
+// offsetParent chain and subtracts the current page scroll.
+function layoutTopOf(el) {
+  let top = 0;
+  let node = el;
+  while (node) {
+    top += node.offsetTop;
+    node = node.offsetParent;
+  }
+  return top - window.scrollY;
 }
 
 function snapshotRects(listEl) {
@@ -1851,6 +1862,38 @@ function bindCrawlPanel() {
   });
   document.getElementById('crawl-save-btn').addEventListener('click', saveCurrentCrawl);
   document.getElementById('crawl-share-btn').addEventListener('click', shareCurrentCrawl);
+  document.getElementById('crawl-directions-btn').addEventListener('click', openCrawlInGoogleMaps);
+}
+
+function openCrawlInGoogleMaps() {
+  const crawl = appState.activeCrawl;
+  if (!crawl || crawl.stops.length < 2) return;
+  const stops = crawl.stops
+    .map(id => appState.pubs.find(p => p.id === id))
+    .filter(Boolean);
+  if (stops.length < 2) return;
+
+  // Google Maps Directions URL supports up to 9 waypoints (10 stops total).
+  // Our crawls cap at 7, so we're fine. Format:
+  //   /maps/dir/?api=1&origin=LAT,LON&destination=LAT,LON
+  //     &waypoints=LAT,LON|LAT,LON&travelmode=walking
+  const origin = `${stops[0].lat},${stops[0].lon}`;
+  const destination = `${stops[stops.length - 1].lat},${stops[stops.length - 1].lon}`;
+  const waypoints = stops
+    .slice(1, -1)
+    .map(p => `${p.lat},${p.lon}`)
+    .join('|');
+
+  const params = new URLSearchParams({
+    api: '1',
+    origin,
+    destination,
+    travelmode: 'walking'
+  });
+  if (waypoints) params.set('waypoints', waypoints);
+
+  const url = `https://www.google.com/maps/dir/?${params.toString()}`;
+  window.open(url, '_blank', 'noopener');
 }
 
 function saveCurrentCrawl() {
