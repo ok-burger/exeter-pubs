@@ -35,7 +35,28 @@
         <span class="icon" aria-hidden="true">📍</span>
         <span id="find-me-text">Find pubs near me</span>
       </button>
+      <button id="plan-crawl-btn" class="btn-plan-crawl" type="button">
+        <span class="icon" aria-hidden="true">🍻</span>
+        <span>Plan a crawl</span>
+      </button>
       <p id="location-status" class="location-status" hidden></p>
+    </section>
+
+    <!-- Active crawl panel (shown when a crawl is loaded) -->
+    <section id="crawl-panel" class="crawl-panel" hidden aria-live="polite">
+      <header class="crawl-panel-header">
+        <div>
+          <h2 class="crawl-panel-title" id="crawl-panel-title">Your crawl</h2>
+          <p class="crawl-panel-meta" id="crawl-panel-meta"></p>
+        </div>
+        <button id="crawl-clear-btn" class="btn-icon" type="button" aria-label="Clear crawl">✕</button>
+      </header>
+      <ol class="crawl-stops" id="crawl-stops"></ol>
+      <footer class="crawl-panel-actions">
+        <button id="crawl-shuffle-btn" class="btn btn-ghost" type="button">🔀 Shuffle order</button>
+        <button id="crawl-save-btn" class="btn btn-ghost" type="button">💾 Save</button>
+        <button id="crawl-share-btn" class="btn btn-primary" type="button">🔗 Share</button>
+      </footer>
     </section>
 
     <!-- Search & filter -->
@@ -136,6 +157,92 @@
         <button type="button" id="review-save-btn" class="btn btn-primary">Save</button>
       </footer>
     </form>
+  </dialog>
+
+  <!-- Crawl planner modal -->
+  <dialog id="crawl-planner-dialog" class="dialog" aria-labelledby="crawl-planner-title">
+    <div class="dialog-form">
+      <header class="dialog-header">
+        <h2 class="dialog-title" id="crawl-planner-title">Plan a crawl</h2>
+        <p class="dialog-subtitle">Pick a handful of pubs near each other. The order's up to chance — that's the fun.</p>
+      </header>
+
+      <div class="dialog-body">
+        <div class="field">
+          <span class="field-label">Number of stops</span>
+          <div class="stops-input" id="crawl-stops-input" role="radiogroup" aria-label="Number of stops">
+            <button type="button" class="stops-btn" data-stops="3">3</button>
+            <button type="button" class="stops-btn active" data-stops="4">4</button>
+            <button type="button" class="stops-btn" data-stops="5">5</button>
+            <button type="button" class="stops-btn" data-stops="6">6</button>
+            <button type="button" class="stops-btn" data-stops="7">7</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">Start from</span>
+          <div class="start-input">
+            <label class="radio-row">
+              <input type="radio" name="crawl-start" value="location" id="crawl-start-location" checked>
+              <span>My current location</span>
+              <span class="radio-hint" id="crawl-start-location-hint">— share location first</span>
+            </label>
+            <label class="radio-row">
+              <input type="radio" name="crawl-start" value="anchor">
+              <span>From a specific pub</span>
+            </label>
+            <select id="crawl-anchor-select" class="area-select" aria-label="Choose a starting pub" disabled></select>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">Walking radius</span>
+          <div class="stops-input" role="radiogroup" aria-label="Walking radius">
+            <button type="button" class="stops-btn" data-radius="500">5 min</button>
+            <button type="button" class="stops-btn active" data-radius="1000">12 min</button>
+            <button type="button" class="stops-btn" data-radius="2000">25 min</button>
+            <button type="button" class="stops-btn" data-radius="0">No limit</button>
+          </div>
+          <p class="field-hint">Max walk from the start to any stop.</p>
+        </div>
+
+        <div class="field">
+          <span class="field-label">Include</span>
+          <div class="venue-types" id="crawl-venue-types">
+            <label class="checkbox-row"><input type="checkbox" value="pub" checked><span>Pubs</span></label>
+            <label class="checkbox-row"><input type="checkbox" value="bar"><span>Bars</span></label>
+            <label class="checkbox-row"><input type="checkbox" value="club"><span>Clubs</span></label>
+          </div>
+        </div>
+
+        <p class="settings-note" id="crawl-planner-note" hidden></p>
+      </div>
+
+      <footer class="dialog-actions">
+        <button type="button" id="crawl-saved-btn" class="btn btn-ghost">My saved crawls</button>
+        <span class="dialog-actions-spacer"></span>
+        <button type="button" id="crawl-planner-cancel" class="btn btn-ghost">Cancel</button>
+        <button type="button" id="crawl-planner-generate" class="btn btn-primary">Generate</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <!-- Saved crawls modal -->
+  <dialog id="saved-crawls-dialog" class="dialog" aria-labelledby="saved-crawls-title">
+    <div class="dialog-form">
+      <header class="dialog-header">
+        <h2 class="dialog-title" id="saved-crawls-title">My saved crawls</h2>
+        <p class="dialog-subtitle">Stored in this browser. Use Share to send a crawl to someone else.</p>
+      </header>
+      <div class="dialog-body">
+        <ul class="saved-crawls-list" id="saved-crawls-list"></ul>
+        <p class="settings-note" id="saved-crawls-empty" hidden>No saved crawls yet. Generate one and tap Save.</p>
+      </div>
+      <footer class="dialog-actions">
+        <span class="dialog-actions-spacer"></span>
+        <button type="button" id="saved-crawls-close" class="btn btn-primary">Done</button>
+      </footer>
+    </div>
   </dialog>
 
   <!-- Settings modal -->

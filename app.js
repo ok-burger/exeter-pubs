@@ -89,6 +89,12 @@ const appState = {
   searchTerm: '',
   activeView: 'map',
   editingPubId: null,
+  // Crawl state
+  activeCrawl: null,        // { id, name, stops: [pubId,...], createdAt }
+  crawlMarkers: [],
+  crawlPolyline: null,
+  plannerStops: 4,
+  plannerRadius: 1000,
 };
 
 // Areas considered part of "Greater Exeter" (the default view).
@@ -126,6 +132,13 @@ async function init() {
   bindViewToggle();
   bindReviewDialog();
   bindSettingsDialog();
+  bindCrawlPlanner();
+  bindCrawlPanel();
+  // Restore crawl from URL hash if present
+  const fromHash = parseCrawlHash();
+  if (fromHash) {
+    setActiveCrawl(fromHash);
+  }
 }
 
 // ----- Area filter -----
@@ -990,6 +1003,455 @@ function jumpToPubInList(pubId) {
     card.classList.add('highlighted');
     setTimeout(() => card.classList.remove('highlighted'), 1800);
   }, 80);
+}
+
+// ----- Pub crawl picker -----
+
+const CRAWLS_KEY = 'exeter-pubs:crawls:v1';
+
+const crawlStore = {
+  cache: null,
+  load() {
+    if (this.cache !== null) return this.cache;
+    try {
+      const raw = localStorage.getItem(CRAWLS_KEY);
+      this.cache = raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      console.warn('Failed to read crawls from storage:', e);
+      this.cache = {};
+    }
+    return this.cache;
+  },
+  save() {
+    try {
+      localStorage.setItem(CRAWLS_KEY, JSON.stringify(this.cache));
+      return true;
+    } catch (e) {
+      console.error('Failed to save crawls:', e);
+      return false;
+    }
+  },
+  set(crawl) {
+    this.load()[crawl.id] = crawl;
+    return this.save();
+  },
+  delete(id) {
+    delete this.load()[id];
+    return this.save();
+  },
+  list() {
+    return Object.values(this.load()).sort((a, b) =>
+      (b.createdAt || '').localeCompare(a.createdAt || '')
+    );
+  }
+};
+
+function bindCrawlPlanner() {
+  document.getElementById('plan-crawl-btn').addEventListener('click', openCrawlPlanner);
+
+  const dlg = document.getElementById('crawl-planner-dialog');
+  document.getElementById('crawl-planner-cancel').addEventListener('click', () => dlg.close());
+  document.getElementById('crawl-planner-generate').addEventListener('click', onGenerateCrawl);
+  document.getElementById('crawl-saved-btn').addEventListener('click', openSavedCrawls);
+
+  // Stops chooser
+  document.getElementById('crawl-stops-input').addEventListener('click', (e) => {
+    const btn = e.target.closest('.stops-btn');
+    if (!btn) return;
+    appState.plannerStops = Number(btn.dataset.stops);
+    document.querySelectorAll('#crawl-stops-input .stops-btn').forEach(b =>
+      b.classList.toggle('active', b === btn));
+  });
+
+  // Radius chooser
+  const radiusGroup = dlg.querySelector('[aria-label="Walking radius"]');
+  radiusGroup.addEventListener('click', (e) => {
+    const btn = e.target.closest('.stops-btn');
+    if (!btn) return;
+    appState.plannerRadius = Number(btn.dataset.radius);
+    radiusGroup.querySelectorAll('.stops-btn').forEach(b =>
+      b.classList.toggle('active', b === btn));
+  });
+
+  // Anchor radio toggles select enable/disable
+  dlg.querySelectorAll('input[name="crawl-start"]').forEach(r => {
+    r.addEventListener('change', () => {
+      const useAnchor = dlg.querySelector('input[name="crawl-start"]:checked').value === 'anchor';
+      document.getElementById('crawl-anchor-select').disabled = !useAnchor;
+    });
+  });
+
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+
+  // Saved crawls dialog
+  const sdlg = document.getElementById('saved-crawls-dialog');
+  document.getElementById('saved-crawls-close').addEventListener('click', () => sdlg.close());
+  sdlg.addEventListener('click', (e) => { if (e.target === sdlg) sdlg.close(); });
+}
+
+function openCrawlPlanner() {
+  const dlg = document.getElementById('crawl-planner-dialog');
+
+  // Refresh anchor select with currently-filtered visible pubs
+  const visible = appState.pubs
+    .filter(pubMatchesArea)
+    .filter(pubMatchesFilters)
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name));
+  const select = document.getElementById('crawl-anchor-select');
+  select.innerHTML = visible.map(p =>
+    `<option value="${p.id}">${escapeHtml(p.name)} — ${escapeHtml(p.area || '')}</option>`
+  ).join('');
+
+  // Disable location option if no fix yet
+  const hasLoc = !!appState.userLocation;
+  const locRadio = document.getElementById('crawl-start-location');
+  const locHint = document.getElementById('crawl-start-location-hint');
+  locRadio.disabled = !hasLoc;
+  locHint.hidden = hasLoc;
+  if (!hasLoc) {
+    document.querySelector('input[name="crawl-start"][value="anchor"]').checked = true;
+    select.disabled = false;
+  } else {
+    locRadio.checked = true;
+    select.disabled = true;
+  }
+
+  setCrawlPlannerNote('', null);
+  dlg.showModal();
+}
+
+function setCrawlPlannerNote(msg, type) {
+  const note = document.getElementById('crawl-planner-note');
+  if (!msg) { note.hidden = true; return; }
+  note.textContent = msg;
+  note.className = 'settings-note ' + (type || '');
+  note.hidden = false;
+}
+
+function onGenerateCrawl() {
+  const dlg = document.getElementById('crawl-planner-dialog');
+  const useLocation = dlg.querySelector('input[name="crawl-start"]:checked').value === 'location';
+  const venueTypes = [...document.querySelectorAll('#crawl-venue-types input:checked')]
+    .map(i => i.value);
+
+  if (venueTypes.length === 0) {
+    setCrawlPlannerNote('Pick at least one venue type.', 'error');
+    return;
+  }
+
+  let anchor;
+  if (useLocation && appState.userLocation) {
+    anchor = { lat: appState.userLocation.lat, lon: appState.userLocation.lon };
+  } else {
+    const anchorId = document.getElementById('crawl-anchor-select').value;
+    const anchorPub = appState.pubs.find(p => p.id === anchorId);
+    if (!anchorPub) { setCrawlPlannerNote('Pick a starting pub.', 'error'); return; }
+    anchor = { lat: anchorPub.lat, lon: anchorPub.lon, id: anchorPub.id };
+  }
+
+  const crawl = generateCrawl({
+    stops: appState.plannerStops,
+    radiusM: appState.plannerRadius,
+    venueTypes,
+    anchor
+  });
+
+  if (!crawl) {
+    setCrawlPlannerNote('Not enough venues match in that radius. Try widening it.', 'error');
+    return;
+  }
+
+  setActiveCrawl(crawl);
+  dlg.close();
+}
+
+function generateCrawl({ stops, radiusM, venueTypes, anchor }) {
+  const types = new Set(venueTypes);
+  // Pool: matching venue type, optionally within radius of anchor
+  let pool = appState.pubs.filter(p => types.has(p.venue_type || 'pub'));
+  if (radiusM > 0) {
+    pool = pool.filter(p =>
+      haversineDistance(anchor.lat, anchor.lon, p.lat, p.lon) <= radiusM
+    );
+  }
+
+  if (pool.length < stops) return null;
+
+  // If anchor is itself a pub, seed the crawl with it
+  const picked = [];
+  if (anchor.id) {
+    const seed = pool.find(p => p.id === anchor.id);
+    if (seed) {
+      picked.push(seed);
+      pool = pool.filter(p => p.id !== seed.id);
+    }
+  }
+
+  // Sample remaining stops randomly
+  const remaining = stops - picked.length;
+  const sampled = sampleRandom(pool, remaining);
+  picked.push(...sampled);
+
+  // Chaos: shuffle the final order
+  const ordered = shuffle(picked);
+
+  return {
+    id: 'crawl-' + Math.random().toString(36).slice(2, 9),
+    name: '',
+    stops: ordered.map(p => p.id),
+    createdAt: new Date().toISOString()
+  };
+}
+
+function sampleRandom(arr, n) {
+  const copy = arr.slice();
+  const out = [];
+  for (let i = 0; i < n && copy.length > 0; i++) {
+    const idx = Math.floor(Math.random() * copy.length);
+    out.push(copy.splice(idx, 1)[0]);
+  }
+  return out;
+}
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function setActiveCrawl(crawl) {
+  appState.activeCrawl = crawl;
+  renderActiveCrawl();
+  drawCrawlOnMap(crawl);
+  setActiveView('map');
+}
+
+function clearActiveCrawl() {
+  appState.activeCrawl = null;
+  document.getElementById('crawl-panel').hidden = true;
+  clearCrawlFromMap();
+  // Strip the hash without reloading
+  if (location.hash.startsWith('#crawl=')) {
+    history.replaceState(null, '', location.pathname + location.search);
+  }
+}
+
+function renderActiveCrawl() {
+  const crawl = appState.activeCrawl;
+  if (!crawl) return;
+  const panel = document.getElementById('crawl-panel');
+  const stopsByPub = crawl.stops.map(id => appState.pubs.find(p => p.id === id)).filter(Boolean);
+
+  document.getElementById('crawl-panel-title').textContent =
+    crawl.name ? crawl.name : 'Your crawl';
+
+  // Compute total walking distance
+  let totalM = 0;
+  for (let i = 1; i < stopsByPub.length; i++) {
+    totalM += haversineDistance(
+      stopsByPub[i - 1].lat, stopsByPub[i - 1].lon,
+      stopsByPub[i].lat,     stopsByPub[i].lon
+    );
+  }
+  const meta = `${stopsByPub.length} stops · ${formatDistance(totalM)} total walk · ${formatWalkingTime(totalM)}`;
+  document.getElementById('crawl-panel-meta').textContent = meta;
+
+  const list = document.getElementById('crawl-stops');
+  list.innerHTML = stopsByPub.map((p, i) => {
+    let legHTML = '';
+    if (i > 0) {
+      const prev = stopsByPub[i - 1];
+      const d = haversineDistance(prev.lat, prev.lon, p.lat, p.lon);
+      legHTML = `<span class="crawl-leg">↳ ${formatDistance(d)} · ${formatWalkingTime(d)}</span>`;
+    }
+    return `
+      <li class="crawl-stop" data-pub-id="${p.id}">
+        <span class="crawl-num">${i + 1}</span>
+        <div class="crawl-stop-body">
+          <span class="crawl-stop-name">${escapeHtml(p.name)}</span>
+          <span class="crawl-stop-meta">${escapeHtml(p.area || '')}${p.address ? ' · ' + escapeHtml(p.address) : ''}</span>
+          ${legHTML}
+        </div>
+      </li>
+    `;
+  }).join('');
+
+  // Click stop → jump to map
+  list.querySelectorAll('.crawl-stop').forEach(li => {
+    li.addEventListener('click', () => jumpToPubOnMap(li.dataset.pubId));
+  });
+
+  panel.hidden = false;
+}
+
+function bindCrawlPanel() {
+  document.getElementById('crawl-clear-btn').addEventListener('click', clearActiveCrawl);
+  document.getElementById('crawl-shuffle-btn').addEventListener('click', () => {
+    if (!appState.activeCrawl) return;
+    appState.activeCrawl.stops = shuffle(appState.activeCrawl.stops);
+    renderActiveCrawl();
+    drawCrawlOnMap(appState.activeCrawl);
+  });
+  document.getElementById('crawl-save-btn').addEventListener('click', saveCurrentCrawl);
+  document.getElementById('crawl-share-btn').addEventListener('click', shareCurrentCrawl);
+}
+
+function saveCurrentCrawl() {
+  const crawl = appState.activeCrawl;
+  if (!crawl) return;
+  const suggested = crawl.name || `Crawl from ${new Date(crawl.createdAt).toLocaleDateString('en-GB')}`;
+  const name = prompt('Name this crawl:', suggested);
+  if (name === null) return;
+  crawl.name = name.trim() || suggested;
+  crawlStore.set(crawl);
+  renderActiveCrawl();
+  alert(`Saved "${crawl.name}".`);
+}
+
+function shareCurrentCrawl() {
+  const crawl = appState.activeCrawl;
+  if (!crawl) return;
+  const url = buildCrawlShareUrl(crawl);
+  // Update the address bar
+  history.replaceState(null, '', '#' + url.split('#')[1]);
+  if (navigator.share) {
+    navigator.share({
+      title: crawl.name || 'A pub crawl',
+      text: 'A pub crawl from the Exeter Pubs app',
+      url
+    }).catch(() => copyShareUrl(url));
+  } else {
+    copyShareUrl(url);
+  }
+}
+
+function copyShareUrl(url) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(
+      () => alert('Share link copied to clipboard.'),
+      () => prompt('Copy this share link:', url)
+    );
+  } else {
+    prompt('Copy this share link:', url);
+  }
+}
+
+function buildCrawlShareUrl(crawl) {
+  const ids = crawl.stops.join(',');
+  return `${location.origin}${location.pathname}#crawl=${ids}`;
+}
+
+function parseCrawlHash() {
+  const hash = location.hash;
+  if (!hash.startsWith('#crawl=')) return null;
+  const ids = hash.slice('#crawl='.length).split(',').filter(Boolean);
+  const valid = ids.filter(id => appState.pubs.some(p => p.id === id));
+  if (valid.length < 2) return null;
+  return {
+    id: 'shared-' + Math.random().toString(36).slice(2, 9),
+    name: 'Shared crawl',
+    stops: valid,
+    createdAt: new Date().toISOString()
+  };
+}
+
+function drawCrawlOnMap(crawl) {
+  clearCrawlFromMap();
+  const stops = crawl.stops.map(id => appState.pubs.find(p => p.id === id)).filter(Boolean);
+  if (stops.length === 0) return;
+
+  // Numbered markers
+  stops.forEach((p, i) => {
+    const icon = L.divIcon({
+      className: '',
+      html: `<div class="crawl-marker">${i + 1}</div>`,
+      iconSize: [32, 32],
+      iconAnchor: [16, 16]
+    });
+    const marker = L.marker([p.lat, p.lon], { icon, zIndexOffset: 800 })
+      .addTo(appState.map)
+      .bindPopup(`<strong>${i + 1}. ${escapeHtml(p.name)}</strong><br>${escapeHtml(p.address || '')}`);
+    appState.crawlMarkers.push(marker);
+  });
+
+  // Polyline connecting them in order
+  const latlngs = stops.map(p => [p.lat, p.lon]);
+  appState.crawlPolyline = L.polyline(latlngs, {
+    color: '#6b2832',
+    weight: 4,
+    opacity: 0.7,
+    dashArray: '8 8'
+  }).addTo(appState.map);
+
+  // Fit the map to the crawl
+  appState.map.fitBounds(L.latLngBounds(latlngs), { padding: [60, 60] });
+}
+
+function clearCrawlFromMap() {
+  appState.crawlMarkers.forEach(m => appState.map.removeLayer(m));
+  appState.crawlMarkers = [];
+  if (appState.crawlPolyline) {
+    appState.map.removeLayer(appState.crawlPolyline);
+    appState.crawlPolyline = null;
+  }
+}
+
+function openSavedCrawls() {
+  const dlg = document.getElementById('saved-crawls-dialog');
+  const list = document.getElementById('saved-crawls-list');
+  const empty = document.getElementById('saved-crawls-empty');
+  const saved = crawlStore.list();
+
+  if (saved.length === 0) {
+    list.innerHTML = '';
+    empty.hidden = false;
+  } else {
+    empty.hidden = true;
+    list.innerHTML = saved.map(c => {
+      const names = c.stops
+        .map(id => appState.pubs.find(p => p.id === id))
+        .filter(Boolean)
+        .map(p => p.name)
+        .join(' → ');
+      const date = c.createdAt ? new Date(c.createdAt).toLocaleDateString('en-GB') : '';
+      return `
+        <li class="saved-crawl" data-crawl-id="${c.id}">
+          <div class="saved-crawl-body">
+            <h3 class="saved-crawl-name">${escapeHtml(c.name || 'Unnamed crawl')}</h3>
+            <p class="saved-crawl-meta">${c.stops.length} stops · ${escapeHtml(date)}</p>
+            <p class="saved-crawl-list">${escapeHtml(names)}</p>
+          </div>
+          <div class="saved-crawl-actions">
+            <button class="btn btn-ghost btn-small" data-action="load">Load</button>
+            <button class="btn btn-ghost btn-small btn-danger" data-action="delete">Delete</button>
+          </div>
+        </li>
+      `;
+    }).join('');
+
+    list.querySelectorAll('.saved-crawl').forEach(li => {
+      const id = li.dataset.crawlId;
+      li.querySelector('[data-action="load"]').addEventListener('click', () => {
+        const crawl = crawlStore.load()[id];
+        if (crawl) {
+          setActiveCrawl(crawl);
+          dlg.close();
+          document.getElementById('crawl-planner-dialog').close();
+        }
+      });
+      li.querySelector('[data-action="delete"]').addEventListener('click', () => {
+        if (!confirm('Delete this saved crawl?')) return;
+        crawlStore.delete(id);
+        openSavedCrawls();
+      });
+    });
+  }
+
+  dlg.showModal();
 }
 
 // ----- Helpers -----
