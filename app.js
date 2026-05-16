@@ -511,12 +511,13 @@ function updateFilterMeta(matched, total) {
     || appState.visitedFilter !== 'off'
     || appState.areaFilter !== 'greater-exeter';
 
-  if (isFiltering) {
-    count.textContent = `${matched} of ${total} match`;
-    clearBtn.hidden = false;
-  } else {
+  // Always be honest about visible vs total when they differ
+  if (matched === total) {
     count.textContent = `${total} pubs`;
-    clearBtn.hidden = true;
+    clearBtn.hidden = !isFiltering;
+  } else {
+    count.textContent = `${matched} of ${total} match`;
+    clearBtn.hidden = !isFiltering;
   }
 }
 
