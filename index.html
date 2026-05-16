@@ -24,6 +24,10 @@
           <p class="tagline">A small, opinionated guide</p>
         </div>
       </div>
+      <button id="help-btn" class="btn-help" type="button" aria-label="Help and about" title="Need help?">
+        <span aria-hidden="true">?</span>
+        <span class="btn-help-label">Need help?</span>
+      </button>
     </div>
   </header>
 
@@ -225,6 +229,51 @@
         <span class="dialog-actions-spacer"></span>
         <button type="button" id="crawl-planner-cancel" class="btn btn-ghost">Cancel</button>
         <button type="button" id="crawl-planner-generate" class="btn btn-primary">Generate</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <!-- Welcome / Help modal -->
+  <dialog id="welcome-dialog" class="dialog dialog-wide" aria-labelledby="welcome-title">
+    <div class="dialog-form">
+      <header class="dialog-header welcome-header">
+        <span class="welcome-mark" aria-hidden="true">🍺</span>
+        <h2 class="dialog-title" id="welcome-title">Welcome to Exeter Pubs</h2>
+        <p class="dialog-subtitle">A small, opinionated guide to <strong>192 pubs, bars and clubs</strong> across Greater Exeter and the surrounding villages. Curated by hand — no ads, no accounts, no tracking.</p>
+      </header>
+
+      <div class="dialog-body welcome-body">
+
+        <section class="welcome-section">
+          <h3 class="welcome-h3">What you can do</h3>
+          <ul class="welcome-list">
+            <li><strong>📍 Find pubs near you</strong> — share your location and they sort by walking distance.</li>
+            <li><strong>🔍 Search &amp; filter</strong> — by name, area (Topsham, Exmouth, Crediton…), or tag (Real Ale, Garden, Dog Friendly…).</li>
+            <li><strong>📓 Keep your own notes</strong> — date a visit, star a pub, write what you thought. Tap "+ Add my notes" on any card.</li>
+            <li><strong>🍻 Plan a pub crawl</strong> — pick stops, drag to reorder, save it, or share a link with a friend.</li>
+          </ul>
+        </section>
+
+        <section class="welcome-section">
+          <h3 class="welcome-h3">A few things to know</h3>
+          <ul class="welcome-list welcome-list-tight">
+            <li>Your notes and saved crawls live in <strong>your browser only</strong>. Use Settings ⚙ to export them as a backup.</li>
+            <li>Pub data comes from <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>, then tagged and cleaned by hand. Tags are best-guess and always improving.</li>
+            <li>Shared crawl links work without an account — recipients see your stops on their own copy of the app.</li>
+          </ul>
+        </section>
+
+        <section class="welcome-section welcome-personal">
+          <h3 class="welcome-h3">A note from the maker</h3>
+          <p>This is a passion project. I built it because I wanted a calmer alternative to the big review sites — somewhere to keep my own pub diary and plan good nights out without all the noise.</p>
+          <p>If you find something wrong, a pub that's closed, or you've got a pub I've missed — <a href="#" id="welcome-feedback-link">drop me a line</a>. <span class="welcome-signoff">— Max</span></p>
+        </section>
+
+      </div>
+
+      <footer class="dialog-actions">
+        <span class="dialog-actions-spacer"></span>
+        <button type="button" id="welcome-close-btn" class="btn btn-primary">Got it — let me explore</button>
       </footer>
     </div>
   </dialog>

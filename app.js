@@ -135,6 +135,8 @@ async function init() {
   bindCrawlPlanner();
   bindCrawlPanel();
   bindAddStopDialog();
+  bindWelcomeDialog();
+  maybeShowWelcomeOnFirstVisit();
   // Restore crawl from URL hash if present
   const fromHash = parseCrawlHash();
   if (fromHash) {
@@ -1694,6 +1696,40 @@ function openSavedCrawls() {
   }
 
   dlg.showModal();
+}
+
+// ----- Welcome / Help -----
+
+const WELCOMED_KEY = 'exeter-pubs:welcomed:v1';
+
+function bindWelcomeDialog() {
+  const dlg = document.getElementById('welcome-dialog');
+  document.getElementById('help-btn').addEventListener('click', () => dlg.showModal());
+  document.getElementById('welcome-close-btn').addEventListener('click', () => {
+    markAsWelcomed();
+    dlg.close();
+  });
+  dlg.addEventListener('close', markAsWelcomed);
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+
+  // Feedback link — placeholder. Replace href with mailto:... when you have an address.
+  document.getElementById('welcome-feedback-link').addEventListener('click', (e) => {
+    e.preventDefault();
+    alert("Feedback link not configured yet. Update the welcome dialog with your email or contact form when you're ready.");
+  });
+}
+
+function maybeShowWelcomeOnFirstVisit() {
+  // Don't auto-open if a shared crawl is in the URL — let the user see that first
+  if (location.hash.startsWith('#crawl=')) return;
+  try {
+    if (localStorage.getItem(WELCOMED_KEY)) return;
+  } catch (_) { return; }
+  document.getElementById('welcome-dialog').showModal();
+}
+
+function markAsWelcomed() {
+  try { localStorage.setItem(WELCOMED_KEY, new Date().toISOString()); } catch (_) {}
 }
 
 // ----- Helpers -----
