@@ -1,0 +1,2342 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2026-05-13T12:16:36Z",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/116683854",
+        "addr:city": "Exeter",
+        "addr:housename": "Heart Of Oak",
+        "addr:housenumber": "34",
+        "addr:postcode": "EX4 8HS",
+        "addr:street": "Main Road",
+        "amenity": "pub",
+        "building": "pub",
+        "fhrs:authority": "Exeter City",
+        "fhrs:id": "1267400",
+        "fhrs:local_authority_id": "PI/000078597",
+        "name": "Heart Of Oak",
+        "opening_hours": "Mo-Th 12:00-23:00; Fr-Sa 12:00-23:59; Su 12:00-17:00",
+        "outdoor_seating": "yes",
+        "smoking": "outside",
+        "source:addr": "FHRS Open Data",
+        "wikidata": "Q26532536",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.470734,
+          50.7390823
+        ]
+      },
+      "id": "way/116683854"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/119208351",
+        "addr:city": "Exeter",
+        "addr:housename": "Double Locks",
+        "addr:postcode": "EX2 6LT",
+        "addr:street": "Canal Banks",
+        "amenity": "pub",
+        "building": "yes",
+        "diet:vegan": "yes",
+        "diet:vegetarian": "yes",
+        "email": "doublelocks@youngs.co.uk",
+        "fhrs:authority": "Exeter City",
+        "fhrs:businesstype": "Pub/bar/nightclub",
+        "fhrs:id": "180017",
+        "fhrs:local_authority_id": "PI/000060934",
+        "fhrs:rating": "5",
+        "food": "yes",
+        "name": "Double Locks Inn",
+        "opening_hours": "Mo-Sa 11:00-22:00; Su 10:30-21:00",
+        "outdoor_seating": "yes",
+        "phone": "+44 1392 256947",
+        "url": "http://www.doublelocks.co.uk",
+        "wheelchair": "yes",
+        "wikidata": "Q26398044",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5127938,
+          50.6999873
+        ]
+      },
+      "id": "way/119208351"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/164967564",
+        "amenity": "bar",
+        "building": "yes",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.4681875,
+          50.7085204
+        ]
+      },
+      "id": "way/164967564"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/175308977",
+        "addr:city": "Exeter",
+        "addr:county": "Devon",
+        "addr:postcode": "EX4 4AH",
+        "addr:street": "New North Road",
+        "amenity": "pub",
+        "brand": "Wetherspoon",
+        "brand:wikidata": "Q6109362",
+        "brand:wikipedia": "en:Wetherspoons",
+        "building": "yes",
+        "contact:phone": "+44 1392 434050",
+        "contact:website": "https://www.jdwetherspoon.com/pubs/all-pubs/england/devon/the-imperial-exeter",
+        "diet:vegan": "yes",
+        "diet:vegetarian": "yes",
+        "dog": "no",
+        "fhrs:authority": "Exeter City",
+        "fhrs:id": "166306",
+        "fhrs:local_authority_id": "PI/000009317",
+        "fhrs:rating": "5",
+        "food": "yes",
+        "indoor_seating": "yes",
+        "levels": "2",
+        "name": "The Imperial",
+        "note": "Has TV screens",
+        "opening_hours": "Su-Th 08:00-00:00; Fr-Sa 08:00-01:00",
+        "outdoor_seating": "yes",
+        "payment:debit_cards": "yes",
+        "payment:mastercard": "yes",
+        "payment:visa": "yes",
+        "real_ale": "yes",
+        "smoking": "separated",
+        "source": "website;https://www.jdwetherspoon.com/pubs/all-pubs/england/devon/the-imperial-exeter",
+        "toilets": "yes",
+        "toilets:access": "customers",
+        "toilets:wheelchair": "yes",
+        "website:menu": "https://order.jdwetherspoon.com/venue/jdw/253/menus",
+        "wheelchair": "limited",
+        "wikidata": "Q17547678",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5397923,
+          50.7303375
+        ]
+      },
+      "id": "way/175308977"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/186668495",
+        "addr:city": "Exeter",
+        "addr:housenumber": "156",
+        "addr:postcode": "EX4 8LX",
+        "addr:street": "Beacon Lane",
+        "amenity": "pub",
+        "building": "yes",
+        "fhrs:id": "990338",
+        "name": "Devon Yeoman",
+        "source:addr": "FHRS Open Data",
+        "wikidata": "Q70628266",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.4972356,
+          50.739254
+        ]
+      },
+      "id": "way/186668495"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/191449760",
+        "addr:city": "Exeter",
+        "addr:postcode": "EX4 3PX",
+        "addr:street": "Little Castle Street",
+        "amenity": "nightclub",
+        "building": "yes",
+        "fhrs:id": "180803",
+        "name": "Timepiece",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5285621,
+          50.7257013
+        ]
+      },
+      "id": "way/191449760"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/200071239",
+        "addr:city": "Exeter",
+        "amenity": "pub",
+        "building": "yes",
+        "food": "yes",
+        "indoor_seating": "yes",
+        "name": "The Prospect Inn",
+        "outdoor_seating": "yes",
+        "payment:cash": "yes",
+        "payment:credit_cards": "yes",
+        "payment:debit_cards": "yes",
+        "wikidata": "Q26517374",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5307743,
+          50.7186437
+        ]
+      },
+      "id": "way/200071239"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/200071273",
+        "addr:city": "Exeter",
+        "addr:postcode": "EX2 4AB",
+        "addr:street": "Commercial Road",
+        "amenity": "pub",
+        "brewery": "london_pride;atlantic_pale_ale;atlantic_offshore",
+        "building": "yes",
+        "fhrs:id": "162447",
+        "name": "The Bishop Blaize",
+        "source:addr": "FHRS Open Data",
+        "wikidata": "Q26661029",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5337051,
+          50.7190607
+        ]
+      },
+      "id": "way/200071273"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/201826184",
+        "addr:city": "Exeter",
+        "addr:housename": "Mill On The Exe",
+        "addr:postcode": "EX4 3AB",
+        "addr:street": "Bonhay Road",
+        "amenity": "pub",
+        "beer_garden": "yes",
+        "building": "yes",
+        "fhrs:authority": "Exeter City",
+        "fhrs:businesstype": "Pub/bar/nightclub",
+        "fhrs:id": "179157",
+        "fhrs:local_authority_id": "PI/000053087",
+        "fhrs:rating": "4",
+        "food": "yes",
+        "name": "The Mill On The Exe",
+        "real_ale": "yes",
+        "toilets:wheelchair": "yes",
+        "website": "https://www.millontheexe.co.uk/",
+        "wheelchair": "limited",
+        "wikidata": "Q70628346",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5392821,
+          50.7219776
+        ]
+      },
+      "id": "way/201826184"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/203662832",
+        "amenity": "pub",
+        "building": "yes",
+        "building:levels": "2",
+        "name": "The Queens Head",
+        "roof:shape": "hipped",
+        "wikidata": "Q70628116",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5022109,
+          50.7316597
+        ]
+      },
+      "id": "way/203662832"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/217574674",
+        "addr:city": "Exeter",
+        "addr:housename": "Old Timers Wine Bar And Restaurant",
+        "addr:postcode": "EX4 3PX",
+        "addr:street": "Little Castle Street",
+        "amenity": "pub",
+        "building": "yes",
+        "fhrs:id": "542745",
+        "name": "Old Timers",
+        "source:addr": "FHRS Open Data",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5287219,
+          50.725485
+        ]
+      },
+      "id": "way/217574674"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/219772696",
+        "addr:city": "Exeter",
+        "addr:housenumber": "36",
+        "addr:postcode": "EX4 6JQ",
+        "addr:street": "Victoria Street",
+        "amenity": "pub",
+        "building": "yes",
+        "building:levels": "2",
+        "check_date": "2025-12-26",
+        "fhrs:id": "1651215",
+        "name": "The Victoria Inn",
+        "operator": "Stonegate",
+        "operator:wikidata": "Q7619176",
+        "website": "https://www.craftunionpubs.com/victoria-inn-exeter",
+        "wikidata": "Q70628424",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5233539,
+          50.7336041
+        ]
+      },
+      "id": "way/219772696"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/222032187",
+        "addr:city": "Exeter",
+        "addr:postcode": "EX4 3AZ",
+        "addr:street": "Mary Arches Street",
+        "amenity": "nightclub",
+        "building": "yes",
+        "name": "Fever & Boutique",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5343894,
+          50.7222085
+        ]
+      },
+      "id": "way/222032187"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/223734495",
+        "addr:city": "Exeter",
+        "addr:housename": "Farmers' Union",
+        "addr:housenumber": "16-18",
+        "addr:postcode": "EX4 4HR",
+        "addr:street": "Queens Terrace",
+        "amenity": "pub",
+        "building": "terrace",
+        "building:levels": "3",
+        "fhrs:id": "1289073",
+        "name": "The Farmers Union",
+        "roof:shape": "hipped",
+        "source": "Parcels;CodePoint",
+        "source:addr": "FHRS Open Data",
+        "wheelchair": "yes",
+        "wikidata": "Q26517586",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5359429,
+          50.7274192
+        ]
+      },
+      "id": "way/223734495"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/245692750",
+        "addr:city": "Exeter",
+        "addr:housenumber": "50",
+        "addr:postcode": "EX4 4EP",
+        "addr:street": "New North Road",
+        "amenity": "pub",
+        "building": "yes",
+        "fhrs:authority": "Exeter City",
+        "fhrs:businesstype": "Pub/bar/nightclub",
+        "fhrs:id": "1015178",
+        "fhrs:local_authority_id": "PI/000078389",
+        "fhrs:rating": "5",
+        "food": "pizza",
+        "name": "The Old Firehouse",
+        "real_ale": "yes",
+        "wheelchair": "limited",
+        "wikidata": "Q70628357",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5279584,
+          50.7268201
+        ]
+      },
+      "id": "way/245692750"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/252625188",
+        "addr:city": "Exeter",
+        "addr:postcode": "EX4 6AB",
+        "addr:street": "Longbrook Street",
+        "amenity": "pub",
+        "brand": "Greene King",
+        "brand:wikidata": "Q5564162",
+        "building": "yes",
+        "fhrs:authority": "Exeter City",
+        "fhrs:businesstype": "Pub/bar/nightclub",
+        "fhrs:id": "176844",
+        "fhrs:local_authority_id": "PI/000039275",
+        "fhrs:rating": "5",
+        "name": "The Black Horse",
+        "website": "https://www.greeneking.co.uk/pubs/devon/black-horse",
+        "wikidata": "Q26563486",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5272597,
+          50.7267727
+        ]
+      },
+      "id": "way/252625188"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/257932508",
+        "addr:city": "Exeter",
+        "addr:housenumber": "29-30",
+        "addr:postcode": "EX4 6ST",
+        "addr:street": "Blackboy Road",
+        "amenity": "pub",
+        "building": "yes",
+        "fhrs:authority": "Exeter City",
+        "fhrs:businesstype": "Pub/bar/nightclub",
+        "fhrs:id": "1005691",
+        "fhrs:local_authority_id": "PI/000078145",
+        "fhrs:rating": "4",
+        "name": "The Bowling Green",
+        "opening_hours": "Tu-Th 16:00-23:00; Fr,Sa 14:00-23:00; Su 14:00-22:00; Mo off",
+        "outdoor_seating": "yes",
+        "toilets": "yes",
+        "wikidata": "Q70628227",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5176547,
+          50.7296878
+        ]
+      },
+      "id": "way/257932508"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/259731758",
+        "addr:city": "Exeter",
+        "addr:housenumber": "31",
+        "addr:postcode": "EX4 6QL",
+        "addr:street": "Well Street",
+        "amenity": "pub",
+        "building": "yes",
+        "check_date": "2025-12-26",
+        "fhrs:authority": "Exeter City",
+        "fhrs:businesstype": "Pub/bar/nightclub",
+        "fhrs:id": "1706596",
+        "fhrs:local_authority_id": "PI/000078404",
+        "fhrs:rating": "5",
+        "name": "St Anne's Well",
+        "note": "Formerly The Brook Green, then Wells Tavern",
+        "source:addr": "FHRS Open Data",
+        "wikidata": "Q70628235",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5229582,
+          50.7297163
+        ]
+      },
+      "id": "way/259731758"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/263343390",
+        "addr:city": "Exeter",
+        "addr:housename": "Harry's Bar",
+        "addr:postcode": "EX4 7AB",
+        "addr:street": "Mount Pleasant Road",
+        "amenity": "pub",
+        "building": "yes",
+        "fhrs:id": "1041687",
+        "name": "Henry's Bar",
+        "resurvey": "yes",
+        "source:addr": "FHRS Open Data",
+        "wikidata": "Q70628511",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.514224,
+          50.7302737
+        ]
+      },
+      "id": "way/263343390"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/265411590",
+        "addr:city": "Exeter",
+        "addr:housenumber": "58",
+        "addr:postcode": "EX4 6PH",
+        "addr:street": "Sidwell Street",
+        "amenity": "pub",
+        "building": "yes",
+        "building:levels": "3",
+        "check_date": "2025-12-24",
+        "fhrs:id": "1726301",
+        "name": "Duke of York",
+        "operator": "Stonegate",
+        "operator:wikidata": "Q7619176",
+        "roof:shape": "hipped",
+        "website": "https://www.craftunionpubs.com/duke-of-york-exeter",
+        "wikidata": "Q70628276",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5231572,
+          50.7278971
+        ]
+      },
+      "id": "way/265411590"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/274954118",
+        "addr:city": "Exeter",
+        "addr:housenumber": "21",
+        "addr:postcode": "EX2 4AU",
+        "addr:street": "Melbourne Street",
+        "amenity": "pub",
+        "brewery": "yes;various",
+        "fhrs:authority": "Exeter City",
+        "fhrs:businesstype": "Pub/bar/nightclub",
+        "fhrs:id": "1430788",
+        "fhrs:local_authority_id": "PI/000008562",
+        "fhrs:rating": "5",
+        "name": "The Hourglass Inn",
+        "operator": "Exeter Brewery",
+        "source:addr": "FHRS Open Data",
+        "wikidata": "Q26660868"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5271831,
+          50.717518
+        ]
+      },
+      "id": "node/274954118"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/286157838",
+        "addr:city": "Exeter",
+        "addr:housename": "Flat",
+        "addr:housenumber": "2",
+        "addr:postcode": "EX1 1BL",
+        "addr:street": "John Street",
+        "amenity": "pub",
+        "building": "yes",
+        "building:levels": "2",
+        "email": "paultimewell@yahoo.com",
+        "fhrs:id": "170885",
+        "microbrewery": "yes",
+        "name": "The Fat Pig",
+        "phone": "+44 7787510954",
+        "source:addr": "FHRS Open Data",
+        "wikidata": "Q70628248",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5340626,
+          50.7208446
+        ]
+      },
+      "id": "way/286157838"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/287695768",
+        "addr:city": "Exeter",
+        "addr:housename": "The Ship Inn",
+        "addr:housenumber": "1-3",
+        "addr:postcode": "EX1 1EY",
+        "addr:street": "Martins Lane",
+        "amenity": "pub",
+        "brand": "Greene King",
+        "brand:wikidata": "Q5564162",
+        "building": "yes",
+        "fhrs:authority": "Exeter City",
+        "fhrs:businesstype": "Pub/bar/nightclub",
+        "fhrs:id": "165712",
+        "fhrs:local_authority_id": "PI/000008400",
+        "fhrs:rating": "5",
+        "fhrs:rating_date": "2018/06/06",
+        "name": "The Ship",
+        "opening_hours": "Mo-Th 11:00-23:00, Fr-Sa 11:00-00:00, Su 11:00-22:30",
+        "source": "fhrs",
+        "toilets:wheelchair": "yes",
+        "website": "https://www.greeneking.co.uk/pubs/devon/ship",
+        "wheelchair": "yes",
+        "wikidata": "Q26563318",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5302381,
+          50.7235916
+        ]
+      },
+      "id": "way/287695768"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/288335883",
+        "addr:city": "Exeter",
+        "addr:housename": "The Clifton Inn",
+        "addr:housenumber": "1",
+        "addr:postcode": "EX1 2BR",
+        "addr:street": "Clifton Road",
+        "amenity": "pub",
+        "check_date": "2025-12-26",
+        "fhrs:id": "1761064",
+        "name": "Clifton Inn",
+        "opening_hours": "Mo,Tu 15:00-22:00; We-Sa 12:00-18:00+; Su 12:00-22:00",
+        "wikidata": "Q70628246"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5202641,
+          50.7255148
+        ]
+      },
+      "id": "node/288335883"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/288473263",
+        "addr:city": "Exeter",
+        "addr:county": "Devon",
+        "addr:housenumber": "161",
+        "addr:postcode": "EX4 6RH",
+        "addr:street": "Sidwell Street",
+        "amenity": "bar",
+        "building": "yes",
+        "fhrs:id": "181025",
+        "name": "Monkey Suit",
+        "source:addr": "FHRS Open Data",
+        "wikidata": "Q70628374",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5246087,
+          50.7264998
+        ]
+      },
+      "id": "way/288473263"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/290010940",
+        "addr:city": "Exeter",
+        "addr:housenumber": "65",
+        "addr:postcode": "EX3 0DY",
+        "addr:street": "High Street",
+        "addr:suburb": "Topsham",
+        "amenity": "pub",
+        "name": "Exeter Inn",
+        "wikidata": "Q70628285"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.4682824,
+          50.6870161
+        ]
+      },
+      "id": "node/290010940"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/290014369",
+        "addr:city": "Exeter",
+        "addr:postcode": "EX3 0DU",
+        "addr:street": "High Street",
+        "addr:suburb": "Topsham",
+        "amenity": "pub",
+        "fhrs:id": "1085707",
+        "name": "Lord Nelson Inn",
+        "outdoor_seating": "yes",
+        "website": "https://lordnelsontopsham.com/",
+        "wikidata": "Q70628340"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.4671305,
+          50.6853821
+        ]
+      },
+      "id": "node/290014369"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/290018966",
+        "addr:city": "Exeter",
+        "addr:postcode": "EX3 0JN",
+        "addr:street": "Ferry Road",
+        "addr:suburb": "Topsham",
+        "amenity": "pub",
+        "brewery": "yes",
+        "check_date": "2023-04-09",
+        "fhrs:id": "669989",
+        "name": "The Passage House Inn",
+        "outdoor_seating": "yes",
+        "payment:mastercard": "yes",
+        "payment:visa": "yes",
+        "payment:visa_debit": "yes",
+        "toilets": "yes",
+        "wheelchair": "limited",
+        "wikidata": "Q26397953"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.4671368,
+          50.6833853
+        ]
+      },
+      "id": "node/290018966"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/290021329",
+        "addr:city": "Exeter",
+        "addr:postcode": "EX3 0HZ",
+        "addr:street": "Fore Street",
+        "addr:suburb": "Topsham",
+        "amenity": "pub",
+        "brand": "Hall & Woodhouse",
+        "brand:wikidata": "Q5642555",
+        "brand:wikipedia": "en:Hall & Woodhouse",
+        "contact:facebook": "thelighterinn",
+        "contact:instagram": "lighterinn.topsham",
+        "fhrs:id": "667194",
+        "name": "The Lighter Inn",
+        "opening_hours": "Mo-Sa 10:00-23:00; Su 12:00-22:00",
+        "outdoor_seating": "yes",
+        "phone": "+44 1392 875439",
+        "website": "https://www.lighterinn.co.uk",
+        "wikidata": "Q26397958"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.4648224,
+          50.6813173
+        ]
+      },
+      "id": "node/290021329"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/290025520",
+        "addr:city": "Exeter",
+        "addr:housename": "Bridge Hill",
+        "addr:postcode": "EX3 0QQ",
+        "addr:street": "Topsham",
+        "amenity": "pub",
+        "contact:facebook": "https://www.facebook.com/thebridgeinntopsham",
+        "fhrs:authority": "Exeter City",
+        "fhrs:businesstype": "Pub/bar/nightclub",
+        "fhrs:id": "174509",
+        "fhrs:local_authority_id": "PI/000029259",
+        "fhrs:rating": "5",
+        "fhrs:rating_date": "2016/10/05",
+        "name": "Bridge Inn",
+        "source": "fhrs",
+        "website": "https://thebridgeinntopsham.co.uk/",
+        "wikidata": "Q17986070",
+        "wikipedia": "en:Bridge Inn, Topsham"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.4596445,
+          50.6844901
+        ]
+      },
+      "id": "node/290025520"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/292264274",
+        "addr:city": "Exeter",
+        "addr:postcode": "EX4 7BZ",
+        "addr:street": "Prince Charles Road",
+        "amenity": "pub",
+        "check_date": "2025-12-26",
+        "fhrs:authority": "Exeter City",
+        "fhrs:businesstype": "Pub/bar/nightclub",
+        "fhrs:id": "1668880",
+        "fhrs:local_authority_id": "PI/000077862",
+        "fhrs:rating": "5",
+        "name": "The Stoke Arms",
+        "smoking": "no",
+        "website": "https://www.stokearmsstokehill.co.uk/",
+        "wikidata": "Q70628398"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5155321,
+          50.7348663
+        ]
+      },
+      "id": "node/292264274"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/292916505",
+        "addr:city": "Exeter",
+        "addr:housenumber": "8",
+        "addr:postcode": "EX4 3LS",
+        "addr:street": "Gandy Street",
+        "amenity": "bar",
+        "fhrs:id": "163648",
+        "name": "The Vaults",
+        "smoking": "outside",
+        "source:addr": "FHRS Open Data",
+        "website": "http://vaults-exeter.webflow.io/",
+        "wheelchair": "no",
+        "wikidata": "Q70628361"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.531079,
+          50.724441
+        ]
+      },
+      "id": "node/292916505"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/293146743",
+        "addr:city": "Exeter",
+        "addr:housename": "Castle Street",
+        "addr:postcode": "EX4 3PX",
+        "addr:street": "Little Castle Street",
+        "amenity": "bar",
+        "fhrs:id": "925434",
+        "name": "Castle Street",
+        "source:addr": "FHRS Open Data",
+        "wikidata": "Q70628318"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5290721,
+          50.725501
+        ]
+      },
+      "id": "node/293146743"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/293150465",
+        "addr:city": "Exeter",
+        "addr:housename": "Mount Radford",
+        "addr:housenumber": "73-75",
+        "addr:postcode": "EX2 4TA",
+        "addr:street": "Magdalen Road",
+        "amenity": "pub",
+        "brand": "Greene King",
+        "brand:wikidata": "Q5564162",
+        "fhrs:id": "165484",
+        "name": "Mount Radford",
+        "phone": "+44 1392 258221",
+        "website": "https://www.greeneking-pubs.co.uk/pubs/devon/mount-radford/",
+        "wikidata": "Q70628351"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.519728,
+          50.7212304
+        ]
+      },
+      "id": "node/293150465"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/299465256",
+        "addr:city": "Exeter",
+        "addr:county": "Devon",
+        "addr:housename": "Kings Arms",
+        "addr:housenumber": "173",
+        "addr:postcode": "EX4 1AA",
+        "addr:street": "Cowick Street",
+        "amenity": "pub",
+        "fhrs:id": "181015",
+        "name": "The Kings",
+        "source:addr": "FHRS Open Data",
+        "wheelchair": "yes",
+        "wikidata": "Q70628066"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5389976,
+          50.7176777
+        ]
+      },
+      "id": "node/299465256"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/331946280",
+        "addr:city": "Exeter",
+        "addr:postcode": "EX3 0HF",
+        "addr:street": "Fore Street",
+        "amenity": "bar",
+        "brewery": "crossed_anchors",
+        "check_date": "2025-09-18",
+        "fhrs:id": "1664410",
+        "name": "The Old Fire Station",
+        "note": "Former Fire Station closed December 2020. Opened as Bar in 2022.",
+        "opening_hours": "Mo-We 16:00-22:00; Th,Su 12:00-22:00; Fr-Sa 12:00-23:00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.4660661,
+          50.684332
+        ]
+      },
+      "id": "node/331946280"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/339435118",
+        "addr:city": "Exeter",
+        "addr:housenumber": "76",
+        "addr:postcode": "EX2 8TA",
+        "addr:street": "Church Road",
+        "amenity": "pub",
+        "building": "yes",
+        "check_date": "2025-12-25",
+        "email": "info@newinnalphington.com",
+        "fhrs:id": "1651216",
+        "name": "New Inn",
+        "phone": "+44 1392 204994",
+        "website": "https://www.newinnalphington.com",
+        "wikidata": "Q70628354",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.533988,
+          50.6998485
+        ]
+      },
+      "id": "way/339435118"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/360421741",
+        "addr:city": "Exeter",
+        "addr:postcode": "EX2 8JB",
+        "addr:street": "Alphington Road",
+        "amenity": "pub",
+        "brand": "Ember Inns",
+        "brand:wikidata": "Q116272278",
+        "building": "yes",
+        "fhrs:id": "160523",
+        "name": "The Seven Stars Hotel",
+        "opening_hours": "Mo-Th 11:00-23:00; Fr 11:00-00:00; Sa 10:00-00:00; Su 10:00-23:00",
+        "phone": "+44 1392 250983",
+        "tourism": "hotel",
+        "website": "https://www.emberinns.co.uk/nationalsearch/southwest/the-seven-stars-hotel-exeter",
+        "wikidata": "Q70628072",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5384449,
+          50.708951
+        ]
+      },
+      "id": "way/360421741"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/361497477",
+        "addr:city": "Exeter",
+        "addr:housenumber": "29",
+        "addr:postcode": "EX2 4TA",
+        "addr:street": "Magdalen Road",
+        "amenity": "bar",
+        "check_date": "2025-12-20",
+        "contact:email": "info@darwinsbar.co.uk",
+        "contact:phone": "+44 1392 682733",
+        "contact:website": "https://www.darwinsbar.co.uk",
+        "drink:gin": "yes",
+        "name": "Darwin's Gin Parlour"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5215385,
+          50.7210262
+        ]
+      },
+      "id": "node/361497477"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/363499121",
+        "addr:city": "Exeter",
+        "addr:housenumber": "121",
+        "addr:postcode": "EX2 9HF",
+        "addr:street": "Cowick Lane",
+        "amenity": "pub",
+        "building": "retail",
+        "diet:vegan": "yes",
+        "diet:vegetarian": "yes",
+        "email": "info@thecowickbarton.co.uk",
+        "fhrs:id": "1774302",
+        "food": "yes",
+        "name": "Cowick Barton",
+        "outdoor_seating": "yes",
+        "phone": "+44 1392 491117",
+        "website": "https://www.thecowickbarton.co.uk/",
+        "wikidata": "Q17547587",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5465544,
+          50.7093724
+        ]
+      },
+      "id": "way/363499121"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/364838404",
+        "addr:city": "Exeter",
+        "addr:housenumber": "68",
+        "addr:postcode": "EX4 1DY",
+        "addr:street": "Okehampton Street",
+        "addr:suburb": "St. Thomas",
+        "amenity": "pub",
+        "contact:facebook": "The-Royal-Oak-1714249162137167",
+        "fhrs:id": "166512",
+        "name": "Royal Oak",
+        "wikidata": "Q70628383"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5400115,
+          50.7189402
+        ]
+      },
+      "id": "node/364838404"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/364857766",
+        "addr:city": "Exeter",
+        "addr:housenumber": "1",
+        "addr:postcode": "EX4 2AA",
+        "addr:street": "St Andrew's Road",
+        "amenity": "pub",
+        "fhrs:authority": "Exeter City",
+        "fhrs:businesstype": "Pub/bar/nightclub",
+        "fhrs:id": "811484",
+        "fhrs:local_authority_id": "PI/000073628",
+        "fhrs:rating": "5",
+        "name": "The Village Inn",
+        "wikidata": "Q70628425"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5485131,
+          50.7321409
+        ]
+      },
+      "id": "node/364857766"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/433828512",
+        "addr:city": "Exeter",
+        "addr:county": "Devon",
+        "addr:housenumber": "121",
+        "addr:postcode": "EX4 1JD",
+        "addr:street": "Cowick Street",
+        "amenity": "pub",
+        "brand": "Wetherspoon",
+        "brand:wikidata": "Q6109362",
+        "brand:wikipedia": "en:Wetherspoons",
+        "brewery": "various",
+        "building": "yes",
+        "building:levels": "1",
+        "contact:phone": "+44 1392 269520",
+        "diet:vegan": "yes",
+        "diet:vegetarian": "yes",
+        "fhrs:authority": "Exeter City",
+        "fhrs:confidence_management": "0",
+        "fhrs:hygiene": "5",
+        "fhrs:id": "172642",
+        "fhrs:local_authority_id": "PI/000023656",
+        "fhrs:rating": "5",
+        "fhrs:rating_date": "2021-05-10T00:00:00",
+        "fhrs:structural": "5",
+        "food": "yes",
+        "internet_access": "wlan",
+        "internet_access:fee": "no",
+        "level": "1",
+        "name": "The Sawyer's Arms",
+        "note": "Has TV screens",
+        "opening_hours": "Mo,Tu,We,Th,Fr,Sa,Su 08:00-24:00",
+        "outdoor_seating": "yes",
+        "payment:debit_cards": "yes",
+        "payment:mastercard": "yes",
+        "payment:visa": "yes",
+        "real_ale": "yes",
+        "roof:shape": "flat",
+        "source": "website;=https://www.jdwetherspoon.com/pubs/all-pubs/england/devon/the-sawyers-arms-exeter",
+        "toilets": "yes",
+        "toilets:access": "customers",
+        "toilets:wheelchair": "yes",
+        "website": "https://www.jdwetherspoon.com/pubs/all-pubs/england/devon/the-sawyers-arms-exeter",
+        "website:menu": "https://order.jdwetherspoon.com/venue/jdw/6035/menus",
+        "wheelchair": "yes",
+        "wikidata": "Q70628387",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5442015,
+          50.7154318
+        ]
+      },
+      "id": "way/433828512"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/437855478",
+        "addr:city": "Exeter",
+        "addr:housenumber": "37",
+        "addr:postcode": "EX2 4AE",
+        "addr:street": "Commercial Road",
+        "amenity": "pub",
+        "building": "yes",
+        "description": "Modern pub offering food and drink,",
+        "fhrs:id": "744459",
+        "name": "Samuel Jones Ale & Smoke House",
+        "smoking": "outside",
+        "source:addr": "FHRS Open Data",
+        "website": "https://www.samueljonesexeter.co.uk/",
+        "wikidata": "Q70628483",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5318201,
+          50.7183674
+        ]
+      },
+      "id": "way/437855478"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/440655596",
+        "addr:city": "Exeter",
+        "addr:postcode": "EX4 2BQ",
+        "addr:street": "Exwick Road",
+        "amenity": "pub",
+        "fhrs:id": "163134",
+        "name": "The Thatched House",
+        "phone": "+44 1392 272920",
+        "website": "https://thatchedhouse.net/",
+        "wikidata": "Q70628409"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5487204,
+          50.7263242
+        ]
+      },
+      "id": "node/440655596"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/469757935",
+        "addr:city": "Exeter",
+        "addr:housenumber": "2",
+        "addr:postcode": "EX2 6LG",
+        "addr:street": "Countess Wear Road",
+        "amenity": "pub",
+        "fhrs:id": "963423",
+        "name": "The Tally Ho",
+        "phone": "+44 1392 271794",
+        "website": "https://www.tallyhoinnexeter.co.uk/index",
+        "wikidata": "Q70628402"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5024048,
+          50.7031311
+        ]
+      },
+      "id": "node/469757935"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/498427461",
+        "addr:city": "Exeter",
+        "addr:postcode": "EX4 1JH",
+        "addr:street": "Buddle Lane",
+        "amenity": "pub",
+        "fhrs:id": "161719",
+        "name": "Green Gables",
+        "wikidata": "Q70628311"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5474186,
+          50.7160682
+        ]
+      },
+      "id": "node/498427461"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/521544427",
+        "addr:city": "Exeter",
+        "addr:housenumber": "60",
+        "addr:postcode": "EX4 4EP",
+        "addr:street": "New North Road",
+        "amenity": "pub",
+        "building": "retail",
+        "building:levels": "2",
+        "check_date": "2026-02-10",
+        "contact:email": "bar@rumoursexeter.co.uk",
+        "contact:website": "https://www.rumoursexeter.co.uk/",
+        "fhrs:id": "1917612",
+        "name": "Rumours",
+        "opening_hours": "Mo-Th 17:00-02:00; Fr 17:00-02:30; Sa 12:00-02:30; Su 17:00-01:00",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5284723,
+          50.7266717
+        ]
+      },
+      "id": "way/521544427"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/537745381",
+        "addr:city": "Exeter",
+        "addr:county": "Devon",
+        "addr:housename": "Public House",
+        "addr:postcode": "EX4 1DG",
+        "addr:street": "Cowick Street",
+        "amenity": "pub",
+        "fhrs:id": "978585",
+        "name": "The Lucombe Oak",
+        "source:addr": "FHRS Open Data",
+        "wikidata": "Q70628121"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5409562,
+          50.7171071
+        ]
+      },
+      "id": "node/537745381"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/715972089",
+        "addr:city": "Exeter",
+        "addr:housenumber": "8",
+        "addr:postcode": "EX2 8GT",
+        "addr:street": "Piazza Terracina",
+        "amenity": "bar",
+        "fhrs:id": "164095",
+        "name": "Bar Venezia"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5301299,
+          50.7173915
+        ]
+      },
+      "id": "node/715972089"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/991222912",
+        "addr:city": "Exeter",
+        "addr:postcode": "EX2 9RG",
+        "addr:street": "Little John's Cross Hill",
+        "amenity": "pub",
+        "contact:facebook": "thetwistedoakide",
+        "dog": "yes",
+        "email": "thetwistedoak@mail.com",
+        "fhrs:id": "955279",
+        "name": "The Twisted Oak",
+        "outdoor_seating": "yes",
+        "phone": "+44 1392 273666",
+        "website": "https://thetwistedoak.co.uk"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5566686,
+          50.706486
+        ]
+      },
+      "id": "node/991222912"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1131143777",
+        "addr:city": "Exeter",
+        "addr:housenumber": "2",
+        "addr:postcode": "EX4 8GA",
+        "addr:street": "Bakers Way",
+        "amenity": "pub",
+        "brand": "Marston's",
+        "brand:wikidata": "Q6773982",
+        "building": "yes",
+        "building:levels": "2",
+        "fhrs:id": "990340",
+        "name": "Pinhoe Hoard",
+        "operator": "Marston’s Inns and Taverns",
+        "source:addr": "FHRS Open Data",
+        "website": "https://www.pinhoehoardpubexeter.co.uk/",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.4793012,
+          50.735071
+        ]
+      },
+      "id": "way/1131143777"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1315878724",
+        "amenity": "pub",
+        "name": "the Half Moon",
+        "wikidata": "Q70628345"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.4923168,
+          50.732607
+        ]
+      },
+      "id": "node/1315878724"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1315879357",
+        "addr:city": "Exeter",
+        "addr:housenumber": "56-58",
+        "addr:postcode": "EX4 8AW",
+        "addr:street": "Whipton Village Road",
+        "amenity": "pub",
+        "fhrs:id": "815911",
+        "name": "The Village Inn",
+        "source:addr": "FHRS Open Data",
+        "wikidata": "Q70628429"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.492691,
+          50.7326791
+        ]
+      },
+      "id": "node/1315879357"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1416127798",
+        "addr:city": "Exeter",
+        "addr:housenumber": "54",
+        "addr:postcode": "EX1 2RR",
+        "addr:street": "Fore Street",
+        "addr:suburb": "Heavitree",
+        "amenity": "pub",
+        "fhrs:id": "170245",
+        "name": "The Ship & Pelican",
+        "outdoor_seating": "yes",
+        "source:addr": "FHRS Open Data",
+        "wheelchair": "no",
+        "wikidata": "Q26660920",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.505177,
+          50.7211605
+        ]
+      },
+      "id": "way/1416127798"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1498572252",
+        "addr:city": "Exeter",
+        "addr:housename": "Cornwall House",
+        "addr:postcode": "EX4 6TG",
+        "addr:street": "St Germans Road",
+        "amenity": "bar",
+        "name": "The Lemon Grove",
+        "website": "https://www.exeterboxoffice.com/events.aspx?ID=2",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5297241,
+          50.7350874
+        ]
+      },
+      "id": "node/1498572252"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1693211829",
+        "addr:city": "Exeter",
+        "addr:housenumber": "31",
+        "addr:postcode": "EX2 6BG",
+        "addr:street": "Burnthouse Lane",
+        "amenity": "pub",
+        "fhrs:id": "811483",
+        "name": "The Dolphin",
+        "wikidata": "Q70628405"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.506246,
+          50.7095059
+        ]
+      },
+      "id": "node/1693211829"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2628478869",
+        "addr:city": "Exeter",
+        "addr:housename": "Barnfield Theatre",
+        "addr:postcode": "EX1 1SN",
+        "addr:street": "Barnfield Road",
+        "amenity": "bar",
+        "name": "Prologue Bar",
+        "opening_hours": "Mo-Sa 17:00-23:00",
+        "phone": "+44 1392 271234",
+        "website": "http://prologuebar.co.uk/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.525838,
+          50.7229584
+        ]
+      },
+      "id": "node/2628478869"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3895111344",
+        "addr:city": "Exeter",
+        "addr:housename": "The Crescent",
+        "addr:housenumber": "1A",
+        "addr:postcode": "EX4 3SB",
+        "addr:street": "Queen Street",
+        "addr:unit": "1a",
+        "amenity": "pub",
+        "brewery": "various",
+        "check_date": "2026-04-26",
+        "contact:phone": "+44 1392 437217",
+        "fhrs:id": "1923945",
+        "name": "Scapegoat",
+        "old_name": "Tabac",
+        "opening_hours": "Mo-Su 16:00-18:00+",
+        "operator": "Topsham Brewery",
+        "payment:cash": "yes",
+        "payment:credit_cards": "yes",
+        "payment:debit_cards": "yes",
+        "smoking": "outside",
+        "source:addr": "FHRS Open Data"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5337568,
+          50.7261714
+        ]
+      },
+      "id": "node/3895111344"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4396682517",
+        "addr:city": "Exeter",
+        "addr:housename": "Portland House",
+        "addr:postcode": "EX4 6AB",
+        "addr:street": "Longbrook Street",
+        "addr:unit": "2",
+        "amenity": "bar",
+        "fhrs:id": "1110513",
+        "name": "The Stand Off",
+        "outdoor_seating": "no",
+        "phone": "+44 1392 982159",
+        "website": "https://www.thestandoff.co.uk"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5272962,
+          50.7264799
+        ]
+      },
+      "id": "node/4396682517"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5089978588",
+        "addr:city": "Exeter",
+        "addr:housename": "Maclaines Warehouse",
+        "addr:housenumber": "1",
+        "addr:postcode": "EX2 8GR",
+        "addr:street": "Haven Road",
+        "amenity": "pub",
+        "contact:facebook": "https://www.facebook.com/topshambrewery",
+        "craft": "brewery",
+        "name": "Topsham Brewery & Taproom",
+        "phone": "+441392275196"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5295227,
+          50.716898
+        ]
+      },
+      "id": "node/5089978588"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5094813879",
+        "amenity": "bar",
+        "indoor_seating": "yes",
+        "operator": "Picture House",
+        "outdoor_seating": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5362943,
+          50.7208198
+        ]
+      },
+      "id": "node/5094813879"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5136103023",
+        "addr:city": "Exeter",
+        "addr:housenumber": "248",
+        "addr:postcode": "EX4 3PZ",
+        "addr:street": "High Street",
+        "amenity": "bar",
+        "check_date": "2024-10-24",
+        "check_date:opening_hours": "2024-10-24",
+        "fhrs:id": "635089",
+        "indoor_seating": "yes",
+        "name": "Artigiano",
+        "opening_hours": "Mo-Th 08:00-23:00, Fr,Sa 08:00-01:00, Su 09:00-18:00",
+        "outdoor_seating": "no",
+        "source:addr": "FHRS Open Data",
+        "wheelchair": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.528183,
+          50.7252157
+        ]
+      },
+      "id": "node/5136103023"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5621670821",
+        "amenity": "bar",
+        "name": "Oriels"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5306685,
+          50.7239391
+        ]
+      },
+      "id": "node/5621670821"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9135882848",
+        "addr:city": "Exeter",
+        "addr:housenumber": "154",
+        "addr:postcode": "EX4 3AT",
+        "addr:street": "Fore Street",
+        "amenity": "pub",
+        "fhrs:id": "1216725",
+        "name": "Little Drop Of Poison",
+        "source:addr": "FHRS Open Data",
+        "website": "https://www.thegangesrestaurant.com/",
+        "wikidata": "Q70628350"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5343488,
+          50.72132
+        ]
+      },
+      "id": "node/9135882848"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/9773108270",
+        "addr:city": "Exeter",
+        "addr:housenumber": "25",
+        "addr:postcode": "EX1 2JB",
+        "addr:street": "Paris Street",
+        "amenity": "bar",
+        "check_date": "2026-02-24",
+        "contact:instagram": "https://www.instagram.com/cuckootaproom/",
+        "indoor_seating": "yes",
+        "name": "Cuckoo Taproom & Bottleshop",
+        "opening_hours": "Mo 14:00-23:00; Tu-Th 12:30-23:00; Fr-Sa 12:30-24:00; Su 12:30-22:00",
+        "outdoor_seating": "yes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5255887,
+          50.7250858
+        ]
+      },
+      "id": "node/9773108270"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10074041594",
+        "addr:city": "Exeter",
+        "addr:housenumber": "79-82",
+        "addr:postcode": "EX4 3RW",
+        "addr:street": "Queen Street",
+        "amenity": "bar",
+        "brand": "Revolution",
+        "brand:wikidata": "Q64024398",
+        "building:levels": "3",
+        "cocktails": "yes",
+        "fhrs:id": "1541834",
+        "name": "Revolution"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.53201,
+          50.7247859
+        ]
+      },
+      "id": "node/10074041594"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10074041598",
+        "addr:city": "Exeter",
+        "addr:housenumber": "23",
+        "addr:postcode": "EX4 3LS",
+        "addr:street": "Gandy Street",
+        "amenity": "bar",
+        "brand": "The Cocktail Club",
+        "brand:wikidata": "Q117280652",
+        "cocktails": "yes",
+        "fhrs:id": "1533107",
+        "name": "The Cocktail Club",
+        "outdoor_seating": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5314105,
+          50.7248175
+        ]
+      },
+      "id": "node/10074041598"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10076043581",
+        "addr:city": "Exeter",
+        "addr:housename": "Georges Meeting House",
+        "addr:housenumber": "38",
+        "addr:postcode": "EX1 1ED",
+        "addr:street": "South Street",
+        "alt_name": "Wetherspoons",
+        "amenity": "pub",
+        "brand": "Wetherspoon",
+        "brand:wikidata": "Q6109362",
+        "fhrs:id": "871626",
+        "name": "George's Meeting House",
+        "opening_hours": "Su-Th 08:00-00:00; Fr,Sa 08:00-01:00",
+        "source:addr": "FHRS Open Data",
+        "website": "https://www.jdwetherspoon.com/pubs/georges-meeting-house-exeter/",
+        "website:menu": "https://order.jdwetherspoon.com/venue/jdw/1040/menus",
+        "wheelchair": "yes",
+        "wikidata": "Q5535857",
+        "wikipedia": "en:George's Chapel, Exeter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5300023,
+          50.7205788
+        ]
+      },
+      "id": "node/10076043581"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10080425230",
+        "addr:city": "Exeter",
+        "addr:county": "Devon",
+        "addr:housenumber": "202",
+        "addr:postcode": "EX4 3EB",
+        "addr:street": "High Street",
+        "amenity": "pub",
+        "brand": "Young's",
+        "brand:wikidata": "Q8057802",
+        "brand:wikipedia": "https://en.wikipedia.org/wiki/Young%27s",
+        "check_date": "2025-08-23",
+        "contact:website": "https://www.turksheadexeter.com/",
+        "email": "turkshead@youngs.co.uk",
+        "fhrs:id": "1410716",
+        "microbrewery": "yes",
+        "name": "The Turks Head",
+        "opening_hours": "Su-Th 10:00-24:00; Fr-Sa 10:00-01:00",
+        "opening_hours:kitchen": "Su-Sa 12:00-21:00",
+        "phone": "+44 1392 706013",
+        "source:addr": "FHRS Open Data",
+        "website": "https://www.turksheadexeter.com/",
+        "wikidata": "Q26397907"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5318551,
+          50.7232903
+        ]
+      },
+      "id": "node/10080425230"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10086021914",
+        "addr:city": "Exeter",
+        "addr:housenumber": "2",
+        "addr:postcode": "EX4 3NB",
+        "addr:street": "Upper Paul Street",
+        "amenity": "bar",
+        "fhrs:authority": "Exeter City",
+        "fhrs:businesstype": "Pub/bar/nightclub",
+        "fhrs:id": "1002131",
+        "fhrs:local_authority_id": "PI/000078253",
+        "fhrs:rating": "5",
+        "name": "Crocketts"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5319137,
+          50.7249429
+        ]
+      },
+      "id": "node/10086021914"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10086049868",
+        "addr:city": "Exeter",
+        "addr:housenumber": "11b",
+        "addr:postcode": "EX4 3LS",
+        "addr:street": "Gandy Street",
+        "amenity": "bar",
+        "check_date": "2023-01-05",
+        "contact:facebook": "https://www.facebook.com/themermaidexeter/about",
+        "email": "exetermermaid@outlook.com",
+        "fhrs:id": "1389960",
+        "name": "The Mermaid",
+        "opening_hours": "Mo,Su off; Tu-Th 17:00-24:00; Fr-Sa 16:30-01:30"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.53138,
+          50.7246823
+        ]
+      },
+      "id": "node/10086049868"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10087527964",
+        "addr:city": "Exeter",
+        "addr:housenumber": "162-163",
+        "addr:postcode": "EX4 3AT",
+        "addr:street": "Fore Street",
+        "amenity": "bar",
+        "indoor_seating": "yes",
+        "name": "The Bootlegger",
+        "outdoor_seating": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5341658,
+          50.7217942
+        ]
+      },
+      "id": "node/10087527964"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10087527977",
+        "addr:housename": "Core",
+        "addr:postcode": "EX4 3AZ",
+        "addr:street": "Mary Arches Street",
+        "amenity": "bar",
+        "check_date": "2025-12-31",
+        "name": "Core"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5339304,
+          50.722069
+        ]
+      },
+      "id": "node/10087527977"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10115426180",
+        "addr:city": "Exeter",
+        "addr:county": "Devon",
+        "addr:housenumber": "81-82",
+        "addr:postcode": "EX4 3HR",
+        "addr:street": "Fore Street",
+        "amenity": "pub",
+        "brand": "Wetherspoon",
+        "brand:wikidata": "Q6109362",
+        "brand:wikipedia": "en:Wetherspoons",
+        "contact:phone": "+44 1392 457760",
+        "contact:website": "https://www.jdwetherspoon.com/pubs/all-pubs/england/devon/the-chevalier-inn-exeter",
+        "diet:vegan": "yes",
+        "diet:vegetarian": "yes",
+        "fhrs:authority": "Exeter City",
+        "fhrs:businesstype": "Pub/bar/nightclub",
+        "fhrs:id": "172788",
+        "fhrs:local_authority_id": "PI/000024005",
+        "fhrs:rating": "5",
+        "food": "yes",
+        "name": "The Chevalier Inn",
+        "note": "Has TV screens",
+        "opening_hours": "Mo-Th 08:00-00:00; Fr,Sa 08:00-02:00; Su 08:00-24:00",
+        "payment:debit_cards": "yes",
+        "payment:mastercard": "yes",
+        "payment:visa": "yes",
+        "real_ale": "yes",
+        "toilets": "yes",
+        "toilets:access": "customers",
+        "website:menu": "https://order.jdwetherspoon.com/venue/jdw/6217/menus",
+        "wheelchair": "yes",
+        "wikidata": "Q70628060"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.532887,
+          50.7221546
+        ]
+      },
+      "id": "node/10115426180"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10539905163",
+        "addr:street": "Queen Street",
+        "amenity": "pub",
+        "name": "Drakes Bar & Lounge"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5334342,
+          50.7253192
+        ]
+      },
+      "id": "node/10539905163"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10796901423",
+        "amenity": "biergarten",
+        "check_date": "2023-04-09"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.4674073,
+          50.6833483
+        ]
+      },
+      "id": "node/10796901423"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11047269737",
+        "addr:city": "Exeter",
+        "addr:housenumber": "3",
+        "addr:postcode": "EX1 1EU",
+        "addr:street": "Catherine Street",
+        "amenity": "bar",
+        "name": "Dugout Bar",
+        "url": "https://thedugoutbar.co.uk/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5299438,
+          50.7237844
+        ]
+      },
+      "id": "node/11047269737"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11813558606",
+        "amenity": "pub",
+        "name": "Loco Bar",
+        "website": "https://www.greatwesternhotel.co.uk/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5421379,
+          50.7304819
+        ]
+      },
+      "id": "node/11813558606"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/12680005703",
+        "addr:city": "Exeter",
+        "addr:housenumber": "6",
+        "addr:postcode": "EX4 3QJ",
+        "addr:street": "Northernhay Place",
+        "amenity": "pub",
+        "brewery": "utopian;various",
+        "food": "yes",
+        "name": "Arcadia",
+        "opening_hours": "Tu 16:00-22:30; We 12:00-22:30; Th-Sa 12:00-23:00; Su 12:00-20:00",
+        "website": "https://www.arcadiaexeter.com/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.528404,
+          50.725797
+        ]
+      },
+      "id": "node/12680005703"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13013923934",
+        "addr:city": "Exeter",
+        "addr:county": "Devon",
+        "addr:housename": "50-52",
+        "addr:housenumber": "77",
+        "addr:postcode": "EX1 2QL",
+        "addr:street": "Fore Street",
+        "addr:suburb": "Heavitree",
+        "amenity": "pub",
+        "fhrs:id": "1071373",
+        "name": "The Horse & Groom",
+        "phone": "+44 1392 437322",
+        "source:addr": "FHRS Open Data"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5055687,
+          50.7212893
+        ]
+      },
+      "id": "node/13013923934"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13013923938",
+        "addr:city": "Exeter",
+        "addr:housename": "The Royal Oak",
+        "addr:housenumber": "78-81",
+        "addr:postcode": "EX1 2RN",
+        "addr:street": "Fore Street",
+        "addr:suburb": "Heavitree",
+        "amenity": "pub",
+        "fhrs:id": "1051638",
+        "name": "Royal Oak",
+        "opening_hours": "Mo-Th 11:30-23:00; Fr-Sa 11:30-00:00; Su 12:00-16:00,19:00-23:00",
+        "phone": "+44 1392 25 41 21",
+        "source:addr": "FHRS Open Data",
+        "website": "https://www.royaloakpubheavitree.co.uk/",
+        "wheelchair": "limited",
+        "wikidata": "Q26397968"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5038689,
+          50.7213739
+        ]
+      },
+      "id": "node/13013923938"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13039558852",
+        "amenity": "bar",
+        "check_date": "2025-07-31",
+        "name": "Boom Battle Bar"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5323145,
+          50.7236165
+        ]
+      },
+      "id": "node/13039558852"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13059428518",
+        "addr:city": "Exeter",
+        "addr:postcode": "EX2 8BY",
+        "addr:street": "Water Lane",
+        "addr:suburb": "Vulcan Estate",
+        "addr:unit": "Unit 16",
+        "amenity": "pub",
+        "contact:email": "info@crossedanchors.co.uk",
+        "contact:website": "https://www.crossedanchors.co.uk/contact/",
+        "craft": "brewery",
+        "name": "Crossed Anchors Brewery & Taproom",
+        "opening_hours": "Fr 16:00-22:00; Sa 12:00-22:00; Su 12:00-17:00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5293621,
+          50.7130168
+        ]
+      },
+      "id": "node/13059428518"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13147580028",
+        "amenity": "bar",
+        "check_date": "2025-09-16",
+        "name": "The Ocean Club"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.531761,
+          50.7188559
+        ]
+      },
+      "id": "node/13147580028"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13147580029",
+        "amenity": "nightclub",
+        "check_date": "2025-09-16",
+        "name": "Bomba"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5312766,
+          50.7189377
+        ]
+      },
+      "id": "node/13147580029"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13160850050",
+        "addr:city": "Exeter",
+        "addr:housenumber": "1",
+        "addr:postcode": "EX4 3RB",
+        "addr:street": "Iron Bridge",
+        "amenity": "pub",
+        "diet:vegan": "yes",
+        "diet:vegetarian": "yes",
+        "name": "City Gate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5348824,
+          50.7236873
+        ]
+      },
+      "id": "node/13160850050"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13233166101",
+        "amenity": "bar",
+        "cuisine": "regional",
+        "level": "0",
+        "name": "The Ram Bar",
+        "opening_hours": "Mo-Su 12:00-23:00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5343446,
+          50.7351634
+        ]
+      },
+      "id": "node/13233166101"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/13432087760",
+        "addr:city": "Exeter",
+        "addr:housenumber": "38A",
+        "addr:postcode": "EX1 2QL",
+        "addr:street": "Fore Street",
+        "addr:suburb": "Heavitree",
+        "amenity": "pub",
+        "check_date": "2026-01-05",
+        "contact:email": "pigandpickle@mail.com",
+        "contact:facebook": "https://www.facebook.com/pigandpickle.exeter",
+        "fhrs:id": "998602",
+        "name": "Pig & Pickle",
+        "name:en": "Pig & Pickle",
+        "opening_hours": "Mo-Th 17:00-23:00; Fr 15:00-23:00; Sa 12:00-23:00; Su 13:00-22:00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5061055,
+          50.7213621
+        ]
+      },
+      "id": "node/13432087760"
+    }
+  ]
+}

@@ -1,10 +1,29 @@
 {
-  "version": 1,
+  "version": 2,
   "city": "Exeter",
-  "generated": "2026-04-28T14:11:22.905Z",
+  "generated": "2026-05-13T12:57:26.513Z",
   "pubs": [
     {
       "id": "pub-001",
+      "osm_id": "way/164967564",
+      "name": "(unnamed)",
+      "lat": 50.7085204,
+      "lon": -3.4681875,
+      "address": "",
+      "website": "",
+      "phone": "",
+      "venue_type": "bar",
+      "tags": [
+        "Cocktails",
+        "Wine",
+        "Food",
+        "Sports",
+        "Rooftop"
+      ],
+      "notes": "\"The View Rooftop Bar\" - Address: The View Restaurant and Rooftop Bar, Sandy Park Way, England, Exeter EX2 7NN"
+    },
+    {
+      "id": "pub-002",
       "osm_id": "node/12680005703",
       "name": "Arcadia",
       "lat": 50.725797,
@@ -18,10 +37,61 @@
         "Chain",
         "Hire"
       ],
+      "notes": "",
+      "venue_type": "pub"
+    },
+    {
+      "id": "pub-003",
+      "osm_id": "node/5136103023",
+      "name": "Artigiano",
+      "lat": 50.7252157,
+      "lon": -3.528183,
+      "address": "248 High Street, Exeter, EX4 3PZ",
+      "website": "",
+      "phone": "",
+      "venue_type": "bar",
+      "tags": [
+        "Late",
+        "Wine",
+        "Cocktails",
+        "Live Music"
+      ],
       "notes": ""
     },
     {
-      "id": "pub-002",
+      "id": "pub-004",
+      "osm_id": "node/715972089",
+      "name": "Bar Venezia",
+      "lat": 50.7173915,
+      "lon": -3.5301299,
+      "address": "8 Piazza Terracina, Exeter, EX2 8GT",
+      "website": "",
+      "phone": "",
+      "venue_type": "bar",
+      "tags": [
+        "Garden",
+        "Shisha"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-005",
+      "osm_id": "node/13147580029",
+      "name": "Bomba",
+      "lat": 50.7189377,
+      "lon": -3.5312766,
+      "address": "",
+      "website": "",
+      "phone": "",
+      "venue_type": "club",
+      "tags": [
+        "Live Music",
+        "Garden"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-006",
       "osm_id": "node/290025520",
       "name": "Bridge Inn",
       "lat": 50.6844901,
@@ -35,10 +105,27 @@
         "Dog Friendly",
         "Traditional"
       ],
-      "notes": "Minimal indoor seating, late opening"
+      "notes": "Minimal indoor seating, late opening",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-003",
+      "id": "pub-007",
+      "osm_id": "node/293146743",
+      "name": "Castle Street",
+      "lat": 50.725501,
+      "lon": -3.5290721,
+      "address": "Little Castle Street, Exeter, EX4 3PX",
+      "website": "",
+      "phone": "",
+      "venue_type": "bar",
+      "tags": [
+        "Cocktails",
+        "Late"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-008",
       "osm_id": "node/13160850050",
       "name": "City Gate",
       "lat": 50.7236873,
@@ -51,10 +138,11 @@
         "Food",
         "Family Friendly"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-004",
+      "id": "pub-009",
       "osm_id": "node/288335883",
       "name": "Clifton Inn",
       "lat": 50.7255148,
@@ -67,10 +155,26 @@
         "Food",
         "Sports"
       ],
+      "notes": "",
+      "venue_type": "pub"
+    },
+    {
+      "id": "pub-010",
+      "osm_id": "node/10087527977",
+      "name": "Core",
+      "lat": 50.722069,
+      "lon": -3.5339304,
+      "address": "Mary Arches Street, EX4 3AZ",
+      "website": "",
+      "phone": "",
+      "venue_type": "club",
+      "tags": [
+        "Late"
+      ],
       "notes": ""
     },
     {
-      "id": "pub-005",
+      "id": "pub-011",
       "osm_id": "way/363499121",
       "name": "Cowick Barton",
       "lat": 50.7093724,
@@ -83,10 +187,26 @@
         "Food",
         "Traditional"
       ],
+      "notes": "",
+      "venue_type": "pub"
+    },
+    {
+      "id": "pub-012",
+      "osm_id": "node/10086021914",
+      "name": "Crocketts",
+      "lat": 50.7249429,
+      "lon": -3.5319137,
+      "address": "2 Upper Paul Street, Exeter, EX4 3NB",
+      "website": "",
+      "phone": "",
+      "venue_type": "bar",
+      "tags": [
+        "Gin"
+      ],
       "notes": ""
     },
     {
-      "id": "pub-006",
+      "id": "pub-013",
       "osm_id": "node/13059428518",
       "name": "Crossed Anchors Brewery & Taproom",
       "lat": 50.7130168,
@@ -99,10 +219,42 @@
         "Real Ale",
         "Industrial"
       ],
+      "notes": "",
+      "venue_type": "pub"
+    },
+    {
+      "id": "pub-014",
+      "osm_id": "node/9773108270",
+      "name": "Cuckoo Taproom & Bottleshop",
+      "lat": 50.7250858,
+      "lon": -3.5255887,
+      "address": "25 Paris Street, Exeter, EX1 2JB",
+      "website": "",
+      "phone": "",
+      "venue_type": "pub",
+      "tags": [
+        "Real Ale",
+        "Live Music"
+      ],
       "notes": ""
     },
     {
-      "id": "pub-007",
+      "id": "pub-015",
+      "osm_id": "node/361497477",
+      "name": "Darwin's Gin Parlour",
+      "lat": 50.7210262,
+      "lon": -3.5215385,
+      "address": "29 Magdalen Road, Exeter, EX2 4TA",
+      "website": "https://www.darwinsbar.co.uk",
+      "phone": "+44 1392 682733",
+      "venue_type": "bar",
+      "tags": [
+        "Gin"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-016",
       "osm_id": "way/186668495",
       "name": "Devon Yeoman",
       "lat": 50.739254,
@@ -114,10 +266,11 @@
         "Garden",
         "Family Friendly"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-008",
+      "id": "pub-017",
       "osm_id": "way/119208351",
       "name": "Double Locks Inn",
       "lat": 50.6999873,
@@ -134,10 +287,11 @@
         "Family Friendly",
         "Live Music"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-009",
+      "id": "pub-018",
       "osm_id": "node/10539905163",
       "name": "Drakes Bar & Lounge",
       "lat": 50.7253192,
@@ -148,10 +302,27 @@
       "tags": [
         "Sports"
       ],
+      "notes": "",
+      "venue_type": "pub"
+    },
+    {
+      "id": "pub-019",
+      "osm_id": "node/11047269737",
+      "name": "Dugout Bar",
+      "lat": 50.7237844,
+      "lon": -3.5299438,
+      "address": "3 Catherine Street, Exeter, EX1 1EU",
+      "website": "",
+      "phone": "",
+      "venue_type": "bar",
+      "tags": [
+        "Food",
+        "Sports"
+      ],
       "notes": ""
     },
     {
-      "id": "pub-010",
+      "id": "pub-020",
       "osm_id": "way/265411590",
       "name": "Duke of York",
       "lat": 50.7278971,
@@ -165,10 +336,11 @@
         "Food",
         "Quiz"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-012",
+      "id": "pub-021",
       "osm_id": "node/10076043581",
       "name": "George's Meeting House",
       "lat": 50.7205788,
@@ -182,10 +354,11 @@
         "Real Ale",
         "Garden"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-013",
+      "id": "pub-022",
       "osm_id": "node/498427461",
       "name": "Green Gables",
       "lat": 50.7160682,
@@ -198,10 +371,11 @@
         "Traditional",
         "Sports"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-014",
+      "id": "pub-023",
       "osm_id": "way/116683854",
       "name": "Heart Of Oak",
       "lat": 50.7390823,
@@ -214,10 +388,11 @@
         "Food",
         "Sports"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-015",
+      "id": "pub-024",
       "osm_id": "way/263343390",
       "name": "Henry's Bar",
       "lat": 50.7302737,
@@ -230,10 +405,11 @@
         "Garden",
         "Traditional"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-016",
+      "id": "pub-025",
       "osm_id": "node/9135882848",
       "name": "Little Drop Of Poison",
       "lat": 50.72132,
@@ -246,10 +422,11 @@
         "Traditional",
         "Live Music"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-017",
+      "id": "pub-026",
       "osm_id": "node/11813558606",
       "name": "Loco Bar",
       "lat": 50.7304819,
@@ -260,10 +437,11 @@
       "tags": [
         "Food"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-018",
+      "id": "pub-027",
       "osm_id": "node/290014369",
       "name": "Lord Nelson Inn",
       "lat": 50.6853821,
@@ -274,10 +452,27 @@
       "tags": [
         "Garden"
       ],
+      "notes": "",
+      "venue_type": "pub"
+    },
+    {
+      "id": "pub-028",
+      "osm_id": "way/288473263",
+      "name": "Monkey Suit",
+      "lat": 50.7264998,
+      "lon": -3.5246087,
+      "address": "161 Sidwell Street, Exeter, EX4 6RH",
+      "website": "",
+      "phone": "",
+      "venue_type": "bar",
+      "tags": [
+        "Live Music",
+        "Sports"
+      ],
       "notes": ""
     },
     {
-      "id": "pub-019",
+      "id": "pub-029",
       "osm_id": "node/293150465",
       "name": "Mount Radford",
       "lat": 50.7212304,
@@ -288,10 +483,11 @@
       "tags": [
         "Food"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-020",
+      "id": "pub-030",
       "osm_id": "way/339435118",
       "name": "New Inn",
       "lat": 50.6998485,
@@ -303,10 +499,11 @@
         "Food",
         "Garden"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-021",
+      "id": "pub-031",
       "osm_id": "way/217574674",
       "name": "Old Timers",
       "lat": 50.725485,
@@ -317,10 +514,28 @@
       "tags": [
         "Traditional"
       ],
+      "notes": "",
+      "venue_type": "pub"
+    },
+    {
+      "id": "pub-032",
+      "osm_id": "node/5621670821",
+      "name": "Oriels",
+      "lat": 50.7239391,
+      "lon": -3.5306685,
+      "address": "",
+      "website": "",
+      "phone": "",
+      "venue_type": "bar",
+      "tags": [
+        "Cocktails",
+        "Late",
+        "Live Music"
+      ],
       "notes": ""
     },
     {
-      "id": "pub-022",
+      "id": "pub-033",
       "osm_id": "node/13432087760",
       "name": "Pig & Pickle",
       "lat": 50.7213621,
@@ -331,10 +546,11 @@
       "tags": [
         "Food"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-023",
+      "id": "pub-034",
       "osm_id": "way/1131143777",
       "name": "Pinhoe Hoard",
       "lat": 50.735071,
@@ -348,10 +564,11 @@
         "Food",
         "Family Friendly"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-024",
+      "id": "pub-035",
       "osm_id": "node/364838404",
       "name": "Royal Oak",
       "lat": 50.7189402,
@@ -368,10 +585,11 @@
         "Live Music",
         "Sports"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-025",
+      "id": "pub-036",
       "osm_id": "node/13013923938",
       "name": "Royal Oak",
       "lat": 50.7213739,
@@ -384,10 +602,11 @@
         "Food",
         "Traditional"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-026",
+      "id": "pub-037",
       "osm_id": "way/521544427",
       "name": "Rumours",
       "lat": 50.7266717,
@@ -396,10 +615,11 @@
       "website": "https://www.rumoursexeter.co.uk/",
       "phone": "",
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-027",
+      "id": "pub-038",
       "osm_id": "way/437855478",
       "name": "Samuel Jones Ale & Smoke House",
       "lat": 50.7183674,
@@ -411,10 +631,11 @@
         "Food",
         "Garden"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-028",
+      "id": "pub-039",
       "osm_id": "node/3895111344",
       "name": "Scapegoat",
       "lat": 50.7261714,
@@ -425,10 +646,26 @@
       "tags": [
         "Real Ale"
       ],
+      "notes": "",
+      "venue_type": "pub"
+    },
+    {
+      "id": "pub-040",
+      "osm_id": "way/259731758",
+      "name": "St Anne's Well",
+      "lat": 50.7297163,
+      "lon": -3.5229582,
+      "address": "31 Well Street, Exeter, EX4 6QL",
+      "website": "",
+      "phone": "",
+      "venue_type": "pub",
+      "tags": [
+        "Traditional"
+      ],
       "notes": ""
     },
     {
-      "id": "pub-030",
+      "id": "pub-041",
       "osm_id": "way/200071273",
       "name": "The Bishop Blaize",
       "lat": 50.7190607,
@@ -439,10 +676,11 @@
       "tags": [
         "Traditional"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-031",
+      "id": "pub-042",
       "osm_id": "way/252625188",
       "name": "The Black Horse",
       "lat": 50.7267727,
@@ -456,10 +694,28 @@
         "Live Music",
         "Sports"
       ],
+      "notes": "",
+      "venue_type": "pub"
+    },
+    {
+      "id": "pub-043",
+      "osm_id": "node/10087527964",
+      "name": "The Bootlegger",
+      "lat": 50.7217942,
+      "lon": -3.5341658,
+      "address": "162-163 Fore Street, Exeter, EX4 3AT",
+      "website": "",
+      "phone": "",
+      "venue_type": "bar",
+      "tags": [
+        "Cocktails",
+        "Late",
+        "Live Music"
+      ],
       "notes": ""
     },
     {
-      "id": "pub-032",
+      "id": "pub-044",
       "osm_id": "way/257932508",
       "name": "The Bowling Green",
       "lat": 50.7296878,
@@ -471,10 +727,11 @@
         "Traditional",
         "Sports"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-033",
+      "id": "pub-045",
       "osm_id": "node/10115426180",
       "name": "The Chevalier Inn",
       "lat": 50.7221546,
@@ -489,10 +746,27 @@
         "Sports",
         "Live Music"
       ],
+      "notes": "",
+      "venue_type": "pub"
+    },
+    {
+      "id": "pub-046",
+      "osm_id": "node/10074041598",
+      "name": "The Cocktail Club",
+      "lat": 50.7248175,
+      "lon": -3.5314105,
+      "address": "23 Gandy Street, Exeter, EX4 3LS",
+      "website": "",
+      "phone": "",
+      "venue_type": "club",
+      "tags": [
+        "Cocktails",
+        "Late"
+      ],
       "notes": ""
     },
     {
-      "id": "pub-034",
+      "id": "pub-047",
       "osm_id": "node/1693211829",
       "name": "The Dolphin",
       "lat": 50.7095059,
@@ -501,10 +775,11 @@
       "website": "",
       "phone": "",
       "tags": [],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-035",
+      "id": "pub-048",
       "osm_id": "way/223734495",
       "name": "The Farmers Union",
       "lat": 50.7274192,
@@ -515,10 +790,11 @@
       "tags": [
         "Sports"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-036",
+      "id": "pub-049",
       "osm_id": "way/286157838",
       "name": "The Fat Pig",
       "lat": 50.7208446,
@@ -529,10 +805,11 @@
       "tags": [
         "Real Ale"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-037",
+      "id": "pub-050",
       "osm_id": "node/1315878724",
       "name": "the Half Moon",
       "lat": 50.732607,
@@ -543,10 +820,11 @@
       "tags": [
         "Traditional"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-038",
+      "id": "pub-051",
       "osm_id": "node/13013923934",
       "name": "The Horse & Groom",
       "lat": 50.7212893,
@@ -558,10 +836,11 @@
         "Traditional",
         "Sports"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-039",
+      "id": "pub-052",
       "osm_id": "node/274954118",
       "name": "The Hourglass Inn",
       "lat": 50.717518,
@@ -574,10 +853,11 @@
         "Traditional",
         "Dog Friendly"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-040",
+      "id": "pub-053",
       "osm_id": "way/175308977",
       "name": "The Imperial",
       "lat": 50.7303375,
@@ -591,10 +871,11 @@
         "Food",
         "Wetherspoon"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-041",
+      "id": "pub-054",
       "osm_id": "node/299465256",
       "name": "The Kings",
       "lat": 50.7176777,
@@ -606,10 +887,26 @@
         "Traditional",
         "Sports"
       ],
+      "notes": "",
+      "venue_type": "pub"
+    },
+    {
+      "id": "pub-055",
+      "osm_id": "node/1498572252",
+      "name": "The Lemon Grove",
+      "lat": 50.7350874,
+      "lon": -3.5297241,
+      "address": "St Germans Road, Exeter, EX4 6TG",
+      "website": "https://www.exeterboxoffice.com/events.aspx?ID=2",
+      "phone": "",
+      "venue_type": "club",
+      "tags": [
+        "Live Music"
+      ],
       "notes": ""
     },
     {
-      "id": "pub-042",
+      "id": "pub-056",
       "osm_id": "node/290021329",
       "name": "The Lighter Inn",
       "lat": 50.6813173,
@@ -622,10 +919,11 @@
         "Food",
         "Family Friendly"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-043",
+      "id": "pub-057",
       "osm_id": "node/537745381",
       "name": "The Lucombe Oak",
       "lat": 50.7171071,
@@ -637,10 +935,28 @@
         "Live Music",
         "Sports"
       ],
+      "notes": "",
+      "venue_type": "pub"
+    },
+    {
+      "id": "pub-058",
+      "osm_id": "node/10086049868",
+      "name": "The Mermaid",
+      "lat": 50.7246823,
+      "lon": -3.53138,
+      "address": "11b Gandy Street, Exeter, EX4 3LS",
+      "website": "",
+      "phone": "",
+      "venue_type": "bar",
+      "tags": [
+        "Late",
+        "Live Music",
+        "Cocktails"
+      ],
       "notes": ""
     },
     {
-      "id": "pub-044",
+      "id": "pub-059",
       "osm_id": "way/201826184",
       "name": "The Mill On The Exe",
       "lat": 50.7219776,
@@ -656,10 +972,44 @@
         "Live Music",
         "Family Friendly"
       ],
+      "notes": "",
+      "venue_type": "pub"
+    },
+    {
+      "id": "pub-060",
+      "osm_id": "node/13147580028",
+      "name": "The Ocean Club",
+      "lat": 50.7188559,
+      "lon": -3.531761,
+      "address": "",
+      "website": "",
+      "phone": "",
+      "venue_type": "bar",
+      "tags": [
+        "Cocktails",
+        "Late"
+      ],
       "notes": ""
     },
     {
-      "id": "pub-045",
+      "id": "pub-061",
+      "osm_id": "node/331946280",
+      "name": "The Old Fire Station",
+      "lat": 50.684332,
+      "lon": -3.4660661,
+      "address": "Fore Street, Exeter, EX3 0HF",
+      "website": "",
+      "phone": "",
+      "venue_type": "bar",
+      "tags": [
+        "Food",
+        "Dog Friendly",
+        "Garden"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "pub-062",
       "osm_id": "way/245692750",
       "name": "The Old Firehouse",
       "lat": 50.7268201,
@@ -673,10 +1023,11 @@
         "Food",
         "Cider"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-046",
+      "id": "pub-063",
       "osm_id": "node/290018966",
       "name": "The Passage House Inn",
       "lat": 50.6833853,
@@ -688,10 +1039,11 @@
         "Garden",
         "Real Ale"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-047",
+      "id": "pub-064",
       "osm_id": "way/200071239",
       "name": "The Prospect Inn",
       "lat": 50.7186437,
@@ -704,10 +1056,11 @@
         "Food",
         "Real Ale"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-048",
+      "id": "pub-065",
       "osm_id": "way/203662832",
       "name": "The Queens Head",
       "lat": 50.7316597,
@@ -718,10 +1071,26 @@
       "tags": [
         "Sports"
       ],
+      "notes": "",
+      "venue_type": "pub"
+    },
+    {
+      "id": "pub-066",
+      "osm_id": "node/13233166101",
+      "name": "The Ram Bar",
+      "lat": 50.7351634,
+      "lon": -3.5343446,
+      "address": "",
+      "website": "",
+      "phone": "",
+      "venue_type": "pub",
+      "tags": [
+        "Food"
+      ],
       "notes": ""
     },
     {
-      "id": "pub-049",
+      "id": "pub-067",
       "osm_id": "way/433828512",
       "name": "The Sawyer's Arms",
       "lat": 50.7154318,
@@ -735,10 +1104,11 @@
         "Food",
         "Wetherspoon"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-050",
+      "id": "pub-068",
       "osm_id": "way/360421741",
       "name": "The Seven Stars Hotel",
       "lat": 50.708951,
@@ -750,10 +1120,11 @@
         "Garden",
         "Dog Friendly"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-051",
+      "id": "pub-069",
       "osm_id": "way/287695768",
       "name": "The Ship",
       "lat": 50.7235916,
@@ -768,10 +1139,11 @@
         "Live Music",
         "Sports"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-052",
+      "id": "pub-070",
       "osm_id": "way/1416127798",
       "name": "The Ship & Pelican",
       "lat": 50.7211605,
@@ -783,10 +1155,27 @@
         "Garden",
         "Sports"
       ],
+      "notes": "",
+      "venue_type": "pub"
+    },
+    {
+      "id": "pub-071",
+      "osm_id": "node/4396682517",
+      "name": "The Stand Off",
+      "lat": 50.7264799,
+      "lon": -3.5272962,
+      "address": "Longbrook Street, Exeter, EX4 6AB",
+      "website": "https://www.thestandoff.co.uk",
+      "phone": "+44 1392 982159",
+      "venue_type": "bar",
+      "tags": [
+        "Late",
+        "Sports"
+      ],
       "notes": ""
     },
     {
-      "id": "pub-053",
+      "id": "pub-072",
       "osm_id": "node/292264274",
       "name": "The Stoke Arms",
       "lat": 50.7348663,
@@ -797,10 +1186,11 @@
       "tags": [
         "Traditional"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-054",
+      "id": "pub-073",
       "osm_id": "node/469757935",
       "name": "The Tally Ho",
       "lat": 50.7031311,
@@ -811,10 +1201,11 @@
       "tags": [
         "Traditional"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-055",
+      "id": "pub-074",
       "osm_id": "node/440655596",
       "name": "The Thatched House",
       "lat": 50.7263242,
@@ -826,10 +1217,11 @@
         "Garden",
         "Dog Friendly"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-056",
+      "id": "pub-075",
       "osm_id": "node/10080425230",
       "name": "The Turks Head",
       "lat": 50.7232903,
@@ -844,10 +1236,11 @@
         "Brewery",
         "Sports"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     },
     {
-      "id": "pub-057",
+      "id": "pub-076",
       "osm_id": "node/991222912",
       "name": "The Twisted Oak",
       "lat": 50.706486,
@@ -859,10 +1252,26 @@
         "Garden",
         "Dog Friendly"
       ],
+      "notes": "",
+      "venue_type": "pub"
+    },
+    {
+      "id": "pub-077",
+      "osm_id": "node/292916505",
+      "name": "The Vaults",
+      "lat": 50.724441,
+      "lon": -3.531079,
+      "address": "8 Gandy Street, Exeter, EX4 3LS",
+      "website": "http://vaults-exeter.webflow.io/",
+      "phone": "",
+      "venue_type": "club",
+      "tags": [
+        "Late"
+      ],
       "notes": ""
     },
     {
-      "id": "pub-058",
+      "id": "pub-078",
       "osm_id": "way/219772696",
       "name": "The Victoria Inn",
       "lat": 50.7336041,
@@ -874,10 +1283,26 @@
         "Traditional",
         "Sports"
       ],
+      "notes": "",
+      "venue_type": "pub"
+    },
+    {
+      "id": "pub-079",
+      "osm_id": "way/191449760",
+      "name": "Timepiece",
+      "lat": 50.7257013,
+      "lon": -3.5285621,
+      "address": "Little Castle Street, Exeter, EX4 3PX",
+      "website": "",
+      "phone": "",
+      "venue_type": "club",
+      "tags": [
+        "Late"
+      ],
       "notes": ""
     },
     {
-      "id": "pub-061",
+      "id": "pub-080",
       "osm_id": "node/5089978588",
       "name": "Topsham Brewery & Taproom",
       "lat": 50.716898,
@@ -894,7 +1319,8 @@
         "Family Friendly",
         "Brewery"
       ],
-      "notes": ""
+      "notes": "",
+      "venue_type": "pub"
     }
   ]
 }
