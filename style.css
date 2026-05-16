@@ -274,20 +274,38 @@ a:hover { color: var(--primary-soft); text-decoration: underline; }
   padding: 8px;
   border-radius: 6px;
   cursor: grab;
-  transition: background 0.15s ease, opacity 0.15s ease, transform 0.15s ease;
   background: var(--surface);
   border: 1px solid transparent;
   touch-action: none;  /* required so pointer events fire instead of scroll */
   user-select: none;
+  /* No baseline transition — FLIP sets and clears its own. */
 }
 .crawl-stop:hover { background: var(--surface-2); }
 .crawl-stop:active { cursor: grabbing; }
+
+/* The original card while a ghost copy is being dragged:
+   acts as a faded "drop slot" showing where the card will land. */
 .crawl-stop.dragging {
-  opacity: 0.6;
-  border-color: var(--accent);
   background: var(--surface-2);
-  box-shadow: var(--shadow);
+  border: 1px dashed var(--accent);
+  opacity: 0.35;
   cursor: grabbing;
+}
+.crawl-stop.dragging > * { visibility: hidden; }
+
+/* The free-floating clone that follows the cursor. */
+.crawl-stop-ghost {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 8px;
+  border-radius: 6px;
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  box-shadow: 0 10px 28px rgba(29, 20, 16, 0.25);
+  cursor: grabbing;
+  transform: rotate(-1.5deg) scale(1.02);
+  transform-origin: center;
 }
 
 .crawl-drag-handle {

@@ -1417,30 +1417,36 @@ function bindAddStopDialog() {
 }
 
 // ----- Stop tap/drag (pointer events, works on touch + mouse) -----
-// Down on a stop card starts tracking. If the pointer moves > DRAG_THRESHOLD,
-// we enter drag mode and reorder. If it doesn't, it's treated as a tap and
-// jumps the map to that pub.
+// Approach: when the user starts dragging a stop, we lift a "ghost" clone
+// that follows the cursor. The original card stays in DOM as a faded slot
+// so it's clear where it currently sits in the order. As the cursor crosses
+// other cards' midpoints, we re-insert the original in DOM and FLIP-animate
+// the displaced siblings into their new positions.
 
-const DRAG_THRESHOLD_PX = 6;
+const DRAG_THRESHOLD_PX = 5;
+const ANIM_MS = 180;
 
 function bindCrawlStopInteractions(listEl) {
-  let tracking = null;   // { stop, pubId, startX, startY, capturedEl, pointerId, dragging }
+  let t = null;  // tracking object
 
   listEl.querySelectorAll('.crawl-stop').forEach(stop => {
     stop.addEventListener('pointerdown', (e) => {
-      // Ignore clicks on the remove button
       if (e.target.closest('.crawl-stop-remove')) return;
-      // Only primary button
       if (e.button !== undefined && e.button !== 0) return;
-
-      tracking = {
+      const rect = stop.getBoundingClientRect();
+      t = {
         stop,
         pubId: stop.dataset.pubId,
         startX: e.clientX,
         startY: e.clientY,
-        capturedEl: stop,
+        offsetX: e.clientX - rect.left,
+        offsetY: e.clientY - rect.top,
+        startWidth: rect.width,
+        startLeft: rect.left,
+        startTop: rect.top,
         pointerId: e.pointerId,
-        dragging: false
+        dragging: false,
+        ghost: null
       };
       try { stop.setPointerCapture(e.pointerId); } catch (_) {}
       stop.addEventListener('pointermove', onMove);
@@ -1450,66 +1456,195 @@ function bindCrawlStopInteractions(listEl) {
   });
 
   function onMove(e) {
-    if (!tracking) return;
-    const dx = e.clientX - tracking.startX;
-    const dy = e.clientY - tracking.startY;
-    if (!tracking.dragging && Math.hypot(dx, dy) > DRAG_THRESHOLD_PX) {
-      tracking.dragging = true;
-      tracking.stop.classList.add('dragging');
+    if (!t) return;
+    const dx = e.clientX - t.startX;
+    const dy = e.clientY - t.startY;
+
+    if (!t.dragging && Math.hypot(dx, dy) > DRAG_THRESHOLD_PX) {
+      enterDragMode();
       e.preventDefault();
     }
-    if (!tracking.dragging) return;
+    if (!t.dragging) return;
+    e.preventDefault();
 
-    // Find the stop we're over (skip the dragged one)
-    const els = document.elementsFromPoint(e.clientX, e.clientY);
-    const targetStop = els.find(el => el.classList && el.classList.contains('crawl-stop') && el !== tracking.stop);
-    if (!targetStop) return;
-    const rect = targetStop.getBoundingClientRect();
-    const midpoint = rect.top + rect.height / 2;
-    if (e.clientY < midpoint) {
-      targetStop.parentNode.insertBefore(tracking.stop, targetStop);
-    } else {
-      targetStop.parentNode.insertBefore(tracking.stop, targetStop.nextSibling);
-    }
+    // Update ghost position
+    t.ghost.style.left = (e.clientX - t.offsetX) + 'px';
+    t.ghost.style.top = (e.clientY - t.offsetY) + 'px';
+
+    // Find the insertion position by walking siblings (ignores gaps cleanly)
+    const target = findInsertPosition(listEl, t.stop, e.clientY);
+    if (!target) return;
+
+    const { targetStop, insertBefore } = target;
+    const desiredAnchor = insertBefore ? targetStop : targetStop.nextElementSibling;
+    if (t.stop === desiredAnchor) return;          // already adjacent at desired side
+    if (insertBefore && t.stop.nextElementSibling === targetStop && t.stop === targetStop.previousElementSibling) return;
+    // No movement needed if we're already in that exact slot
+    if (t.stop.nextElementSibling === desiredAnchor) return;
+
+    // FLIP: snapshot positions → reorder → animate the difference
+    const before = snapshotRects(listEl);
+    targetStop.parentNode.insertBefore(t.stop, desiredAnchor || null);
+    flipAnimate(listEl, before, t.stop);
+    refreshCrawlLegs(listEl);  // live numbers + leg distances while dragging
   }
 
-  function onUp(e) {
-    if (!tracking) return;
-    const wasDragging = tracking.dragging;
-    const pubId = tracking.pubId;
-    cleanup();
+  function onUp() {
+    if (!t) return;
+    if (t.dragging) {
+      // Settle the ghost into the placeholder's position with a quick snap
+      const finalRect = t.stop.getBoundingClientRect();
+      t.ghost.style.transition = `left ${ANIM_MS}ms ease, top ${ANIM_MS}ms ease, opacity ${ANIM_MS}ms ease, transform ${ANIM_MS}ms ease`;
+      t.ghost.style.left = finalRect.left + 'px';
+      t.ghost.style.top = finalRect.top + 'px';
+      t.ghost.style.opacity = '0';
+      t.ghost.style.transform = 'scale(0.98)';
+      const ghost = t.ghost;
+      setTimeout(() => ghost.remove(), ANIM_MS);
 
-    if (wasDragging) {
       // Commit new order
       const newOrder = [...listEl.querySelectorAll('.crawl-stop')].map(el => el.dataset.pubId);
       const crawl = appState.activeCrawl;
       if (crawl && JSON.stringify(newOrder) !== JSON.stringify(crawl.stops)) {
         crawl.stops = newOrder;
         persistCrawlIfSaved(crawl);
-        renderActiveCrawl();
+        // We don't call renderActiveCrawl() here — DOM is already correct, just refresh the leg labels & map
+        refreshCrawlLegs(listEl);
         drawCrawlOnMap(crawl);
       }
+      cleanupDragState();
     } else {
-      // It was a tap — jump map to this pub
+      // Tap → jump map to this pub
+      const pubId = t.pubId;
+      cleanup();
       jumpToPubOnMap(pubId);
     }
   }
 
   function onCancel() {
-    if (!tracking) return;
+    if (!t) return;
+    if (t.dragging) {
+      if (t.ghost) t.ghost.remove();
+      cleanupDragState();
+    }
     cleanup();
   }
 
-  function cleanup() {
-    if (!tracking) return;
-    const { capturedEl, pointerId } = tracking;
-    capturedEl.classList.remove('dragging');
-    capturedEl.removeEventListener('pointermove', onMove);
-    capturedEl.removeEventListener('pointerup', onUp);
-    capturedEl.removeEventListener('pointercancel', onCancel);
-    try { capturedEl.releasePointerCapture(pointerId); } catch (_) {}
-    tracking = null;
+  function enterDragMode() {
+    t.dragging = true;
+    const stop = t.stop;
+    stop.classList.add('dragging');
+
+    // Build a ghost clone that follows the cursor
+    const ghost = stop.cloneNode(true);
+    ghost.classList.add('crawl-stop-ghost');
+    ghost.classList.remove('dragging');
+    ghost.style.position = 'fixed';
+    ghost.style.left = t.startLeft + 'px';
+    ghost.style.top = t.startTop + 'px';
+    ghost.style.width = t.startWidth + 'px';
+    ghost.style.margin = '0';
+    ghost.style.pointerEvents = 'none';
+    ghost.style.zIndex = '9999';
+    // Remove interactive controls from the ghost so they don't capture clicks
+    ghost.querySelectorAll('button').forEach(b => b.remove());
+    document.body.appendChild(ghost);
+    t.ghost = ghost;
   }
+
+  function cleanupDragState() {
+    t.stop.classList.remove('dragging');
+  }
+
+  function cleanup() {
+    if (!t) return;
+    const { stop, pointerId } = t;
+    stop.removeEventListener('pointermove', onMove);
+    stop.removeEventListener('pointerup', onUp);
+    stop.removeEventListener('pointercancel', onCancel);
+    try { stop.releasePointerCapture(pointerId); } catch (_) {}
+    t = null;
+  }
+}
+
+// Walk siblings top-to-bottom, find the first whose midpoint is below the cursor.
+// Insert *before* that one. If cursor is below them all, insert after the last.
+// Works regardless of inter-card gaps.
+function findInsertPosition(listEl, draggingStop, clientY) {
+  const stops = [...listEl.querySelectorAll('.crawl-stop')].filter(s => s !== draggingStop);
+  if (stops.length === 0) return null;
+  for (const stop of stops) {
+    const rect = stop.getBoundingClientRect();
+    if (clientY < rect.top + rect.height / 2) {
+      return { targetStop: stop, insertBefore: true };
+    }
+  }
+  return { targetStop: stops[stops.length - 1], insertBefore: false };
+}
+
+function snapshotRects(listEl) {
+  const m = new Map();
+  listEl.querySelectorAll('.crawl-stop').forEach(el => {
+    m.set(el.dataset.pubId, el.getBoundingClientRect());
+  });
+  return m;
+}
+
+// FLIP technique: items have already been re-inserted in DOM. We compute
+// the deltas from their "before" positions and animate them back to zero.
+function flipAnimate(listEl, beforeRects, skipEl) {
+  listEl.querySelectorAll('.crawl-stop').forEach(el => {
+    if (el === skipEl) return;  // dragging card is positioned by the ghost
+    const before = beforeRects.get(el.dataset.pubId);
+    if (!before) return;
+    const after = el.getBoundingClientRect();
+    const dx = before.left - after.left;
+    const dy = before.top - after.top;
+    if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) return;
+
+    el.style.transition = 'none';
+    el.style.transform = `translate(${dx}px, ${dy}px)`;
+    // Force reflow then transition to zero
+    void el.offsetHeight;
+    el.style.transition = `transform ${ANIM_MS}ms cubic-bezier(0.2, 0.8, 0.2, 1)`;
+    el.style.transform = '';
+  });
+}
+
+// After a drag-and-drop, the per-card leg distances (↳ 350m) are stale
+// because the order changed. Recompute and patch them in place without
+// a full re-render (which would tear down our DOM).
+function refreshCrawlLegs(listEl) {
+  const stops = [...listEl.querySelectorAll('.crawl-stop')];
+  let prev = null;
+  stops.forEach((el, i) => {
+    el.querySelector('.crawl-num').textContent = i + 1;
+    const pub = appState.pubs.find(p => p.id === el.dataset.pubId);
+    let legEl = el.querySelector('.crawl-leg');
+    if (i === 0) {
+      if (legEl) legEl.remove();
+    } else if (pub && prev) {
+      const d = haversineDistance(prev.lat, prev.lon, pub.lat, pub.lon);
+      const text = `↳ ${formatDistance(d)} · ${formatWalkingTime(d)}`;
+      if (legEl) {
+        legEl.textContent = text;
+      } else {
+        legEl = document.createElement('span');
+        legEl.className = 'crawl-leg';
+        legEl.textContent = text;
+        el.querySelector('.crawl-stop-body').appendChild(legEl);
+      }
+    }
+    if (pub) prev = pub;
+  });
+  // Update header meta
+  let totalM = 0;
+  const allPubs = stops.map(el => appState.pubs.find(p => p.id === el.dataset.pubId)).filter(Boolean);
+  for (let i = 1; i < allPubs.length; i++) {
+    totalM += haversineDistance(allPubs[i-1].lat, allPubs[i-1].lon, allPubs[i].lat, allPubs[i].lon);
+  }
+  const meta = `${allPubs.length} stops · ${formatDistance(totalM)} total walk · ${formatWalkingTime(totalM)}`;
+  document.getElementById('crawl-panel-meta').textContent = meta;
 }
 
 function bindCrawlPanel() {
