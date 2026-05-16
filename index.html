@@ -209,14 +209,20 @@
         </div>
 
         <div class="field">
-          <span class="field-label">Walking radius</span>
-          <div class="stops-input" role="radiogroup" aria-label="Walking radius">
-            <button type="button" class="stops-btn" data-radius="500">5 min</button>
-            <button type="button" class="stops-btn active" data-radius="1000">12 min</button>
-            <button type="button" class="stops-btn" data-radius="2000">25 min</button>
-            <button type="button" class="stops-btn" data-radius="0">No limit</button>
+          <div class="radius-header">
+            <span class="field-label">How far are you willing to walk?</span>
+            <label class="no-limit-toggle">
+              <input type="checkbox" id="crawl-radius-nolimit">
+              <span>No limit</span>
+            </label>
           </div>
-          <p class="field-hint">Max walk from the start to any stop.</p>
+          <div class="radius-slider-row">
+            <input type="range" id="crawl-radius-slider" class="radius-slider"
+              min="200" max="3000" step="100" value="1000" aria-label="Walking radius in metres">
+            <span class="radius-value" id="crawl-radius-value">1.0 km</span>
+          </div>
+          <div id="crawl-radius-map" class="radius-map" aria-hidden="true"></div>
+          <p class="field-hint" id="crawl-radius-hint">Straight-line radius from your start point. Actual walking distance will be a bit further.</p>
         </div>
 
         <div class="field">

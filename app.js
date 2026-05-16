@@ -95,6 +95,9 @@ const appState = {
   crawlPolyline: null,
   plannerStops: 4,
   plannerRadius: 1000,
+  plannerMap: null,
+  plannerCircle: null,
+  plannerCentreMarker: null,
 };
 
 // Areas considered part of "Greater Exeter" (the default view).
@@ -1067,23 +1070,35 @@ function bindCrawlPlanner() {
       b.classList.toggle('active', b === btn));
   });
 
-  // Radius chooser
-  const radiusGroup = dlg.querySelector('[aria-label="Walking radius"]');
-  radiusGroup.addEventListener('click', (e) => {
-    const btn = e.target.closest('.stops-btn');
-    if (!btn) return;
-    appState.plannerRadius = Number(btn.dataset.radius);
-    radiusGroup.querySelectorAll('.stops-btn').forEach(b =>
-      b.classList.toggle('active', b === btn));
+  // Radius slider + no-limit toggle
+  const slider = document.getElementById('crawl-radius-slider');
+  const nolimit = document.getElementById('crawl-radius-nolimit');
+  slider.addEventListener('input', () => {
+    appState.plannerRadius = Number(slider.value);
+    updateRadiusDisplay();
+    updatePlannerRadiusCircle();
+  });
+  nolimit.addEventListener('change', () => {
+    if (nolimit.checked) {
+      appState.plannerRadius = 0;
+      slider.disabled = true;
+    } else {
+      slider.disabled = false;
+      appState.plannerRadius = Number(slider.value);
+    }
+    updateRadiusDisplay();
+    updatePlannerRadiusCircle();
   });
 
-  // Anchor radio toggles select enable/disable
+  // Anchor radio toggles select enable/disable + recenter the mini-map
   dlg.querySelectorAll('input[name="crawl-start"]').forEach(r => {
     r.addEventListener('change', () => {
       const useAnchor = dlg.querySelector('input[name="crawl-start"]:checked').value === 'anchor';
       document.getElementById('crawl-anchor-select').disabled = !useAnchor;
+      recenterPlannerMap();
     });
   });
+  document.getElementById('crawl-anchor-select').addEventListener('change', recenterPlannerMap);
 
   dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
 
@@ -1121,8 +1136,123 @@ function openCrawlPlanner() {
     select.disabled = true;
   }
 
+  // Sync slider with current state
+  const slider = document.getElementById('crawl-radius-slider');
+  const nolimit = document.getElementById('crawl-radius-nolimit');
+  if (appState.plannerRadius === 0) {
+    nolimit.checked = true;
+    slider.disabled = true;
+  } else {
+    nolimit.checked = false;
+    slider.disabled = false;
+    slider.value = appState.plannerRadius;
+  }
+  updateRadiusDisplay();
+
   setCrawlPlannerNote('', null);
   dlg.showModal();
+
+  // Initialise the mini-map after the dialog is visible (Leaflet needs a sized container)
+  setTimeout(() => {
+    ensurePlannerMap();
+    recenterPlannerMap();
+    updatePlannerRadiusCircle();
+  }, 50);
+}
+
+function updateRadiusDisplay() {
+  const valueEl = document.getElementById('crawl-radius-value');
+  const hintEl = document.getElementById('crawl-radius-hint');
+  if (appState.plannerRadius === 0) {
+    valueEl.textContent = 'No limit';
+    hintEl.textContent = 'Any venue qualifies — the crawl might span the full catchment.';
+  } else {
+    const m = appState.plannerRadius;
+    const km = (m / 1000).toFixed(m >= 1000 ? 1 : 2);
+    const walkMin = Math.max(1, Math.round(m / WALKING_METRES_PER_SECOND / 60));
+    valueEl.textContent = m >= 1000 ? `${km} km` : `${m} m`;
+    hintEl.textContent = `Straight-line radius — about a ${walkMin} min walk as the crow flies. Real walking is usually a bit further.`;
+  }
+}
+
+function ensurePlannerMap() {
+  if (appState.plannerMap) {
+    appState.plannerMap.invalidateSize();
+    return;
+  }
+  const container = document.getElementById('crawl-radius-map');
+  if (!container) return;
+  appState.plannerMap = L.map(container, {
+    zoomControl: false,
+    attributionControl: false,
+    dragging: false,
+    scrollWheelZoom: false,
+    doubleClickZoom: false,
+    boxZoom: false,
+    keyboard: false,
+    touchZoom: false,
+    tap: false
+  }).setView([EXETER_CENTRE.lat, EXETER_CENTRE.lon], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18
+  }).addTo(appState.plannerMap);
+}
+
+function getPlannerCentre() {
+  const dlg = document.getElementById('crawl-planner-dialog');
+  const useLocation = dlg.querySelector('input[name="crawl-start"]:checked').value === 'location';
+  if (useLocation && appState.userLocation) {
+    return { lat: appState.userLocation.lat, lon: appState.userLocation.lon };
+  }
+  const anchorId = document.getElementById('crawl-anchor-select').value;
+  const pub = appState.pubs.find(p => p.id === anchorId);
+  if (pub) return { lat: pub.lat, lon: pub.lon };
+  return EXETER_CENTRE;
+}
+
+function recenterPlannerMap() {
+  if (!appState.plannerMap) return;
+  const c = getPlannerCentre();
+  appState.plannerMap.setView([c.lat, c.lon], 13, { animate: false });
+  updatePlannerRadiusCircle();
+}
+
+function updatePlannerRadiusCircle() {
+  if (!appState.plannerMap) return;
+  const c = getPlannerCentre();
+
+  if (appState.plannerCircle) {
+    appState.plannerMap.removeLayer(appState.plannerCircle);
+    appState.plannerCircle = null;
+  }
+  if (appState.plannerCentreMarker) {
+    appState.plannerMap.removeLayer(appState.plannerCentreMarker);
+    appState.plannerCentreMarker = null;
+  }
+
+  // Always show the centre marker
+  const centreIcon = L.divIcon({
+    className: '',
+    html: '<div class="planner-centre-marker"></div>',
+    iconSize: [14, 14],
+    iconAnchor: [7, 7]
+  });
+  appState.plannerCentreMarker = L.marker([c.lat, c.lon], { icon: centreIcon })
+    .addTo(appState.plannerMap);
+
+  if (appState.plannerRadius > 0) {
+    appState.plannerCircle = L.circle([c.lat, c.lon], {
+      radius: appState.plannerRadius,
+      color: '#6b2832',
+      weight: 2,
+      fillColor: '#b88a3a',
+      fillOpacity: 0.18
+    }).addTo(appState.plannerMap);
+    // Frame the map to the circle (with padding)
+    appState.plannerMap.fitBounds(appState.plannerCircle.getBounds(), { padding: [10, 10], animate: false });
+  } else {
+    appState.plannerMap.setView([c.lat, c.lon], 11, { animate: false });
+  }
 }
 
 function setCrawlPlannerNote(msg, type) {
@@ -1509,6 +1639,13 @@ function dragOnMove(e) {
   t.ghost.style.left = (e.clientX - t.offsetX) + 'px';
   t.ghost.style.top = (e.clientY - t.offsetY) + 'px';
 
+  // SWAP COOLDOWN: while sibling FLIP animations are still running, their
+  // getBoundingClientRect() returns the in-flight visual position (with
+  // transform), not the final layout position. A still cursor over a card
+  // sliding underneath it would otherwise re-trigger swaps every frame —
+  // which felt like "the card is sticking on invisible elements".
+  if (t.lastSwapAt && performance.now() - t.lastSwapAt < ANIM_MS) return;
+
   const target = findInsertPosition(listEl, t.stop, e.clientY);
   if (!target) return;
 
@@ -1521,6 +1658,7 @@ function dragOnMove(e) {
   targetStop.parentNode.insertBefore(t.stop, desiredAnchor || null);
   flipAnimate(listEl, before, t.stop);
   refreshCrawlLegs(listEl);
+  t.lastSwapAt = performance.now();
 }
 
 function dragOnUp() {
