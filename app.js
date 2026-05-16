@@ -1426,145 +1426,190 @@ function bindAddStopDialog() {
 const DRAG_THRESHOLD_PX = 5;
 const ANIM_MS = 180;
 
+// Drag state lives at module scope so it can be tracked & cleaned up
+// across re-renders of the crawl list. The per-render bindCrawlStopInteractions
+// only wires the pointerdown listeners on the new stop elements.
+const dragSystem = {
+  t: null,
+  listEl: null,
+  initialized: false
+};
+
+function initDragSystemOnce() {
+  if (dragSystem.initialized) return;
+  dragSystem.initialized = true;
+
+  // Window-level safety nets — catch pointer releases that don't reach
+  // the captured element (cursor outside viewport, browser drop, alt-tab).
+  window.addEventListener('pointerup', (e) => dragOnWindowEnd(e));
+  window.addEventListener('pointercancel', (e) => dragOnWindowEnd(e));
+  window.addEventListener('blur', () => dragAbort());
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) dragAbort();
+  });
+}
+
 function bindCrawlStopInteractions(listEl) {
-  let t = null;  // tracking object
+  initDragSystemOnce();
+  dragSystem.listEl = listEl;
+
+  // Defensive sweep: kill any orphaned ghosts/dragging states from a
+  // previous render or interrupted drag.
+  killAllGhosts();
 
   listEl.querySelectorAll('.crawl-stop').forEach(stop => {
-    stop.addEventListener('pointerdown', (e) => {
-      if (e.target.closest('.crawl-stop-remove')) return;
-      if (e.button !== undefined && e.button !== 0) return;
-      const rect = stop.getBoundingClientRect();
-      t = {
-        stop,
-        pubId: stop.dataset.pubId,
-        startX: e.clientX,
-        startY: e.clientY,
-        offsetX: e.clientX - rect.left,
-        offsetY: e.clientY - rect.top,
-        startWidth: rect.width,
-        startLeft: rect.left,
-        startTop: rect.top,
-        pointerId: e.pointerId,
-        dragging: false,
-        ghost: null
-      };
-      try { stop.setPointerCapture(e.pointerId); } catch (_) {}
-      stop.addEventListener('pointermove', onMove);
-      stop.addEventListener('pointerup', onUp);
-      stop.addEventListener('pointercancel', onCancel);
-    });
+    stop.addEventListener('pointerdown', dragOnPointerDown);
   });
+}
 
-  function onMove(e) {
-    if (!t) return;
-    const dx = e.clientX - t.startX;
-    const dy = e.clientY - t.startY;
+function dragOnPointerDown(e) {
+  const stop = e.currentTarget;
+  if (e.target.closest('.crawl-stop-remove')) return;
+  if (e.button !== undefined && e.button !== 0) return;
 
-    if (!t.dragging && Math.hypot(dx, dy) > DRAG_THRESHOLD_PX) {
-      enterDragMode();
-      e.preventDefault();
-    }
-    if (!t.dragging) return;
+  // Always purge any prior state before starting a new drag
+  dragAbort();
+
+  const rect = stop.getBoundingClientRect();
+  dragSystem.t = {
+    stop,
+    pubId: stop.dataset.pubId,
+    startX: e.clientX,
+    startY: e.clientY,
+    offsetX: e.clientX - rect.left,
+    offsetY: e.clientY - rect.top,
+    startWidth: rect.width,
+    startLeft: rect.left,
+    startTop: rect.top,
+    pointerId: e.pointerId,
+    dragging: false,
+    ghost: null
+  };
+  try { stop.setPointerCapture(e.pointerId); } catch (_) {}
+  stop.addEventListener('pointermove', dragOnMove);
+  stop.addEventListener('pointerup', dragOnUp);
+  stop.addEventListener('pointercancel', dragOnUp);
+}
+
+function dragOnMove(e) {
+  const t = dragSystem.t;
+  const listEl = dragSystem.listEl;
+  if (!t || !listEl) return;
+  const dx = e.clientX - t.startX;
+  const dy = e.clientY - t.startY;
+
+  if (!t.dragging && Math.hypot(dx, dy) > DRAG_THRESHOLD_PX) {
+    dragEnter();
     e.preventDefault();
-
-    // Update ghost position
-    t.ghost.style.left = (e.clientX - t.offsetX) + 'px';
-    t.ghost.style.top = (e.clientY - t.offsetY) + 'px';
-
-    // Find the insertion position by walking siblings (ignores gaps cleanly)
-    const target = findInsertPosition(listEl, t.stop, e.clientY);
-    if (!target) return;
-
-    const { targetStop, insertBefore } = target;
-    const desiredAnchor = insertBefore ? targetStop : targetStop.nextElementSibling;
-    if (t.stop === desiredAnchor) return;          // already adjacent at desired side
-    if (insertBefore && t.stop.nextElementSibling === targetStop && t.stop === targetStop.previousElementSibling) return;
-    // No movement needed if we're already in that exact slot
-    if (t.stop.nextElementSibling === desiredAnchor) return;
-
-    // FLIP: snapshot positions → reorder → animate the difference
-    const before = snapshotRects(listEl);
-    targetStop.parentNode.insertBefore(t.stop, desiredAnchor || null);
-    flipAnimate(listEl, before, t.stop);
-    refreshCrawlLegs(listEl);  // live numbers + leg distances while dragging
   }
+  if (!t.dragging) return;
+  e.preventDefault();
 
-  function onUp() {
-    if (!t) return;
-    if (t.dragging) {
-      // Settle the ghost into the placeholder's position with a quick snap
-      const finalRect = t.stop.getBoundingClientRect();
-      t.ghost.style.transition = `left ${ANIM_MS}ms ease, top ${ANIM_MS}ms ease, opacity ${ANIM_MS}ms ease, transform ${ANIM_MS}ms ease`;
-      t.ghost.style.left = finalRect.left + 'px';
-      t.ghost.style.top = finalRect.top + 'px';
-      t.ghost.style.opacity = '0';
-      t.ghost.style.transform = 'scale(0.98)';
-      const ghost = t.ghost;
-      setTimeout(() => ghost.remove(), ANIM_MS);
+  // Keep ghost glued to the cursor
+  t.ghost.style.left = (e.clientX - t.offsetX) + 'px';
+  t.ghost.style.top = (e.clientY - t.offsetY) + 'px';
 
-      // Commit new order
-      const newOrder = [...listEl.querySelectorAll('.crawl-stop')].map(el => el.dataset.pubId);
-      const crawl = appState.activeCrawl;
-      if (crawl && JSON.stringify(newOrder) !== JSON.stringify(crawl.stops)) {
-        crawl.stops = newOrder;
-        persistCrawlIfSaved(crawl);
-        // We don't call renderActiveCrawl() here — DOM is already correct, just refresh the leg labels & map
-        refreshCrawlLegs(listEl);
-        drawCrawlOnMap(crawl);
-      }
-      cleanupDragState();
-    } else {
-      // Tap → jump map to this pub
-      const pubId = t.pubId;
-      cleanup();
-      jumpToPubOnMap(pubId);
+  const target = findInsertPosition(listEl, t.stop, e.clientY);
+  if (!target) return;
+
+  const { targetStop, insertBefore } = target;
+  const desiredAnchor = insertBefore ? targetStop : targetStop.nextElementSibling;
+  if (t.stop === desiredAnchor) return;
+  if (t.stop.nextElementSibling === desiredAnchor) return;
+
+  const before = snapshotRects(listEl);
+  targetStop.parentNode.insertBefore(t.stop, desiredAnchor || null);
+  flipAnimate(listEl, before, t.stop);
+  refreshCrawlLegs(listEl);
+}
+
+function dragOnUp() {
+  const t = dragSystem.t;
+  const listEl = dragSystem.listEl;
+  if (!t) return;
+  const wasDragging = t.dragging;
+  const pubId = t.pubId;
+
+  if (wasDragging && listEl) {
+    const newOrder = [...listEl.querySelectorAll('.crawl-stop')].map(el => el.dataset.pubId);
+    const crawl = appState.activeCrawl;
+    if (crawl && JSON.stringify(newOrder) !== JSON.stringify(crawl.stops)) {
+      crawl.stops = newOrder;
+      persistCrawlIfSaved(crawl);
+      refreshCrawlLegs(listEl);
+      drawCrawlOnMap(crawl);
     }
   }
 
-  function onCancel() {
-    if (!t) return;
-    if (t.dragging) {
-      if (t.ghost) t.ghost.remove();
-      cleanupDragState();
-    }
-    cleanup();
+  dragCleanup();
+
+  if (!wasDragging) {
+    jumpToPubOnMap(pubId);
   }
+}
 
-  function enterDragMode() {
-    t.dragging = true;
-    const stop = t.stop;
-    stop.classList.add('dragging');
+function dragOnWindowEnd(e) {
+  const t = dragSystem.t;
+  if (!t) return;
+  if (e.pointerId !== undefined && t.pointerId !== undefined && e.pointerId !== t.pointerId) return;
+  dragOnUp();
+}
 
-    // Build a ghost clone that follows the cursor
-    const ghost = stop.cloneNode(true);
-    ghost.classList.add('crawl-stop-ghost');
-    ghost.classList.remove('dragging');
-    ghost.style.position = 'fixed';
-    ghost.style.left = t.startLeft + 'px';
-    ghost.style.top = t.startTop + 'px';
-    ghost.style.width = t.startWidth + 'px';
-    ghost.style.margin = '0';
-    ghost.style.pointerEvents = 'none';
-    ghost.style.zIndex = '9999';
-    // Remove interactive controls from the ghost so they don't capture clicks
-    ghost.querySelectorAll('button').forEach(b => b.remove());
-    document.body.appendChild(ghost);
-    t.ghost = ghost;
+function dragAbort() {
+  killAllGhosts();
+  const t = dragSystem.t;
+  if (t) {
+    try { t.stop.releasePointerCapture(t.pointerId); } catch (_) {}
+    t.stop.removeEventListener('pointermove', dragOnMove);
+    t.stop.removeEventListener('pointerup', dragOnUp);
+    t.stop.removeEventListener('pointercancel', dragOnUp);
+    dragSystem.t = null;
   }
+}
 
-  function cleanupDragState() {
-    t.stop.classList.remove('dragging');
-  }
+function dragEnter() {
+  const t = dragSystem.t;
+  if (!t) return;
+  t.dragging = true;
+  const stop = t.stop;
+  stop.classList.add('dragging');
 
-  function cleanup() {
-    if (!t) return;
+  const ghost = stop.cloneNode(true);
+  ghost.classList.add('crawl-stop-ghost');
+  ghost.classList.remove('dragging');
+  ghost.style.position = 'fixed';
+  ghost.style.left = t.startLeft + 'px';
+  ghost.style.top = t.startTop + 'px';
+  ghost.style.width = t.startWidth + 'px';
+  ghost.style.margin = '0';
+  ghost.style.pointerEvents = 'none';
+  ghost.style.zIndex = '9999';
+  ghost.querySelectorAll('button').forEach(b => b.remove());
+  document.body.appendChild(ghost);
+  t.ghost = ghost;
+}
+
+function dragCleanup() {
+  // Single source of truth for ending a drag. Always kills any ghosts
+  // (defensive), strips dragging classes, removes listeners, releases
+  // capture, and nulls the tracking object.
+  killAllGhosts();
+  const t = dragSystem.t;
+  if (t) {
     const { stop, pointerId } = t;
-    stop.removeEventListener('pointermove', onMove);
-    stop.removeEventListener('pointerup', onUp);
-    stop.removeEventListener('pointercancel', onCancel);
+    stop.removeEventListener('pointermove', dragOnMove);
+    stop.removeEventListener('pointerup', dragOnUp);
+    stop.removeEventListener('pointercancel', dragOnUp);
     try { stop.releasePointerCapture(pointerId); } catch (_) {}
-    t = null;
+    dragSystem.t = null;
   }
+}
+
+// Page-level helper — removes every ghost regardless of which drag
+// created it. Called defensively from multiple cleanup paths.
+function killAllGhosts() {
+  document.querySelectorAll('.crawl-stop-ghost').forEach(g => g.remove());
+  document.querySelectorAll('.crawl-stop.dragging').forEach(s => s.classList.remove('dragging'));
 }
 
 // Walk siblings top-to-bottom, find the first whose midpoint is below the cursor.
