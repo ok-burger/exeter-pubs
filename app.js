@@ -1182,23 +1182,19 @@ function generateCrawl({ stops, radiusM, venueTypes, anchor }) {
 
   if (pool.length < stops) return null;
 
-  // If anchor is itself a pub, seed the crawl with it
-  const picked = [];
+  // If anchor is a pub, lock it as the first stop. Shuffle only the rest.
+  let firstStop = null;
   if (anchor.id) {
-    const seed = pool.find(p => p.id === anchor.id);
-    if (seed) {
-      picked.push(seed);
-      pool = pool.filter(p => p.id !== seed.id);
+    firstStop = pool.find(p => p.id === anchor.id);
+    if (firstStop) {
+      pool = pool.filter(p => p.id !== firstStop.id);
     }
   }
 
-  // Sample remaining stops randomly
-  const remaining = stops - picked.length;
+  const remaining = stops - (firstStop ? 1 : 0);
   const sampled = sampleRandom(pool, remaining);
-  picked.push(...sampled);
-
-  // Chaos: shuffle the final order
-  const ordered = shuffle(picked);
+  const shuffledRest = shuffle(sampled);
+  const ordered = firstStop ? [firstStop, ...shuffledRest] : shuffledRest;
 
   return {
     id: 'crawl-' + Math.random().toString(36).slice(2, 9),
@@ -1250,8 +1246,11 @@ function renderActiveCrawl() {
   const panel = document.getElementById('crawl-panel');
   const stopsByPub = crawl.stops.map(id => appState.pubs.find(p => p.id === id)).filter(Boolean);
 
-  document.getElementById('crawl-panel-title').textContent =
-    crawl.name ? crawl.name : 'Your crawl';
+  const nameInput = document.getElementById('crawl-name-input');
+  // Only sync from state if the input isn't focused, so we don't clobber the user mid-type
+  if (document.activeElement !== nameInput) {
+    nameInput.value = crawl.name || '';
+  }
 
   // Compute total walking distance
   let totalM = 0;
@@ -1273,8 +1272,8 @@ function renderActiveCrawl() {
       legHTML = `<span class="crawl-leg">↳ ${formatDistance(d)} · ${formatWalkingTime(d)}</span>`;
     }
     return `
-      <li class="crawl-stop" data-pub-id="${p.id}" data-index="${i}">
-        <button class="crawl-drag-handle" type="button" aria-label="Drag to reorder" title="Drag to reorder">⋮⋮</button>
+      <li class="crawl-stop" data-pub-id="${p.id}" data-index="${i}" title="Drag to reorder, tap to view on map">
+        <span class="crawl-drag-handle" aria-hidden="true">⋮⋮</span>
         <span class="crawl-num">${i + 1}</span>
         <div class="crawl-stop-body">
           <span class="crawl-stop-name">${escapeHtml(p.name)}</span>
@@ -1286,22 +1285,16 @@ function renderActiveCrawl() {
     `;
   }).join('');
 
-  // Stop interactions: jump to map / remove / drag-to-reorder
+  // Stop interactions: remove button + tap/drag combo on the whole card
   list.querySelectorAll('.crawl-stop').forEach(li => {
     const pubId = li.dataset.pubId;
-
-    li.addEventListener('click', (e) => {
-      if (e.target.closest('.crawl-stop-remove') || e.target.closest('.crawl-drag-handle')) return;
-      jumpToPubOnMap(pubId);
-    });
-
     li.querySelector('.crawl-stop-remove').addEventListener('click', (e) => {
       e.stopPropagation();
       removeStopFromCrawl(pubId);
     });
   });
 
-  bindCrawlStopDrag(list);
+  bindCrawlStopInteractions(list);
 
   panel.hidden = false;
 }
@@ -1337,49 +1330,6 @@ function persistCrawlIfSaved(crawl) {
   if (saved[crawl.id]) {
     crawlStore.set(crawl);
   }
-}
-
-function startRenameCrawl() {
-  const crawl = appState.activeCrawl;
-  if (!crawl) return;
-
-  const row = document.querySelector('.crawl-panel-title-row');
-  if (!row || row.querySelector('.crawl-name-input')) return;
-
-  const titleEl = document.getElementById('crawl-panel-title');
-  const pencil = document.getElementById('crawl-rename-btn');
-  const currentName = crawl.name || '';
-
-  const input = document.createElement('input');
-  input.type = 'text';
-  input.className = 'crawl-name-input';
-  input.value = currentName;
-  input.placeholder = 'Name this crawl';
-  input.maxLength = 60;
-
-  titleEl.hidden = true;
-  pencil.hidden = true;
-  row.insertBefore(input, titleEl);
-  input.focus();
-  input.select();
-
-  let done = false;
-  const finish = (save) => {
-    if (done) return;
-    done = true;
-    if (save) {
-      const newName = input.value.trim();
-      crawl.name = newName;
-      persistCrawlIfSaved(crawl);
-    }
-    renderActiveCrawl();
-  };
-
-  input.addEventListener('blur', () => finish(true));
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') { e.preventDefault(); finish(true); }
-    if (e.key === 'Escape') { e.preventDefault(); finish(false); }
-  });
 }
 
 // ----- Add-a-stop dialog -----
@@ -1466,74 +1416,114 @@ function bindAddStopDialog() {
   dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
 }
 
-// ----- Drag-to-reorder (pointer events, works on touch + mouse) -----
+// ----- Stop tap/drag (pointer events, works on touch + mouse) -----
+// Down on a stop card starts tracking. If the pointer moves > DRAG_THRESHOLD,
+// we enter drag mode and reorder. If it doesn't, it's treated as a tap and
+// jumps the map to that pub.
 
-function bindCrawlStopDrag(listEl) {
-  let dragging = null;
-  let activeHandle = null;
-  let activePointerId = null;
+const DRAG_THRESHOLD_PX = 6;
 
-  const handles = listEl.querySelectorAll('.crawl-drag-handle');
-  handles.forEach(handle => {
-    handle.addEventListener('pointerdown', (e) => {
-      const stop = handle.closest('.crawl-stop');
-      if (!stop) return;
-      e.preventDefault();
-      dragging = stop;
-      activeHandle = handle;
-      activePointerId = e.pointerId;
-      dragging.classList.add('dragging');
-      handle.setPointerCapture(e.pointerId);
-      handle.addEventListener('pointermove', onMove);
-      handle.addEventListener('pointerup', onUp);
-      handle.addEventListener('pointercancel', onUp);
+function bindCrawlStopInteractions(listEl) {
+  let tracking = null;   // { stop, pubId, startX, startY, capturedEl, pointerId, dragging }
+
+  listEl.querySelectorAll('.crawl-stop').forEach(stop => {
+    stop.addEventListener('pointerdown', (e) => {
+      // Ignore clicks on the remove button
+      if (e.target.closest('.crawl-stop-remove')) return;
+      // Only primary button
+      if (e.button !== undefined && e.button !== 0) return;
+
+      tracking = {
+        stop,
+        pubId: stop.dataset.pubId,
+        startX: e.clientX,
+        startY: e.clientY,
+        capturedEl: stop,
+        pointerId: e.pointerId,
+        dragging: false
+      };
+      try { stop.setPointerCapture(e.pointerId); } catch (_) {}
+      stop.addEventListener('pointermove', onMove);
+      stop.addEventListener('pointerup', onUp);
+      stop.addEventListener('pointercancel', onCancel);
     });
   });
 
   function onMove(e) {
-    if (!dragging) return;
-    // Find which stop we're hovering over
+    if (!tracking) return;
+    const dx = e.clientX - tracking.startX;
+    const dy = e.clientY - tracking.startY;
+    if (!tracking.dragging && Math.hypot(dx, dy) > DRAG_THRESHOLD_PX) {
+      tracking.dragging = true;
+      tracking.stop.classList.add('dragging');
+      e.preventDefault();
+    }
+    if (!tracking.dragging) return;
+
+    // Find the stop we're over (skip the dragged one)
     const els = document.elementsFromPoint(e.clientX, e.clientY);
-    const targetStop = els.find(el => el.classList && el.classList.contains('crawl-stop') && el !== dragging);
+    const targetStop = els.find(el => el.classList && el.classList.contains('crawl-stop') && el !== tracking.stop);
     if (!targetStop) return;
     const rect = targetStop.getBoundingClientRect();
     const midpoint = rect.top + rect.height / 2;
     if (e.clientY < midpoint) {
-      targetStop.parentNode.insertBefore(dragging, targetStop);
+      targetStop.parentNode.insertBefore(tracking.stop, targetStop);
     } else {
-      targetStop.parentNode.insertBefore(dragging, targetStop.nextSibling);
+      targetStop.parentNode.insertBefore(tracking.stop, targetStop.nextSibling);
     }
   }
 
-  function onUp() {
-    if (!dragging) return;
-    dragging.classList.remove('dragging');
-    if (activeHandle) {
-      activeHandle.removeEventListener('pointermove', onMove);
-      activeHandle.removeEventListener('pointerup', onUp);
-      activeHandle.removeEventListener('pointercancel', onUp);
-      try { activeHandle.releasePointerCapture(activePointerId); } catch (_) {}
-    }
+  function onUp(e) {
+    if (!tracking) return;
+    const wasDragging = tracking.dragging;
+    const pubId = tracking.pubId;
+    cleanup();
 
-    // Read new order from the DOM and commit
-    const newOrder = [...listEl.querySelectorAll('.crawl-stop')].map(el => el.dataset.pubId);
-    const crawl = appState.activeCrawl;
-    if (crawl && JSON.stringify(newOrder) !== JSON.stringify(crawl.stops)) {
-      crawl.stops = newOrder;
-      persistCrawlIfSaved(crawl);
-      renderActiveCrawl();
-      drawCrawlOnMap(crawl);
+    if (wasDragging) {
+      // Commit new order
+      const newOrder = [...listEl.querySelectorAll('.crawl-stop')].map(el => el.dataset.pubId);
+      const crawl = appState.activeCrawl;
+      if (crawl && JSON.stringify(newOrder) !== JSON.stringify(crawl.stops)) {
+        crawl.stops = newOrder;
+        persistCrawlIfSaved(crawl);
+        renderActiveCrawl();
+        drawCrawlOnMap(crawl);
+      }
+    } else {
+      // It was a tap — jump map to this pub
+      jumpToPubOnMap(pubId);
     }
-    dragging = null;
-    activeHandle = null;
-    activePointerId = null;
+  }
+
+  function onCancel() {
+    if (!tracking) return;
+    cleanup();
+  }
+
+  function cleanup() {
+    if (!tracking) return;
+    const { capturedEl, pointerId } = tracking;
+    capturedEl.classList.remove('dragging');
+    capturedEl.removeEventListener('pointermove', onMove);
+    capturedEl.removeEventListener('pointerup', onUp);
+    capturedEl.removeEventListener('pointercancel', onCancel);
+    try { capturedEl.releasePointerCapture(pointerId); } catch (_) {}
+    tracking = null;
   }
 }
 
 function bindCrawlPanel() {
   document.getElementById('crawl-clear-btn').addEventListener('click', clearActiveCrawl);
-  document.getElementById('crawl-rename-btn').addEventListener('click', startRenameCrawl);
   document.getElementById('crawl-add-stop-btn').addEventListener('click', openAddStopDialog);
+  const nameInput = document.getElementById('crawl-name-input');
+  nameInput.addEventListener('input', () => {
+    if (!appState.activeCrawl) return;
+    appState.activeCrawl.name = nameInput.value.trim();
+    persistCrawlIfSaved(appState.activeCrawl);
+  });
+  nameInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); nameInput.blur(); }
+  });
   document.getElementById('crawl-shuffle-btn').addEventListener('click', () => {
     if (!appState.activeCrawl) return;
     appState.activeCrawl.stops = shuffle(appState.activeCrawl.stops);
@@ -1548,13 +1538,25 @@ function bindCrawlPanel() {
 function saveCurrentCrawl() {
   const crawl = appState.activeCrawl;
   if (!crawl) return;
-  const suggested = crawl.name || `Crawl from ${new Date(crawl.createdAt).toLocaleDateString('en-GB')}`;
-  const name = prompt('Name this crawl:', suggested);
-  if (name === null) return;
-  crawl.name = name.trim() || suggested;
+  // Use the name from the input (already in state); fall back to a dated default
+  if (!crawl.name) {
+    crawl.name = `Crawl from ${new Date(crawl.createdAt).toLocaleDateString('en-GB')}`;
+  }
   crawlStore.set(crawl);
   renderActiveCrawl();
-  alert(`Saved "${crawl.name}".`);
+  flashSaveConfirmation(crawl.name);
+}
+
+function flashSaveConfirmation(name) {
+  // Non-blocking confirmation that fades out
+  const btn = document.getElementById('crawl-save-btn');
+  const orig = btn.textContent;
+  btn.textContent = `✓ Saved "${name.length > 24 ? name.slice(0, 24) + '…' : name}"`;
+  btn.classList.add('btn-confirmed');
+  setTimeout(() => {
+    btn.textContent = orig;
+    btn.classList.remove('btn-confirmed');
+  }, 2200);
 }
 
 function shareCurrentCrawl() {

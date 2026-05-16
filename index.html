@@ -50,8 +50,15 @@
     <section id="crawl-panel" class="crawl-panel" hidden aria-live="polite">
       <header class="crawl-panel-header">
         <div class="crawl-panel-title-row">
-          <h2 class="crawl-panel-title" id="crawl-panel-title">Your crawl</h2>
-          <button id="crawl-rename-btn" class="btn-pencil" type="button" aria-label="Rename crawl" title="Rename">✎</button>
+          <span class="crawl-name-icon" aria-hidden="true">✎</span>
+          <input
+            type="text"
+            id="crawl-name-input"
+            class="crawl-name-input"
+            placeholder="Name this crawl…"
+            maxlength="60"
+            autocomplete="off"
+            aria-label="Crawl name">
         </div>
         <p class="crawl-panel-meta" id="crawl-panel-meta"></p>
         <button id="crawl-clear-btn" class="btn-icon crawl-clear-btn" type="button" aria-label="Clear crawl">✕</button>
